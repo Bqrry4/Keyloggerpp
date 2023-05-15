@@ -1,35 +1,94 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
+using static InputListener.LLInput;
 
 namespace InputListener
 {
-    internal class InputListener
+    public class InputListener
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nCode"></param>
-        /// <param name="wParam"></param>
-        /// <param name="lParam"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public static IntPtr LowLevelInputProc(int nCode, UIntPtr wParam, IntPtr lParam)
+        private IntPtr hookedKeyboard;
+        private IntPtr hookedMouse;
+        public InputListener()
         {
-
-            if (nCode >= 0)
-            {
-                if ((LLInput.KeyEvent)wParam.ToUInt32() == LLInput.KeyEvent.WM_SYSKEYDOWN)
-                {
-                    //Console.WriteLine((Keys)Marshal.ReadInt32(lParam));
-                }
-            }
-
-            return LLInput.CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
+            hookedKeyboard = SetHook(LowLevelKeyboardProc, HookType.WH_KEYBOARD_LL);
+            hookedMouse = SetHook(LowLevelMouseProc, HookType.WH_MOUSE_LL);
         }
+
+        ~InputListener()
+        {
+            UnhookWindowsHookEx(hookedKeyboard);
+            UnhookWindowsHookEx(hookedMouse);
+        }
+
+        /// <summary>
+        /// A ProcessHookMessage callback that process llKeyboard messages
+        /// </summary>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void LowLevelKeyboardProc(MessageType msT, IntPtr data)
+        {
+            KBDLLHOOKSTRUCT dataStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(data, typeof(KBDLLHOOKSTRUCT));
+
+            switch (msT)
+            {
+                case MessageType.WM_KEYDOWN:
+
+                    break;
+                case MessageType.WM_KEYUP:
+
+                    break;
+                case MessageType.WM_SYSKEYDOWN:
+
+                    break;
+                case MessageType.WM_SYSKEYUP:
+
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// A ProcessHookMessage callback that process llMouse messages
+        /// </summary>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void LowLevelMouseProc(MessageType msT, IntPtr data)
+        {
+            MSLLHOOKSTRUCT dataStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(data, typeof(MSLLHOOKSTRUCT));
+
+            switch (msT)
+            {
+                case MessageType.WM_RBUTTONDOWN:
+
+                    break;
+                case MessageType.WM_RBUTTONUP:
+
+                    break;
+                case MessageType.WM_LBUTTONDOWN:
+
+                    break;
+                case MessageType.WM_LBUTTONUP:
+
+                    break;
+            }
+        }
+    }
+
+    public class LLEventData
+    {
+        public int type;
+    }
+
+    public class KeyEventData : LLEventData
+    {
+        public Key key;
+        //How many times it was multiplied when the key was pressed
+        public int count;
+    }
+
+    public class MouseEventData : LLEventData
+    {
+        public Point choords;
+
     }
 }

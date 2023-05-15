@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keylogger++", "Keylogger++.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "..\Interpreter\Interpreter.csproj", "{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputListener", "..\InputListener\InputListener.csproj", "{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
