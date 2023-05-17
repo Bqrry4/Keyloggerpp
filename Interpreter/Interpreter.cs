@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Interpreter
 {
@@ -17,8 +12,8 @@ namespace Interpreter
         /// <summary>
         /// Interpret the given script and return the hotkeys to be listened for as triggers.
         /// </summary>
-        /// <param name="script"></param>
-        /// <param name="hotkeys"></param>
+        /// <param name="script">String containing the script to be interpreted</param>
+        /// <param name="hotkeys">List of strings representing the triggers to be listened for</param>
         public Interpreter(in string script, out List<string> hotkeys)
         {
             hotkeys = new List<string>();
@@ -49,7 +44,7 @@ namespace Interpreter
         /// <summary>
         /// This method will be called by the Intermediary when it detects that the given hotkey was pressed.
         /// </summary>
-        /// <param name="hotkey"></param>
+        /// <param name="hotkey">String representing the trigger</param>
         public void Run(in string hotkey)
         {
             List<IKlppCommand> commandList;
