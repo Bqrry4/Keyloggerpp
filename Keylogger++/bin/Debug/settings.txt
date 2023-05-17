@@ -1,2 +1,0 @@
-Light mode = 0
-Dark mode = 1
