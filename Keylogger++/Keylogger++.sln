@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "..\Interpret
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputListener", "..\InputListener\InputListener.csproj", "{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recorder", "..\Recorder\Recorder.csproj", "{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
