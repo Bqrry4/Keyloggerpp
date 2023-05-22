@@ -1,11 +1,6 @@
 ﻿using Interpreter.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Interpreter
 {
@@ -57,7 +52,6 @@ namespace Interpreter
                             throw e;
                         }
                         return new MousePressCommand(posX, posY, mouseButton);
-                        //break;
                     case "ClickRelease":
                         args = argumentString.Split(',');
                         if (args.Length != 3)
@@ -79,7 +73,6 @@ namespace Interpreter
                             throw e;
                         }
                         return new MouseReleaseCommand(posX, posY, mouseButton);
-                    //break;
                     case "Send":
                         if(textPattern.Matches(argumentString).Count > 1)
                         {
@@ -87,7 +80,6 @@ namespace Interpreter
                         }
                         string text = textPattern.Match(argumentString).Groups[0].Value;
                         return new SendCommand(text);
-                        //break;
                     case "SendInput":
                         if (textPattern.Matches(argumentString).Count > 1)
                         {
@@ -95,7 +87,6 @@ namespace Interpreter
                         }
                         string inputs = textPattern.Match(argumentString).Groups[0].Value;
                         return new SendInputCommand(inputs);
-                        //break;
                     case "MessageBox":
                         string message, title;
                         switch (textPattern.Matches(argumentString).Count)
@@ -103,16 +94,13 @@ namespace Interpreter
                             case 1:
                                 message = textPattern.Match(argumentString).Groups[0].Value;
                                 return new MessageBoxCommand(message);
-                                //break;
                             case 2:
                                 message = textPattern.Match(argumentString).Groups[0].Value;
                                 title = textPattern.Match(argumentString).Groups[1].Value;
                                 return new MessageBoxCommand(message, title);
-                                //break;
                             default:
                                 throw new ArgumentException("Syntax error: 'MessageBox' command accepts one or two string arguments!");
                         }
-                        //break;
                     default:
                         throw new NotImplementedException("Command " + commandName + " not implemented!");
                 }
