@@ -15,7 +15,10 @@ namespace Interpreter
         /// Takes a line of script representing a Keylogger++ command and creates a corresponding KlppCommand object 
         /// </summary>
         /// <param name="command">String containing a line of Klpp script</param>
-        /// <returns></returns>
+        /// <returns>Command parsed out of given text</returns>
+        /// <exception cref="MalformedLineException"> When a line does not conform to klpp script</exception>
+        /// <exception cref="NotImplementedException"> When klpp format is respected, but the command given is not recognized </exception>
+        /// <exception cref="ArgumentException"> When a command was recognized, but its' usage was erroneous</exception>
         public static IKlppCommand Parse(string command)
         {
             Regex commandPattern = new Regex("(\\w+)\\(((?:(?: ?\\d+,?)|(?: ?\"(?:[^\"])*\",?))*)\\)+");
@@ -29,7 +32,7 @@ namespace Interpreter
                 string[] args;
                 Regex textPattern = new Regex("\"([^\"]+)\"");
 
-                int posX, posY;
+                ushort posX, posY;
                 byte mouseButton;
 
                 switch (commandName)
@@ -45,8 +48,8 @@ namespace Interpreter
                         args[2] = args[2].Replace(" ", "").Replace("\"", "");
                         try
                         {
-                            posX = Int32.Parse(args[0]);
-                            posY = Int32.Parse(args[1]);
+                            posX = UInt16.Parse(args[0]);
+                            posY = UInt16.Parse(args[1]);
                             mouseButton = Byte.Parse(args[2]);
                         }
                         catch (Exception e)
@@ -67,8 +70,8 @@ namespace Interpreter
                         
                         try
                         {
-                            posX = Int32.Parse(args[0]);
-                            posY = Int32.Parse(args[1]);
+                            posX = UInt16.Parse(args[0]);
+                            posY = UInt16.Parse(args[1]);
                             mouseButton = Byte.Parse(args[2]);
                         }
                         catch (Exception e)
