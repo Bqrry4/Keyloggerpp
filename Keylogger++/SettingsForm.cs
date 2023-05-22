@@ -19,21 +19,35 @@ namespace Keylogger__
         public SettingsForm()
         {
             InitializeComponent();
-            StreamReader sr = new StreamReader(_settings);
-            string line = sr.ReadLine();
-            if (line.Contains("1"))
+            try
             {
-                radioButtonLightMode.Checked = true;
-                radioButtonDarkMode.Checked = false;
+                StreamReader sr = new StreamReader(_settings);
+                List<string> strings = new List<string>();
+                string line = sr.ReadLine();
+                while (line != null)
+                {
+                    strings.Add(line);
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+                if (strings[0].Contains("1"))
+                {
+                    radioButtonLightMode.Checked = true;
+                    radioButtonDarkMode.Checked = false;
+                }
+                else
+                {
+                    radioButtonDarkMode.Checked = true;
+                    radioButtonLightMode.Checked = false;
+                }
+                textBoxDir.Text = strings[2].Substring(20);
             }
-            else
+            catch (Exception ex)
             {
-                radioButtonDarkMode.Checked = true;
-                radioButtonLightMode.Checked = false;
+                MessageBox.Show(ex.Message);
             }
-            sr.Close();
         }
-
+        // Saves settings to the settings file
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (radioButtonLightMode.Checked == true)
@@ -46,11 +60,29 @@ namespace Keylogger__
                 _darkMode = 1;
                 _lightMode = 0;
             }
-            StreamWriter sw = new StreamWriter(_settings);
-            sw.WriteLine("Light mode = " + _lightMode);
-            sw.WriteLine("Dark mode = " + _darkMode);
-            sw.Close();
-            this.Hide();
+            try
+            {
+                StreamWriter sw = new StreamWriter(_settings);
+                sw.WriteLine("Light mode = " + _lightMode);
+                sw.WriteLine("Dark mode = " + _darkMode);
+                sw.WriteLine("Default directory = " + textBoxDir.Text);
+                sw.Close();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        // Change directory browser
+        private void buttonBrowseDir_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            textBoxDir.Text = folderBrowserDialog.SelectedPath;
         }
     }
 }

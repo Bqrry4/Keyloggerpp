@@ -14,20 +14,36 @@ namespace Keylogger__
 {
     public partial class Interface : Form
     {
+        private string _directory;
+        private const string _settings = "settings.txt";
         public Interface()
         {
             InitializeComponent();
-            StreamReader sr = new StreamReader("settings.txt");
-            string line = sr.ReadLine();
-            if (line.Contains("1"))
+            try
             {
-                InitUI("light");
+                StreamReader sr = new StreamReader(_settings);
+                List<string> strings = new List<string>();
+                string line = sr.ReadLine();
+                while (line != null)
+                {
+                    strings.Add(line);
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+                if (strings[0].Contains("1"))
+                {
+                    InitUI("light");
+                }
+                else
+                {
+                    InitUI("dark");
+                }
+                _directory = strings[2].Substring(20);
             }
-            else
+            catch (Exception ex)
             {
-                InitUI("dark");
+                MessageBox.Show(ex.Message);
             }
-            sr.Close();
         }
 
         private void buttonRecord_Click(object sender, EventArgs e)
@@ -39,13 +55,13 @@ namespace Keylogger__
         {
 
         }
-
+        // Opens a .klpp file
         private void buttonOpenFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "KeyLogger++ files|*.kpp|All files|*.*";
+            openFileDialog.Filter = "KeyLogger++ files|*.klpp|All files|*.*";
             openFileDialog.Title = "Open script file";
-            openFileDialog.InitialDirectory = "Documents\\";
+            openFileDialog.InitialDirectory = _directory;
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() != DialogResult.OK)
                 return;
@@ -61,14 +77,14 @@ namespace Keylogger__
                 MessageBox.Show("Error reading file");
             }
         }
-
+        // Saves the script as a *.klpp file
         private void buttonSaveFile_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.DefaultExt = "*.kpp";
+            saveFileDialog.DefaultExt = "*.klpp";
             saveFileDialog.Title = "Save script file";
-            saveFileDialog.InitialDirectory = "Documents\\";
-            saveFileDialog.Filter = "KeyLogger++ files|*.kpp|All files|*.*";
+            saveFileDialog.InitialDirectory = _directory;
+            saveFileDialog.Filter = "KeyLogger++ files|*.klpp|All files|*.*";
             if (saveFileDialog.ShowDialog() != DialogResult.OK)
                 return;
             try
@@ -84,19 +100,28 @@ namespace Keylogger__
             }
         }
 
+        // Opens settings dialog
         private void buttonSettings_Click(object sender, EventArgs e)
         {
             SettingsForm settings = new SettingsForm();
             settings.Show();
         }
 
+        // Applies settings
         private void buttonApplySettings_Click(object sender, EventArgs e)
         {
             try
             {
                 StreamReader sr = new StreamReader("settings.txt");
+                List<string> strings = new List<string>();
                 string line = sr.ReadLine();
-                if (line.Contains("1"))
+                while (line != null)
+                {
+                    strings.Add(line);
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+                if (strings[0].Contains("1"))
                 {
                     InitUI("light");
                 }
@@ -104,14 +129,17 @@ namespace Keylogger__
                 {
                     InitUI("dark");
                 }
-                sr.Close();
+                _directory = strings[2].Substring(20);
             }
             catch (Exception)
             {
                 MessageBox.Show("Error reading settings file");
             }
         }
-
+        /// <summary>
+        /// Initializes the UI based on settings
+        /// </summary>
+        /// <param name="key"></param>
         private void InitUI(string key)
         {
             if (key == "dark")
@@ -172,7 +200,7 @@ namespace Keylogger__
         {
 
         }
-
+        // About the program section
         private void buttonAbout_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Program that allows user to make custom hotkeys", "About keylogger");
