@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
+using System.Text;
 
 namespace InputListener
 {
@@ -68,6 +70,8 @@ namespace InputListener
             }
         }
 
+        #region privateImports
+
         [DllImport("user32.dll")]
         private static extern IntPtr SetWindowsHookEx(int idHook, HookCallback lpfn, IntPtr hMod, uint dwThreadId);
 
@@ -80,7 +84,94 @@ namespace InputListener
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, UIntPtr wParam, IntPtr lParam);
 
+
+        [DllImport("user32.dll")]
+        private static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[] lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags, IntPtr dwhkl);
+        [DllImport("user32.dll")]
+        private static extern bool GetKeyboardState(byte[] lpKeyState);
+        [DllImport("user32.dll")]
+        private static extern short GetKeyState(int vkey);
+
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern IntPtr GetKeyboardLayout(uint dwLayout);
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        [DllImport("user32.dll")]
+        private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
+        [DllImport("kernel32.dll")]
+        private static extern uint GetCurrentThreadId();
+        #endregion
+
+        /// <summary>
+        /// Returns the Unicode character represented by the current keyboard state
+        /// </summary>
+        /// <param name="vkCode"></param>
+        /// <returns></returns>
+        public static string GetCharsFromVKCode(uint vkCode, uint scanCode)
+        {
+
+            var buf = new StringBuilder(8);
+            var keyboardState = new byte[256];
+
+            // Gets the current windows window handle, threadID, processID
+            IntPtr currentHWnd = GetForegroundWindow();
+            uint currentWindowThreadID = GetWindowThreadProcessId(currentHWnd, out _);
+
+            // This programs Thread ID
+            uint thisProgramThreadId = GetCurrentThreadId();
+
+
+            bool isAttachedThread = false;
+            // Attach to active thread so we can get the most late state of the keyboard
+            if (AttachThreadInput(thisProgramThreadId, currentWindowThreadID, true))
+            {
+                isAttachedThread = true;
+
+            }
+
+            //Seems there is a bug, so this is needed so GetKeyboardState can work correctly
+            GetKeyState(0);
+
+            //Retrieve the keyboardState and return an empty string on fail
+            if (!GetKeyboardState(keyboardState))
+            {
+                //Also we must detach that thread
+                if (isAttachedThread)
+                {
+                    // Detach
+                    AttachThreadInput(thisProgramThreadId, currentWindowThreadID, false);
+                }
+
+                return "";
+            }
+
+            //If a thread was attached now we can detach
+            if (isAttachedThread)
+            {
+                // Detach
+                AttachThreadInput(thisProgramThreadId, currentWindowThreadID, false);
+
+            }
+
+            // Gets the layout of keyboard
+            IntPtr hkl = GetKeyboardLayout(currentWindowThreadID);
+
+            ToUnicodeEx(vkCode, scanCode, keyboardState, buf, buf.Capacity, 0, hkl);
+            return buf.ToString();
+        }
+
+
+        /// <summary>
+        /// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput
+        /// </summary>
+        [DllImport("user32.dll")]
+        public static extern uint SendInput(uint cInputs, INPUT[] pInputs, int cbSize);
+
     }
+
 
     [StructLayout(LayoutKind.Sequential)]
     public struct Point
@@ -89,6 +180,9 @@ namespace InputListener
         int Y;
     }
 
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-msllhookstruct
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct MSLLHOOKSTRUCT
     {
@@ -99,6 +193,9 @@ namespace InputListener
         public UIntPtr dwExtraInfo;
     }
 
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-kbdllhookstruct
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct KBDLLHOOKSTRUCT
     {
@@ -107,5 +204,67 @@ namespace InputListener
         public uint flags;
         public uint time;
         public UIntPtr dwExtraInfo;
+    }
+
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-input
+    /// </summary>
+    [System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
+    public struct INPUT
+    {
+        /// <summary>
+        /// 0 = INPUT_MOUSE
+        /// 1 = INPUT_KEYBOARD
+        /// 2 = INPUT_HARDWARE
+        /// </summary>
+        [FieldOffset(0)]
+        public int type;
+
+        [FieldOffset(sizeof(int))]
+        public MOUSEINPUT mi;
+
+        [FieldOffset(sizeof(int))]
+        public KEYBDINPUT ki;
+
+        [FieldOffset(sizeof(int))]
+        public HARDWAREINPUT hi;
+    }
+
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-mouseinput
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MOUSEINPUT
+    {
+        long dx;
+        long dy;
+        int mouseData;
+        int dwFlags;
+        int time;
+        UIntPtr dwExtraInfo;
+    }
+
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-keybdinput
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct KEYBDINPUT
+    {
+        short wVk;
+        short wScan;
+        int dwFlags;
+        int time;
+        UIntPtr dwExtraInfo;
+    }
+
+    /// <summary>
+    /// https://learn.microsoft.com/en-us/windows/desktop/api/winuser/ns-winuser-hardwareinput
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public struct HARDWAREINPUT
+    {
+        int uMsg;
+        short wParamL;
+        short wParamH;
     }
 }
