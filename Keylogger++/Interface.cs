@@ -1,13 +1,16 @@
-﻿using System;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        Interface.cs                                             *
+ *  Copyright:   (c) Păduraru George                                      *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Interface for the Keylogger++ app.                       *
+ *                                                                        *
+ **************************************************************************/
+
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Configuration;
 using System.IO;
 
 namespace Keylogger__
@@ -48,12 +51,18 @@ namespace Keylogger__
 
         private void buttonRecord_Click(object sender, EventArgs e)
         {
-
+            if (buttonRecord.Text == "Start recording")
+                buttonRecord.Text = "Stop recording";
+            else
+                buttonRecord.Text = "Start recording";
         }
 
         private void buttonRun_Click(object sender, EventArgs e)
         {
-
+            if (buttonRun.Text == "Start running")
+                buttonRun.Text = "Stop running";
+            else
+                buttonRun.Text = "Start running";
         }
         // Opens a .klpp file
         private void buttonOpenFile_Click(object sender, EventArgs e)
@@ -167,6 +176,7 @@ namespace Keylogger__
                 buttonHelp.ForeColor = Color.FromArgb(245, 246, 250);
                 buttonExit.ForeColor = Color.FromArgb(245, 246, 250);
                 richTextBoxScript.ForeColor = Color.FromArgb(245, 246, 250);
+
             }
             else
             {
