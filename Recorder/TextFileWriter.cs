@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace Recorder
@@ -7,6 +8,11 @@ namespace Recorder
     {
         private FileStream output;
 
+        /// <summary>
+        /// Creates or open a new file to write in
+        /// </summary>
+        /// <param name="path"></param>
+        /// <exception cref="">Exception</exception>
         public TextFileWriter(string path)
         {
             output = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
