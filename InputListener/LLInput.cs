@@ -218,7 +218,7 @@ namespace InputListener
         /// 2 = INPUT_HARDWARE
         /// </summary>
         [FieldOffset(0)]
-        public int type;
+        public InputType type;
 
         [FieldOffset(sizeof(int))]
         public MOUSEINPUT mi;
@@ -236,12 +236,12 @@ namespace InputListener
     [StructLayout(LayoutKind.Sequential)]
     public struct MOUSEINPUT
     {
-        long dx;
-        long dy;
-        int mouseData;
-        int dwFlags;
-        int time;
-        UIntPtr dwExtraInfo;
+        public long dx;
+        public long dy;
+        public int mouseData;
+        public int dwFlags;
+        public int time;
+        public UIntPtr dwExtraInfo;
     }
 
     /// <summary>
@@ -250,11 +250,11 @@ namespace InputListener
     [StructLayout(LayoutKind.Sequential)]
     public struct KEYBDINPUT
     {
-        short wVk;
-        short wScan;
-        int dwFlags;
-        int time;
-        UIntPtr dwExtraInfo;
+        public short wVk;
+        public short wScan;
+        public KeyEvent dwFlags;
+        public int time;
+        public UIntPtr dwExtraInfo;
     }
 
     /// <summary>
@@ -263,8 +263,23 @@ namespace InputListener
     [StructLayout(LayoutKind.Sequential)]
     public struct HARDWAREINPUT
     {
-        int uMsg;
-        short wParamL;
-        short wParamH;
+        public int uMsg;
+        public short wParamL;
+        public short wParamH;
+    }
+
+    public enum InputType : int
+    {
+        INPUT_MOUSE = 0,
+        INPUT_KEYBOARD = 1,
+        INPUT_HARDWARE = 2
+    }
+    
+    public enum KeyEvent : int
+    {
+        KEYEVENTF_EXTENDEDKEY = 1,
+        KETEVENTF_KEYUP = 2,
+        KEYEVENTF_SCANCODE = 3,
+        KEYEVENTF_UNICODE = 4
     }
 }

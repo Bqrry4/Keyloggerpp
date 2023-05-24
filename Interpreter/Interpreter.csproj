@@ -54,5 +54,11 @@
     <Compile Include="Commands\SendCommand.cs" />
     <Compile Include="Commands\SendInputCommand.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InputListener\InputListener.csproj">
+      <Project>{bc89bc5b-cffe-4b0d-8262-56caa8e975ad}</Project>
+      <Name>InputListener</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
