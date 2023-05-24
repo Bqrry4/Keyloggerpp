@@ -1,9 +1,14 @@
-﻿using System;
+﻿/**************************************************************************
+*                                                                         *
+*  File:        Recorder.cs                                               *
+*  Copyright:   (c) Onofrei Grigore                                       *
+*               @Kakerou_CLUB                                             *
+*  Description: Module to record events and output them as scripts.       *
+*                                                                         *
+**************************************************************************/
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using InputListener;
 
 namespace Recorder
@@ -69,7 +74,7 @@ namespace Recorder
         /// <summary>
         /// Record an action to be written in every writer's destination
         /// </summary>
-        /// <param name="action">Action to be recorded</param>
+        /// <param name="action"> Action to be recorded </param>
         public void Record(LLEventData action)
         {
             switch(action.eType)
@@ -77,7 +82,7 @@ namespace Recorder
                 case 0:
                     foreach(IWriter w in writers)
                     {
-                        string cmd = "SendInput(\"";
+                        string cmd = "Send(\"";
                         for(int i = 0; i < action.kEvent.count; i++)
                         {
                             cmd += action.kEvent.uChar;

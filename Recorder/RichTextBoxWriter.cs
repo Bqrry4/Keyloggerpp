@@ -1,4 +1,13 @@
-﻿using System;
+﻿/**************************************************************************
+*                                                                         *
+*  File:        RichTextBoxWriter.cs                                      *
+*  Copyright:   (c) Onofrei Grigore                                       *
+*               @Kakerou_CLUB                                             *
+*  Description: Recorder text box writer for scripts.                     *
+*                                                                         *
+**************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

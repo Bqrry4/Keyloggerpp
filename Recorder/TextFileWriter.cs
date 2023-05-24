@@ -1,4 +1,13 @@
-﻿using System;
+﻿/**************************************************************************
+*                                                                         *
+*  File:        TextFileWriter.cs                                         *
+*  Copyright:   (c) Onofrei Grigore                                       *
+*               @Kakerou_CLUB                                             *
+*  Description: Recorder file writer for scripts.                         *
+*                                                                         *
+**************************************************************************/
+
+using System;
 using System.IO;
 using System.Text;
 
@@ -11,16 +20,26 @@ namespace Recorder
         /// <summary>
         /// Creates or open a new file to write in
         /// </summary>
-        /// <param name="path"></param>
-        /// <exception cref="">Exception</exception>
+        /// <param name="path">Path to the file</param>
+        /// <exception cref="System.Exception">FileStream related exceptions</exception>
         public TextFileWriter(string path)
         {
-            output = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+            try
+            {
+                output = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
 
-            string firstLine = Recorder.StopKey + "::{\n";
-            output.Write(Encoding.UTF8.GetBytes(firstLine), 0, firstLine.Length);
+                string firstLine = Recorder.StopKey + "::{\n";
+                output.Write(Encoding.UTF8.GetBytes(firstLine), 0, firstLine.Length);
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
 
+        /// <summary>
+        /// Write last line of script and close FileStream to save changes
+        /// </summary>
         void IWriter.Close()
         {
             output.Write(Encoding.UTF8.GetBytes("}"), 0, "}".Length);
@@ -29,7 +48,7 @@ namespace Recorder
 
         void IWriter.Write(string value)
         {
-            output.Write(Encoding.UTF8.GetBytes(value), 0, value.Length);
+            output.Write(Encoding.UTF8.GetBytes("\t" + value), 0, value.Length);
         }
     }
 }

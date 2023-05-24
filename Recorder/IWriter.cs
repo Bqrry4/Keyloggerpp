@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/**************************************************************************
+*                                                                         *
+*  File:        IWriter.cs                                                *
+*  Copyright:   (c) Onofrei Grigore                                       *
+*               @Kakerou_CLUB                                             *
+*  Description: Interface for writers used in Recorder.                   *
+*                                                                         *
+**************************************************************************/
 
 namespace Recorder
 {
