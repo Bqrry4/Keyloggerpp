@@ -65,13 +65,24 @@ namespace InputListener
                         else
                         {
                             //Adding the new event
-                            _currentKeyEvent.Add(new KeyEventData(dataStruct.vkCode, GetCharsFromVKCode(dataStruct.vkCode, dataStruct.scanCode), 1));
+                            _currentKeyEvent.Add(new KeyEventData
+                            {
+                                vkCode = dataStruct.vkCode,
+                                uChar = GetCharsFromVKCode(dataStruct.vkCode, dataStruct.scanCode),
+                                count = 1
+                            });
 
                             goto ProcessEvent;
                         }
                     }
 
-                    _currentKeyEvent.Add(new KeyEventData(dataStruct.vkCode, GetCharsFromVKCode(dataStruct.vkCode, dataStruct.scanCode), 1));
+                    _currentKeyEvent.Add(new KeyEventData
+                    {
+                        vkCode = dataStruct.vkCode,
+                        uChar = GetCharsFromVKCode(dataStruct.vkCode, dataStruct.scanCode),
+                        count = 1
+                    });
+
 
 
                     break;
@@ -82,11 +93,12 @@ namespace InputListener
                     //UpPress event pair for an already processed event
                     if (_currentKeyEvent.Count == 0)
                     {
+                        //throw it away
                         break;
                     }
 
 
-                    //sadfpojasfj PROCESS
+                    //PROCESS event
                     KeyEventData pp = _currentKeyEvent.First();
                     // Console.WriteLine(_currentKeyEvent.First().count);
                     _currentKeyEvent.RemoveAt(0);
@@ -134,63 +146,50 @@ namespace InputListener
                     break;
             }
 
-            //PostEvent
+            //PostEvent 3
         }
     }
 
-    public abstract class LLEventData
+    [System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
+    public struct LLEventData
     {
         /// <summary>
         /// 0 = KeyEventData
         /// 1 = MouseEventData
         /// </summary>
+        [FieldOffset(0)]
         public int eType;
+
+        [FieldOffset(sizeof(int))]
+        public KeyEventData kEvent;
+
+        [FieldOffset(sizeof(int))]
+        public MouseEventData mEvent;
+
     }
 
-    public class KeyEventData : LLEventData
+    public class KeyEventData
     {
+        //the virtual key code
         public uint vkCode;
         //The unicode character
         public string uChar;
         //How many times it was multiplied when the key was pressed
         public byte count;
-
-        public KeyEventData()
-        {
-            eType = 0;
-
-        }
-        public KeyEventData(uint vkCode, string uChar, byte count) : this()
-        {
-            this.vkCode = vkCode;
-            this.uChar = uChar;
-            this.count = count;
-        }
     }
 
-    public class MouseEventData : LLEventData
+    public class MouseEventData
     {
+        //Screen coordinates where the mouse was pointing
         public Point coords;
-
+        /// <summary>
+        /// 0 = LeftClick 
+        /// 1 = RightClick 
+        /// </summary>
         public int buttonID;
         /// <summary>
         /// 0 = Press | 1 = Release
         /// </summary>
         public bool status;
-
-        public MouseEventData()
-        {
-            eType = 1;
-        }
-
-        public MouseEventData(Point coords, int buttonID, bool status) : this()
-        {
-
-            this.coords = coords;
-            this.buttonID = buttonID;
-            this.status = status;
-
-        }
-
     }
 }
