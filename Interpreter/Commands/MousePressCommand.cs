@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net.Configuration;
+using System.Runtime.InteropServices;
+using InputListener;
 
 namespace Interpreter
 {
@@ -42,13 +45,34 @@ namespace Interpreter
         {
             _posX = posX;
             _posY = posY;
+
             _mouseButton = mouseButton;
         }
 
         public void Execute()
         {
-            //TODO: RELEASE
-            throw new NotImplementedException();
+            //TODO: press
+            INPUT[] input = new INPUT[1];
+
+            int mouseEvent = 0x0004;
+
+            if (_mouseButton == 2)
+                mouseEvent <<= 2;
+
+            input[0] = new INPUT
+            {
+                type = InputType.INPUT_MOUSE,
+                mi = new MOUSEINPUT
+                {
+                    dx = _posX,
+                    dy = _posY,
+                    mouseData = 0,
+                    dwFlags = mouseEvent | 0x8000 //ABSOLUT
+                }
+            };
+
+            LLInput.SendInput(1, input, Marshal.SizeOf(typeof(INPUT)));
+            //throw new NotImplementedException();
         }
     }
 }

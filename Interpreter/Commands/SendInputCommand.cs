@@ -1,7 +1,9 @@
 ﻿using InputListener;
+using Windows.System;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
 
 namespace Interpreter
 {
@@ -23,16 +25,18 @@ namespace Interpreter
             INPUT[] inputArray = new INPUT[_text.Length * 2];
             int index = 0;
             Stack<INPUT> releaseStack = new Stack<INPUT>(_text.Length);
-            for (int i = 0; i < _text.Length; i++)
+            string[] keys = _text.Split(' ');
+            foreach (string key in keys)
             {
-                if (_text.Substring(i).StartsWith("Ctrl"))
+                //First check for modifiers
+                if (key.Contains("Ctrl"))
                 {
                     inputArray[index++] = new INPUT
                     {
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = 0xA0, //LSHIFT
+                            wVk = 0xA2, //LCTRL
                             wScan = 0,
                             dwFlags = 0
                         }
@@ -42,13 +46,13 @@ namespace Interpreter
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = 0xA0, //LSHIFT
+                            wVk = 0xA2, //LCTRL
                             wScan = 0,
                             dwFlags = KeyEvent.KETEVENTF_KEYUP
                         }
-                    }); 
+                    });
                 }
-                else if(_text.Substring(i).StartsWith("Win"))
+                else if (key.Contains("Win"))
                 {
                     inputArray[index++] = new INPUT
                     {
@@ -71,14 +75,14 @@ namespace Interpreter
                         }
                     });
                 }
-                else if(_text.Substring(i).StartsWith("Shift"))
+                else if (key.Contains("Shift"))
                 {
                     inputArray[index++] = new INPUT
                     {
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = 0x5B, //LWIN
+                            wVk = 0xA0, //LSHIFT
                             wScan = 0,
                             dwFlags = 0
                         }
@@ -88,37 +92,94 @@ namespace Interpreter
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = 0x5B, //LWIN
+                            wVk = 0xA0, //LSHIFT
                             wScan = 0,
                             dwFlags = KeyEvent.KETEVENTF_KEYUP
                         }
                     });
                 }
-                else if (_text.Substring(i).StartsWith("Alt"))
+                else if (key.Contains("Alt"))
                 {
-
+                    inputArray[index++] = new INPUT
+                    {
+                        type = InputType.INPUT_KEYBOARD,
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = 0xA4, //LALT
+                            wScan = 0,
+                            dwFlags = 0
+                        }
+                    };
+                    releaseStack.Push(new INPUT
+                    {
+                        type = InputType.INPUT_KEYBOARD,
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = 0xA4, //LALT
+                            wScan = 0,
+                            dwFlags = KeyEvent.KETEVENTF_KEYUP
+                        }
+                    });
                 }
+                //Second, check for regular, non-OEM keys 
+                else if (('a' <= key[0] && 'z' >= key[0]) || ('0' <= key[0] && '1' >= key[0]))
+                {
+                    inputArray[index++] = new INPUT
+                    {
+                        type = InputType.INPUT_KEYBOARD,
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = 0,
+                            wScan = (short)key[0],
+                            dwFlags = KeyEvent.KEYEVENTF_UNICODE
+                        }
+                    };
+                    inputArray[index++] = new INPUT
+                    {
+                        type = InputType.INPUT_KEYBOARD,
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = 0,
+                            wScan = (short)key[0],
+                            dwFlags = KeyEvent.KEYEVENTF_UNICODE | KeyEvent.KETEVENTF_KEYUP
+                        }
+                    };
+                }
+                //Last, check for other special keys, like Tab
+                else try
+                    {
+                        VirtualKey vKey = (VirtualKey)Enum.Parse(typeof(VirtualKey), key);
+                        inputArray[index++] = new INPUT
+                        {
+                            type = InputType.INPUT_KEYBOARD,
+                            ki = new KEYBDINPUT
+                            {
+                                wVk = (short)vKey,
+                                wScan = 0,
+                                dwFlags = 0
+                            }
+                        };
+                        inputArray[index++] = new INPUT
+                        {
+                            type = InputType.INPUT_KEYBOARD,
+                            ki = new KEYBDINPUT
+                            {
+                                wVk = (short)vKey,
+                                wScan = 0,
+                                dwFlags = KeyEvent.KETEVENTF_KEYUP
+                            }
+                        };
+                    }
+                    catch (Exception exc)
+                    {
+                        throw exc;
+                        //do something lmao
+                    }
 
-                inputArray[2 * i] = new INPUT
-                {
-                    type = InputType.INPUT_KEYBOARD,
-                    ki = new KEYBDINPUT
-                    {
-                        wVk = 0,
-                        wScan = (short)_text[i],
-                        dwFlags = KeyEvent.KEYEVENTF_UNICODE
-                    }
-                };
-                inputArray[2 * i + i] = new INPUT
-                {
-                    type = InputType.INPUT_KEYBOARD,
-                    ki = new KEYBDINPUT
-                    {
-                        wVk = 0,
-                        wScan = (short)_text[i],
-                        dwFlags = KeyEvent.KEYEVENTF_UNICODE | KeyEvent.KETEVENTF_KEYUP
-                    }
-                };
+            }
+            while(releaseStack.Count > 0)
+            {
+                inputArray[index++] = releaseStack.Pop();
             }
             LLInput.SendInput((uint)inputArray.Length, inputArray, Marshal.SizeOf(typeof(INPUT)));
             //throw new NotImplementedException();

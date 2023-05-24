@@ -14,7 +14,6 @@ namespace Interpreter
     public class Interpreter
     {
         private Dictionary<string, List<IKlppCommand>> _hotkeyScripts;
-        //private CommandFactory _commandFactory;
 
         /// <summary>
         /// Interpret the given script and return the hotkeys to be listened for as triggers.
