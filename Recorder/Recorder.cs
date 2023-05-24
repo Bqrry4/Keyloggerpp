@@ -31,7 +31,7 @@ namespace Recorder
         /// </summary>
         private Queue<LLEventData> eventQueue = new Queue<LLEventData>();
 
-        private Key[] specialKeys = { Key.LWin, Key.RWin, Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
+        //private Key[] specialKeys = { Key.LWin, Key.RWin, Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
 
         public Recorder(Queue<LLEventData> eventQueue)
         {
@@ -72,27 +72,36 @@ namespace Recorder
         /// <param name="action">Action to be recorded</param>
         public void Record(LLEventData action)
         {
-            switch(action.type)
+            switch(action.eType)
             {
                 case 0:
-                    KeyEventData keyAction = (KeyEventData)action;
                     foreach(IWriter w in writers)
                     {
-                        if(Array.IndexOf(specialKeys, keyAction.key) == -1)
+                        string cmd = "SendInput(\"";
+                        for(int i = 0; i < action.kEvent.count; i++)
                         {
-                            w.Write("\tSendInput(" + keyAction.key.ToString() + ")\n");
+                            cmd += action.kEvent.uChar;
                         }
+                        cmd += "\")\r\n";
+                        w.Write(cmd);
                     }
                     break;
                 case 1:
-                    MouseEventData mouseAction = (MouseEventData)action;
                     foreach(IWriter w in writers)
                     {
-                        //w.Write("\tClick(" + mouseAction.choords.x);
+                        int x = action.mEvent.coords.X, y = action.mEvent.coords.Y;
+                        if (action.mEvent.status)
+                        {
+                            w.Write("ClickRelease(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n");
+                        }
+                        else
+                        {
+                            w.Write("ClickPress(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n");
+                        }
                     }
                     break;
                 case 2:
-
+                    throw new NotImplementedException();
                     break;
             }
         }

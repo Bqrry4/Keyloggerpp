@@ -176,8 +176,8 @@ namespace InputListener
     [StructLayout(LayoutKind.Sequential)]
     public struct Point
     {
-        int X;
-        int Y;
+        public int X;
+        public int Y;
     }
 
     /// <summary>
