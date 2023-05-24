@@ -15,7 +15,7 @@ namespace Keylogger__
     public partial class Interface : Form
     {
         private string _directory;
-        private const string _settings = "settings.txt";
+        private const string _settings = @"../../settings.txt";
         public Interface()
         {
             InitializeComponent();
@@ -112,7 +112,7 @@ namespace Keylogger__
         {
             try
             {
-                StreamReader sr = new StreamReader("settings.txt");
+                StreamReader sr = new StreamReader(_settings);
                 List<string> strings = new List<string>();
                 string line = sr.ReadLine();
                 while (line != null)

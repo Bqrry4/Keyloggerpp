@@ -15,7 +15,7 @@ namespace Keylogger__
     {
         private int _lightMode = 1;
         private int _darkMode = 0;
-        private const string _settings = "settings.txt";
+        private const string _settings = @"../../settings.txt";
         public SettingsForm()
         {
             InitializeComponent();
