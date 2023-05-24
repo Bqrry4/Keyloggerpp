@@ -1,10 +1,7 @@
 ﻿using InputListener;
-using Windows.System;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows.Input;
-
 namespace Interpreter
 {
     /// <summary>
@@ -148,7 +145,7 @@ namespace Interpreter
                 //Last, check for other special keys, like Tab
                 else try
                     {
-                        VirtualKey vKey = (VirtualKey)Enum.Parse(typeof(VirtualKey), key);
+                        VirtualKeys vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
                         inputArray[index++] = new INPUT
                         {
                             type = InputType.INPUT_KEYBOARD,
