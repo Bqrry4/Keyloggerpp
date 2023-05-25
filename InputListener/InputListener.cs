@@ -15,6 +15,13 @@ namespace InputListener
 
         private List<KeyEventData> _currentKeyEvent = new List<KeyEventData>(2);
 
+        /// <summary>
+        /// Win = 0x1
+        /// Alt = 0x2
+        /// Shift = 0x4
+        /// Ctrl = 0x8
+        /// </summary>
+        private ushort _activeModifiers = 0x0;
 
         public InputListener()
         {
@@ -35,9 +42,6 @@ namespace InputListener
         private void LowLevelKeyboardProc(MessageType msT, IntPtr data)
         {
             KBDLLHOOKSTRUCT dataStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(data, typeof(KBDLLHOOKSTRUCT));
-            //Key key = KeyInterop.KeyFromVirtualKey((int)dataStruct.vkCode);
-
-            //LLInput.VKCodeToString(dataStruct.vkCode, msT == MessageType.WM_KEYDOWN);
 
             switch (msT)
             {
@@ -45,13 +49,41 @@ namespace InputListener
                 case MessageType.WM_KEYDOWN:
 
 
+                    //Looking for modifiers
+                    switch ((VirtualKeys)dataStruct.vkCode)
+                    {
+                        case VirtualKeys.LeftWindows:
+                        case VirtualKeys.RightWindows:
+                            _activeModifiers |= 0x1;
+                            break;
+
+                        case VirtualKeys.LeftMenu:
+                        case VirtualKeys.RightMenu:
+                            _activeModifiers |= 0x2;
+                            break;
+
+                        case VirtualKeys.LeftShift:
+                        case VirtualKeys.RightShift:
+                            _activeModifiers |= 0x4;
+                            break;
+
+                        case VirtualKeys.LeftControl:
+                        case VirtualKeys.RightControl:
+                            _activeModifiers |= 0x8;
+                            break;
+                            //If it will be needed, i will extend it for separate right and left combination in further releases
+                    }
+
+
                     //Press interrupted by another press event
                     if (_currentKeyEvent.Count > 0)
                     {
+                        //Its a duplicate for the same event
                         if (_currentKeyEvent.First().vkCode == dataStruct.vkCode)
                         {
                             if (_currentKeyEvent.First().count < 255)
                             {
+                                //Increase the count for duplicates when long down press
                                 _currentKeyEvent.First().count++;
                                 break;
                             }
@@ -72,10 +104,11 @@ namespace InputListener
                                 count = 1
                             });
 
+                            //Process the old event which was interrupted by the new one (forcing the event)
                             goto ProcessEvent;
                         }
                     }
-
+                    //Append the event to list
                     _currentKeyEvent.Add(new KeyEventData
                     {
                         vkCode = dataStruct.vkCode,
@@ -83,25 +116,120 @@ namespace InputListener
                         count = 1
                     });
 
-
-
                     break;
+
+
                 case MessageType.WM_SYSKEYUP:
                 case MessageType.WM_KEYUP:
-                ProcessEvent:
+
+                    //Looking if it is a modifier
+                    switch ((VirtualKeys)dataStruct.vkCode)
+                    {
+
+                        case VirtualKeys.LeftWindows:
+                        case VirtualKeys.RightWindows:
+                            ushort mask;
+                            mask = 0x1;
+                            goto ClearModifierMask;
+                        case VirtualKeys.LeftMenu:
+                        case VirtualKeys.RightMenu:
+                            mask = 0x2;
+                            goto ClearModifierMask;
+                        case VirtualKeys.LeftShift:
+                        case VirtualKeys.RightShift:
+                            mask = 0x4;
+                            goto ClearModifierMask;
+                        case VirtualKeys.LeftControl:
+                        case VirtualKeys.RightControl:
+                            mask = 0x8;
+
+                        ClearModifierMask:
+                            //Clear the mask if it was released (keyUp event)
+                            _activeModifiers &= (ushort)~mask;
+
+                            break;
+                    }
+
 
                     //UpPress event pair for an already processed event
                     if (_currentKeyEvent.Count == 0)
                     {
-                        //throw it away
+                        //If its not a modifier then its a pair for a normal key
                         break;
+
                     }
 
+                //Label for a forced event
+                ProcessEvent:
 
-                    //PROCESS event
-                    KeyEventData pp = _currentKeyEvent.First();
-                    // Console.WriteLine(_currentKeyEvent.First().count);
+                    //Add to an eventQ
+                    KeyEventData kEvent = _currentKeyEvent.First();
                     _currentKeyEvent.RemoveAt(0);
+
+                    //If it has a modifier, it must be a combination
+                    List<uint> modifers = new List<uint>();
+                    if (_activeModifiers > 0)
+                    {
+                        //WinKey is on?
+                        if ((_activeModifiers & 0x1) != 0)
+                        {
+                            modifers.Add((uint)VirtualKeys.LeftWindows);
+                        }
+
+                        //Ctrl is on?
+                        if ((_activeModifiers & 0x8) != 0)
+                        {
+                            modifers.Add((uint)VirtualKeys.LeftControl);
+
+                        }
+                        //Alt is on?
+                        if ((_activeModifiers & 0x2) != 0)
+                        {
+                            modifers.Add((uint)VirtualKeys.LeftMenu);
+
+                        }
+
+                        //Shift is on?
+                        if ((_activeModifiers & 0x4) != 0)
+                        {
+                            //Shift alone is not a valid combination
+                            if (modifers.Count > 0)
+                            {
+                                modifers.Add((uint)VirtualKeys.LeftShift);
+                            }
+                        }
+                    }
+
+                    if (modifers.Count > 0)
+                    {
+
+                        //If the last key is a modifier throw it away (Invalid combination)
+                        switch ((VirtualKeys)kEvent.vkCode)
+                        {
+                            case VirtualKeys.LeftWindows:
+                            case VirtualKeys.RightWindows:
+                            case VirtualKeys.LeftMenu:
+                            case VirtualKeys.RightMenu:
+                            case VirtualKeys.LeftShift:
+                            case VirtualKeys.RightShift:
+                            case VirtualKeys.LeftControl:
+                            case VirtualKeys.RightControl:
+
+                                //throw 
+                                return;
+                        }
+                        foreach (uint c in modifers)
+                        {
+                            Console.WriteLine((VirtualKeys)(c));
+                        }
+                        Console.WriteLine((VirtualKeys)kEvent.vkCode);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine((VirtualKeys)kEvent.vkCode);
+
+                    }
 
                     break;
                 default:
@@ -156,6 +284,7 @@ namespace InputListener
         /// <summary>
         /// 0 = KeyEventData
         /// 1 = MouseEventData
+        /// 2 = KeyCombinationEvent
         /// </summary>
         [FieldOffset(0)]
         public int eType;
@@ -165,6 +294,9 @@ namespace InputListener
 
         [FieldOffset(sizeof(int))]
         public MouseEventData mEvent;
+
+        [FieldOffset(sizeof(int))]
+        public KeyCombination cEvent;
 
     }
 
@@ -191,5 +323,11 @@ namespace InputListener
         /// 0 = Press | 1 = Release
         /// </summary>
         public bool status;
+    }
+
+    public class KeyCombination
+    {
+        List<uint> modifers;
+        KeyEventData key;
     }
 }
