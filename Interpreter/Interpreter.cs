@@ -13,14 +13,14 @@ namespace Interpreter
     /// </summary>
     public class Interpreter
     {
-        private Dictionary<string, List<IKlppCommand>> _hotkeyScripts;
+        private Dictionary<string, List<IKlppCommand>> _hotkeyScripts = new Dictionary<string, List<IKlppCommand>>();
 
         /// <summary>
         /// Interpret the given script and return the hotkeys to be listened for as triggers.
         /// </summary>
         /// <param name="script">String containing the script to be interpreted</param>
         /// <param name="hotkeys">List of strings representing the triggers to be listened for</param>
-        public Interpreter(in string script, out List<string> hotkeys)
+        public void Run(in string script, out List<string> hotkeys)
         {
             hotkeys = new List<string>();
             //Step 1: Read the hotkey and send it to the Intermediary.
@@ -49,7 +49,9 @@ namespace Interpreter
                     }
                     catch(Exception ex)
                     {
-                        MessageBox.Show("Error at line " + lineIndex + ": " + ex.Message);
+                        //MessageBox.Show("Error at line " + lineIndex + ": " + ex.Message);
+                        //break;
+                        throw new ArgumentException("Error parsing klpp script at line " + lineIndex + ": " + ex.Message, ex);
                     }
                 }
 
@@ -71,7 +73,14 @@ namespace Interpreter
             }
             foreach(IKlppCommand command in commandList)
             {
-                command.Execute();
+                try
+                {
+                    command.Execute();
+                }
+                catch (Exception ex)
+                {
+                    throw new AggregateException("Error executing hotkey " + hotkey, ex);
+                }
             }
         }
     }

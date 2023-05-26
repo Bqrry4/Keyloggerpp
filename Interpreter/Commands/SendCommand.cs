@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace Interpreter
 {
     /// <summary>
-    /// Command that sends raw text
+    /// Command that sends raw text as keystrokes to the eventQueue of the OS
     /// </summary>
     internal class SendCommand : IKlppCommand
     {
@@ -19,7 +19,6 @@ namespace Interpreter
         
         public void Execute()
         {
-            //TODO: SEND TEXT
             INPUT[] inputArray = new INPUT[_text.Length * 2];
             for(int i = 0; i < _text.Length; i++)
             {
@@ -45,8 +44,6 @@ namespace Interpreter
                 };
             }
             LLInput.SendInput((uint)inputArray.Length, inputArray, Marshal.SizeOf(typeof(INPUT)));
-
-            //throw new NotImplementedException();
         }
     }
 }

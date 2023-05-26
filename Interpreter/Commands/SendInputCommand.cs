@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Interpreter
 {
     /// <summary>
-    /// Command that sends modified keypresses
+    /// Command that sends keypresses to the eventQueue of the OS
     /// </summary>
     internal class SendInputCommand : IKlppCommand
     {
@@ -18,15 +18,14 @@ namespace Interpreter
 
         public void Execute()
         {
-            //TODO: SEND MODIFIED KEY
-            INPUT[] inputArray = new INPUT[_text.Length * 2];
+            INPUT[] inputArray = new INPUT[_text.Length * 2]; //Worst case scenario is one modifier + many text keys, so plenty of space
             int index = 0;
-            Stack<INPUT> releaseStack = new Stack<INPUT>(_text.Length);
+            Stack<INPUT> releaseStack = new Stack<INPUT>(_text.Length / 3); // The only key releases that need to be loaded into the release stack are modifier keys Ctrl, Alt, Win and Shift
             string[] keys = _text.Split(' ');
             foreach (string key in keys)
             {
-                //First check for modifiers
-                if (key.Contains("Ctrl"))
+                //First check for modifiers as they need to be added to the releaseStack
+                if (key.Equals("Ctrl") || key.Equals("LeftCtrl") || key.Equals("RightCtrl"))
                 {
                     inputArray[index++] = new INPUT
                     {
@@ -49,7 +48,7 @@ namespace Interpreter
                         }
                     });
                 }
-                else if (key.Contains("Win"))
+                else if (key.Equals("Win") || key.Equals("LeftWin") || key.Equals("RightWin"))
                 {
                     inputArray[index++] = new INPUT
                     {
@@ -72,7 +71,7 @@ namespace Interpreter
                         }
                     });
                 }
-                else if (key.Contains("Shift"))
+                else if (key.Equals("Shift") || key.Equals("LeftShift") || key.Equals("RightShift"))
                 {
                     inputArray[index++] = new INPUT
                     {
@@ -95,7 +94,7 @@ namespace Interpreter
                         }
                     });
                 }
-                else if (key.Contains("Alt"))
+                else if (key.Equals("Alt") || key.Equals("LeftAlt") || key.Equals("RightAlt")) 
                 {
                     inputArray[index++] = new INPUT
                     {
@@ -118,8 +117,8 @@ namespace Interpreter
                         }
                     });
                 }
-                //Second, check for regular, non-OEM keys 
-                else if (('a' <= key[0] && 'z' >= key[0]) || ('0' <= key[0] && '1' >= key[0]))
+                //Second, check for digits as their VirtualKeys equivalent is not user-friendly
+                else if (key.Length == 1 && '0' <= key[0] && '1' >= key[0])
                 {
                     inputArray[index++] = new INPUT
                     {
@@ -142,7 +141,7 @@ namespace Interpreter
                         }
                     };
                 }
-                //Last, check for other special keys, like Tab
+                //Last, check for other keys
                 else try
                     {
                         VirtualKeys vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
@@ -167,19 +166,16 @@ namespace Interpreter
                             }
                         };
                     }
-                    catch (Exception exc)
+                    catch (Exception ex)
                     {
-                        throw exc;
-                        //do something lmao
+                        throw new ArgumentException("Error executing SendInputCommand: Key not recognized: " + key, ex);
                     }
-
             }
             while(releaseStack.Count > 0)
             {
                 inputArray[index++] = releaseStack.Pop();
             }
             LLInput.SendInput((uint)inputArray.Length, inputArray, Marshal.SizeOf(typeof(INPUT)));
-            //throw new NotImplementedException();
         }
     }
 }

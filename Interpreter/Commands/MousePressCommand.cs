@@ -51,10 +51,14 @@ namespace Interpreter
 
         public void Execute()
         {
-            //TODO: press
             INPUT[] input = new INPUT[1];
 
             int mouseEvent = 0x0004;
+
+            if (_mouseButton != 1 && _mouseButton != 2) 
+            {
+                throw new ArgumentException("Error executing MousePress: Invalid mouse button: " + _mouseButton);
+            }
 
             if (_mouseButton == 2)
                 mouseEvent <<= 2;
@@ -70,9 +74,7 @@ namespace Interpreter
                     dwFlags = mouseEvent | 0x8000 //ABSOLUT
                 }
             };
-
             LLInput.SendInput(1, input, Marshal.SizeOf(typeof(INPUT)));
-            //throw new NotImplementedException();
         }
     }
 }

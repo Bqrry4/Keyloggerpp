@@ -53,7 +53,12 @@ namespace Interpreter
 
             int mouseEvent = 0x0004;
 
-            if (_mouseButton == 4)
+            if (_mouseButton != 1 && _mouseButton != 2)
+            {
+                throw new ArgumentException("Error executing MouseRelease: Invalid mouse button: " + _mouseButton);
+            }
+
+            if (_mouseButton == 2)
                 mouseEvent <<= 2;
 
             input[0] = new INPUT
