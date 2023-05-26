@@ -6,9 +6,9 @@
 *  Description: Module to record events and output them as scripts.       *
 *                                                                         *
 **************************************************************************/
-
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using InputListener;
 
 namespace Recorder
@@ -75,40 +75,63 @@ namespace Recorder
         /// Record an action to be written in every writer's destination
         /// </summary>
         /// <param name="action"> Action to be recorded </param>
-        public void Record(LLEventData action)
+        private void Record(LLEventData action)
         {
-            switch(action.eType)
+            string cmd;
+
+            // create command string
+            switch (action.eType)
             {
-                case 0:
-                    foreach(IWriter w in writers)
+                case 0:// key event
+                    cmd = "Send(\"";
+
+                    for (int i = 0; i < action.kEvent.count; i++)
                     {
-                        string cmd = "Send(\"";
-                        for(int i = 0; i < action.kEvent.count; i++)
-                        {
-                            cmd += action.kEvent.uChar;
-                        }
-                        cmd += "\")\r\n";
-                        w.Write(cmd);
+                        cmd += action.kEvent.uChar;
                     }
+
+                    cmd += "\")";
                     break;
-                case 1:
-                    foreach(IWriter w in writers)
+                case 1:// mouse event
+                    int x = action.mEvent.coords.X, y = action.mEvent.coords.Y;
+
+                    if (action.mEvent.status)
                     {
-                        int x = action.mEvent.coords.X, y = action.mEvent.coords.Y;
-                        if (action.mEvent.status)
-                        {
-                            w.Write("ClickRelease(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n");
-                        }
-                        else
-                        {
-                            w.Write("ClickPress(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n");
-                        }
+                        cmd = "ClickRelease(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")";
+                    }
+                    else
+                    {
+                        cmd = "ClickPress(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")";
                     }
                     break;
                 case 2:
-                    throw new NotImplementedException();
+                    cmd = "SendInput(";
+
+                    foreach(uint k in action.cEvent.modifers)
+                    {
+                        cmd += (VirtualKeys)k + " ";
+                    }
+
+                    cmd += action.cEvent.key.uChar + ")";
+                    break;
+                default:
+                    cmd = null;
                     break;
             }
+
+            // write in every writer if created
+            if(cmd != null)
+            {
+                foreach (IWriter w in writers)
+                {
+                    w.Write(cmd);
+                }
+            }
+        }
+
+        public void StartRecording()
+        {
+
         }
     }
 }

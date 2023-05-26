@@ -48,7 +48,7 @@ namespace Recorder
 
         void IWriter.Write(string value)
         {
-            output.Write(Encoding.UTF8.GetBytes("\t" + value), 0, value.Length);
+            output.Write(Encoding.UTF8.GetBytes("\t" + value + "\r\n"), 0, value.Length);
         }
     }
 }

@@ -327,7 +327,7 @@ namespace InputListener
 
     public class KeyCombination
     {
-        List<uint> modifers;
-        KeyEventData key;
+        public List<uint> modifers;
+        public KeyEventData key;
     }
 }

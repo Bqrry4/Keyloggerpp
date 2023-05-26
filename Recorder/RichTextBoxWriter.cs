@@ -44,7 +44,7 @@ namespace Recorder
         /// <param name="value"></param>
         public void Write(string value)
         {
-            output.Text += "\t" + value;
+            output.Text += "\t" + value + "\r\n";
         }
     }
 }
