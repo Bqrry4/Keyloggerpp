@@ -28,7 +28,7 @@ namespace Recorder
             {
                 output = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
 
-                string firstLine = Recorder.StopKey + "::{\n";
+                string firstLine = Logger.StopKey + "::{\n";
                 output.Write(Encoding.UTF8.GetBytes(firstLine), 0, firstLine.Length);
             }
             catch(Exception e)

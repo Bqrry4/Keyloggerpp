@@ -1,15 +1,24 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
+using System.Windows.Interop;
 using static InputListener.LLInput;
 
 namespace InputListener
 {
-    public class InputListener
+    /// <summary>
+    /// Class that encapsulates the capturing of low level input and sending events to a queue given in the constructor
+    /// </summary>
+    public class LLListener
     {
+        //The eventQueue where the valid events are pushed
+        private ConcurrentQueue<LLEventData> _eventQueue = new ConcurrentQueue<LLEventData>();
+
+
         private IntPtr _hookedKeyboard;
         private IntPtr _hookedMouse;
 
@@ -23,16 +32,30 @@ namespace InputListener
         /// </summary>
         private ushort _activeModifiers = 0x0;
 
-        public InputListener()
+        public LLListener(ConcurrentQueue<LLEventData> eventQueue)
+        {
+            _eventQueue = eventQueue;
+        }
+        /// <summary>
+        /// Set hooks over ll input
+        /// </summary>
+        public void StartListening()
         {
             _hookedKeyboard = SetHook(LowLevelKeyboardProc, HookType.WH_KEYBOARD_LL);
             _hookedMouse = SetHook(LowLevelMouseProc, HookType.WH_MOUSE_LL);
         }
-
-        ~InputListener()
+        /// <summary>
+        /// Unhook to stop recieving callbacks
+        /// </summary>
+        public void StopListening()
         {
             UnhookWindowsHookEx(_hookedKeyboard);
             UnhookWindowsHookEx(_hookedMouse);
+        }
+
+        ~LLListener()
+        {
+            StopListening();
         }
 
         /// <summary>
@@ -163,29 +186,29 @@ namespace InputListener
                 ProcessEvent:
 
                     //Add to an eventQ
-                    KeyEventData kEvent = _currentKeyEvent.First();
+                    KeyEventData kbE = _currentKeyEvent.First();
                     _currentKeyEvent.RemoveAt(0);
 
                     //If it has a modifier, it must be a combination
-                    List<uint> modifers = new List<uint>();
+                    List<uint> modifersList = new List<uint>();
                     if (_activeModifiers > 0)
                     {
                         //WinKey is on?
                         if ((_activeModifiers & 0x1) != 0)
                         {
-                            modifers.Add((uint)VirtualKeys.LeftWindows);
+                            modifersList.Add((uint)VirtualKeys.LeftWindows);
                         }
 
                         //Ctrl is on?
                         if ((_activeModifiers & 0x8) != 0)
                         {
-                            modifers.Add((uint)VirtualKeys.LeftControl);
+                            modifersList.Add((uint)VirtualKeys.LeftControl);
 
                         }
                         //Alt is on?
                         if ((_activeModifiers & 0x2) != 0)
                         {
-                            modifers.Add((uint)VirtualKeys.LeftMenu);
+                            modifersList.Add((uint)VirtualKeys.LeftMenu);
 
                         }
 
@@ -193,18 +216,18 @@ namespace InputListener
                         if ((_activeModifiers & 0x4) != 0)
                         {
                             //Shift alone is not a valid combination
-                            if (modifers.Count > 0)
+                            if (modifersList.Count > 0)
                             {
-                                modifers.Add((uint)VirtualKeys.LeftShift);
+                                modifersList.Add((uint)VirtualKeys.LeftShift);
                             }
                         }
                     }
 
-                    if (modifers.Count > 0)
+                    if (modifersList.Count > 0)
                     {
 
                         //If the last key is a modifier throw it away (Invalid combination)
-                        switch ((VirtualKeys)kEvent.vkCode)
+                        switch ((VirtualKeys)kbE.vkCode)
                         {
                             case VirtualKeys.LeftWindows:
                             case VirtualKeys.RightWindows:
@@ -218,17 +241,25 @@ namespace InputListener
                                 //throw 
                                 return;
                         }
-                        foreach (uint c in modifers)
+                        //Push Event to the queue
+                        _eventQueue.Enqueue(new LLEventData
                         {
-                            Console.WriteLine((VirtualKeys)(c));
-                        }
-                        Console.WriteLine((VirtualKeys)kEvent.vkCode);
-
+                            eType = 2,
+                            cEvent = new KeyCombination
+                            {
+                                modifers = modifersList,
+                                key = kbE
+                            }
+                        });
                     }
                     else
                     {
-                        Console.WriteLine((VirtualKeys)kEvent.vkCode);
-
+                        //Push Event to the queue
+                        _eventQueue.Enqueue(new LLEventData
+                        {
+                            eType = 0,
+                            kEvent = kbE
+                        });
                     }
 
                     break;
@@ -274,7 +305,12 @@ namespace InputListener
                     break;
             }
 
-            //PostEvent 3
+            //Push Event to the queue
+            _eventQueue.Enqueue(new LLEventData
+            {
+                eType = 1,
+                mEvent= msE
+            });
         }
     }
 
