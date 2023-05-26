@@ -71,6 +71,14 @@ namespace Recorder
             writers.Clear();
         }
 
+        private void SendToWriters(string command)
+        {
+            foreach (IWriter w in writers)
+            {
+                w.Write(command);
+            }
+        }
+
         /// <summary>
         /// Record an action to be written in every writer's destination
         /// </summary>
@@ -91,6 +99,9 @@ namespace Recorder
                     }
 
                     cmd += "\")";
+
+                    SendToWriters(cmd);
+
                     break;
                 case 1:// mouse event
                     int x = action.mEvent.coords.X, y = action.mEvent.coords.Y;
@@ -103,8 +114,11 @@ namespace Recorder
                     {
                         cmd = "ClickPress(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")";
                     }
+
+                    SendToWriters(cmd);
+
                     break;
-                case 2:
+                case 2://special keys combination
                     cmd = "SendInput(";
 
                     foreach(uint k in action.cEvent.modifers)
@@ -112,20 +126,23 @@ namespace Recorder
                         cmd += (VirtualKeys)k + " ";
                     }
 
-                    cmd += action.cEvent.key.uChar + ")";
-                    break;
-                default:
-                    cmd = null;
-                    break;
-            }
+                    //if the last key is a digit(not from numpad)
+                    if(action.cEvent.key.vkCode >= 48 && action.cEvent.key.vkCode <= 57)
+                    {
+                        cmd += (action.cEvent.key.vkCode - 48) + ")";
+                    }
+                    else
+                    {
+                        cmd += action.cEvent.key.uChar + ")";
+                    }
 
-            // write in every writer if created
-            if(cmd != null)
-            {
-                foreach (IWriter w in writers)
-                {
-                    w.Write(cmd);
-                }
+                    //write the same command how many times last key was pressed
+                    for(int i = 0; i < action.cEvent.key.count; i++)
+                    {
+                        SendToWriters(cmd);
+                    }
+
+                    break;
             }
         }
 
