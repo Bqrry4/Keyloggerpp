@@ -48,7 +48,7 @@
     <Compile Include="Commands\IKlppCommand.cs" />
     <Compile Include="Exceptions\HotkeyNotFoundException.cs" />
     <Compile Include="Exceptions\MalformedLineException.cs" />
-    <Compile Include="Interpreter.cs" />
+    <Compile Include="ScriptInterpreter.cs" />
     <Compile Include="Commands\MouseReleaseCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\SendCommand.cs" />

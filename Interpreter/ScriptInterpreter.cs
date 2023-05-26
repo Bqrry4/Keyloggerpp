@@ -10,7 +10,7 @@ namespace Interpreter
     /// Class that encapsulates klpp script interpreting and running.
     /// <para>Reads the given script line by line and interprets them into commands</para>
     /// </summary>
-    public class Interpreter
+    public class ScriptInterpreter
     {
         private Dictionary<string, List<IKlppCommand>> _hotkeyScripts = new Dictionary<string, List<IKlppCommand>>();
 
