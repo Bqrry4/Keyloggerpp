@@ -1,9 +1,7 @@
 ﻿using InputListener;
 using Interpreter.Exceptions;
 using System;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace Interpreter
 {
@@ -25,6 +23,7 @@ namespace Interpreter
 
             //0 for mouse1, 1 for mouse2, true for pressed, false for released
             bool[] mousePressed = new bool[2]; 
+
             if (match.Success)
             {
                 string commandName = match.Groups[1].Value;

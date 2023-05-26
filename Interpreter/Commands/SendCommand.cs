@@ -1,6 +1,4 @@
 ﻿using InputListener;
-using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Interpreter
@@ -17,6 +15,9 @@ namespace Interpreter
             _text = text;
         }
         
+        /// <summary>
+        /// Sends keystroke events from unicode
+        /// </summary>
         public void Execute()
         {
             INPUT[] inputArray = new INPUT[_text.Length * 2];

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace Interpreter
 {
@@ -20,6 +19,7 @@ namespace Interpreter
         /// </summary>
         /// <param name="script">String containing the script to be interpreted</param>
         /// <param name="hotkeys">List of strings representing the triggers to be listened for</param>
+        /// <exception cref="AggregateException">If there is an error parsing a line of script</exception>
         public void Run(in string script, out List<string> hotkeys)
         {
             hotkeys = new List<string>();
@@ -51,7 +51,7 @@ namespace Interpreter
                     {
                         //MessageBox.Show("Error at line " + lineIndex + ": " + ex.Message);
                         //break;
-                        throw new ArgumentException("Error parsing klpp script at line " + lineIndex + ": " + ex.Message, ex);
+                        throw new AggregateException("Error parsing klpp script at line " + lineIndex + ": " + ex.Message, ex);
                     }
                 }
 
@@ -64,6 +64,7 @@ namespace Interpreter
         /// <remarks>This method will be called by the Intermediary when it detects that the given hotkey was pressed.</remarks>
         /// <param name="hotkey">String representing the trigger</param>
         /// <exception cref="HotkeyNotFoundException">If the given hotkey was not registered within the interpreter </exception>
+        /// <exception cref="AggregateException">If an error occurs while executing a command </exception>
         public void Run(in string hotkey)
         {
             List<IKlppCommand> commandList;

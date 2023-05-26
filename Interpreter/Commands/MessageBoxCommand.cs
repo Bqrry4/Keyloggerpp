@@ -17,6 +17,9 @@ namespace Interpreter
             _title = title;
         }
 
+        /// <summary>
+        /// ....Shows a message box...
+        /// </summary>
         public void Execute()
         {
             MessageBox.Show(_message, _title);
