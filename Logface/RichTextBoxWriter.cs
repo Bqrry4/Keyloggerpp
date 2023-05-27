@@ -7,18 +7,14 @@
 *                                                                         *
 **************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Recorder;
 
-namespace Recorder
+namespace Logface
 {
     public class RichTextBoxWriter : IWriter
     {
-        private RichTextBox output;
+        private RichTextBox _output;
 
         /// <summary>
         /// Every scripts starts with a line that describes the stop execution key
@@ -26,8 +22,8 @@ namespace Recorder
         /// <param name="output">TextBox to be written in</param>
         public RichTextBoxWriter(RichTextBox output)
         {
-            this.output = output;
-            this.output.Text += Logger.StopKey + "::{\n";
+            this._output = output;
+            this._output.Text += Logger.StopKey + "::\n{\n";
         }
 
         /// <summary>
@@ -35,7 +31,7 @@ namespace Recorder
         /// </summary>
         public void Close()
         {
-            this.output.Text += "}";
+            this._output.Text += "}";
         }
 
         /// <summary>
@@ -44,7 +40,7 @@ namespace Recorder
         /// <param name="value"></param>
         public void Write(string value)
         {
-            output.Text += "\t" + value + "\r\n";
+            _output.Text += "\t" + value + "\r\n";
         }
     }
 }
