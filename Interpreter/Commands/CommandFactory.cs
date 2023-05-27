@@ -1,11 +1,20 @@
-﻿using InputListener;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        CommandFactory.cs                                        *
+ *  Copyright:   (c) Olăreț Radu                                          *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Class that builds Commands from a lines of text          *
+ *                                                                        *
+ **************************************************************************/
+
+using InputListener;
 using Interpreter.Exceptions;
 using System;
 using System.Text.RegularExpressions;
 
 namespace Interpreter
 {
-    internal class CommandFactory
+    internal static class CommandFactory
     {
         /// <summary>
         /// Takes a line of script representing a Keylogger++ command and creates a corresponding KlppCommand object 

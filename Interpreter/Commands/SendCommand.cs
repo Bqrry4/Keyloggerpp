@@ -1,10 +1,19 @@
-﻿using InputListener;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        SendCommand.cs                                           *
+ *  Copyright:   (c) Olăreț Radu                                          *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Command that sends raw text as keystrokes to the event   *
+ *               queue                                                    *
+ **************************************************************************/
+
+using InputListener;
 using System.Runtime.InteropServices;
 
 namespace Interpreter
 {
     /// <summary>
-    /// Command that sends raw text as keystrokes to the eventQueue of the OS
+    /// Command that sends raw text as keystrokes to the event queue of the OS
     /// </summary>
     internal class SendCommand : IKlppCommand
     {
@@ -14,9 +23,9 @@ namespace Interpreter
         {
             _text = text;
         }
-        
+
         /// <summary>
-        /// Sends keystroke events from unicode
+        /// Sends raw text as keystrokes to the event queue of the OS
         /// </summary>
         public void Execute()
         {

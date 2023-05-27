@@ -1,4 +1,13 @@
-﻿using System.Windows.Forms;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        MessageBoxCommand.cs                                     *
+ *  Copyright:   (c) Olăreț Radu                                          *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Command that opens a messageBox with the given message   *
+ *               and titles.                                              *
+ **************************************************************************/
+
+using System.Windows.Forms;
 
 namespace Interpreter
 {

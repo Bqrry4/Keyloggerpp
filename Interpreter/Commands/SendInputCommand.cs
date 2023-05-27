@@ -1,4 +1,13 @@
-﻿using InputListener;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        SendInputCommand.cs                                      *
+ *  Copyright:   (c) Olăreț Radu                                          *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Command that sends keypresses to the event queue         *
+ *                                                                        *
+ **************************************************************************/
+
+using InputListener;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -6,7 +15,7 @@ using System.Runtime.InteropServices;
 namespace Interpreter
 {
     /// <summary>
-    /// Command that sends keypresses to the eventQueue of the OS
+    /// Command that sends keypresses to the event queue of the OS
     /// </summary>
     internal class SendInputCommand : IKlppCommand
     {
@@ -18,7 +27,7 @@ namespace Interpreter
         }
 
         /// <summary>
-        /// Sends the keys given as keystrokes to the eventQueue of the OS
+        /// Sends the keys given as keystrokes to the event queue of the OS
         /// </summary>
         /// <exception cref="ArgumentException">When given key does not exist</exception>
         public void Execute()
