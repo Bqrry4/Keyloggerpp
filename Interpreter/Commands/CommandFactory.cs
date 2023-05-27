@@ -130,7 +130,7 @@ namespace Interpreter
                             }
                         }
                         return new SendInputCommand(inputs);
-                    case "MessageBox":
+                    case "MsgBox":
                         string message, title;
                         switch (textPattern.Matches(argumentString).Count)
                         {
@@ -142,7 +142,7 @@ namespace Interpreter
                                 title = textPattern.Match(argumentString).Groups[1].Value;
                                 return new MessageBoxCommand(message, title);
                             default:
-                                throw new ArgumentException("Syntax error: 'MessageBox' command usage: MessageBox(string message[, string title])");
+                                throw new ArgumentException("Syntax error: 'MsgBox' command usage: MessageBox(string message[, string title])");
                         }
                     default:
                         throw new NotImplementedException("Syntax error: Command " + commandName + " not recognized!");
