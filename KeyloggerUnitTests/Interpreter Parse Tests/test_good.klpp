@@ -1,0 +1,10 @@
+Ctrl J::
+{
+    MsgBox("Hello!")
+    MsgBox("World", "Title")
+	MousePress(100,200,1)
+    Send ("Lorem Ipsum")
+	MouseRelease(200,100,1)
+	SendInput("Enter")
+	SendInput("Alt T")
+}
