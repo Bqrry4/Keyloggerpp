@@ -1,6 +1,6 @@
 ﻿/**************************************************************************
 *                                                                         *
-*  File:        Recorder.cs                                               *
+*  File:        Logger.cs                                                 *
 *  Copyright:   (c) Onofrei Grigore                                       *
 *               @Kakerou_CLUB                                             *
 *  Description: Module to record events and output them as scripts.       *
@@ -9,39 +9,38 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using InputListener;
 
 namespace Recorder
 {
     public class Logger
     {
-        private static string stopKey = "q";
+        private static string _stopKey = "q";
 
         /// <summary>
         /// Key used to stop a running script (default: 'q')
         /// </summary>
         public static string StopKey 
         { 
-            get { return stopKey; }
-            set { stopKey = value; } 
+            get { return _stopKey; }
+            set { _stopKey = value; } 
         }
 
         /// <summary>
         /// Mutable list of writers
         /// </summary>
-        private List<IWriter> writers = new List<IWriter>();
+        private List<IWriter> _writers = new List<IWriter>();
 
         /// <summary>
         /// Queue for listening events when recording
         /// </summary>
-        private ConcurrentQueue<LLEventData> eventQueue = new ConcurrentQueue<LLEventData>();
+        private ConcurrentQueue<LLEventData> _eventQueue = new ConcurrentQueue<LLEventData>();
 
         //private Key[] specialKeys = { Key.LWin, Key.RWin, Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
 
         public Logger(ConcurrentQueue<LLEventData> eventQueue)
         {
-            this.eventQueue = eventQueue;
+            this._eventQueue = eventQueue;
         }
 
         /// <summary>
@@ -49,32 +48,32 @@ namespace Recorder
         /// </summary>
         ~Logger()
         {
-            writers.Clear();
+            _writers.Clear();
         }
 
         public void AddWriter(IWriter writer)
         {
-            writers.Add(writer);
+            _writers.Add(writer);
         }
 
         public void RemoveWriter(IWriter writer)
         {
-            writers.Remove(writer);
+            _writers.Remove(writer);
         }
 
         public void RemoveWriter(int index)
         {
-            writers.RemoveAt(index);
+            _writers.RemoveAt(index);
         }
 
         public void ClearWriters()
         {
-            writers.Clear();
+            _writers.Clear();
         }
 
         private void SendToWriters(string command)
         {
-            foreach (IWriter w in writers)
+            foreach (IWriter w in _writers)
             {
                 w.Write(command);
             }

@@ -15,7 +15,7 @@ namespace Recorder
 {
     internal class TextFileWriter : IWriter
     {
-        private FileStream output;
+        private FileStream _output;
 
         /// <summary>
         /// Creates or open a new file to write in
@@ -26,10 +26,10 @@ namespace Recorder
         {
             try
             {
-                output = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                _output = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
 
-                string firstLine = Logger.StopKey + "::{\n";
-                output.Write(Encoding.UTF8.GetBytes(firstLine), 0, firstLine.Length);
+                string firstLine = Logger.StopKey + "::\n{\n";
+                _output.Write(Encoding.UTF8.GetBytes(firstLine), 0, firstLine.Length);
             }
             catch(Exception e)
             {
@@ -42,13 +42,13 @@ namespace Recorder
         /// </summary>
         void IWriter.Close()
         {
-            output.Write(Encoding.UTF8.GetBytes("}"), 0, "}".Length);
-            output.Close();
+            _output.Write(Encoding.UTF8.GetBytes("}"), 0, "}".Length);
+            _output.Close();
         }
 
         void IWriter.Write(string value)
         {
-            output.Write(Encoding.UTF8.GetBytes("\t" + value + "\r\n"), 0, value.Length);
+            _output.Write(Encoding.UTF8.GetBytes("\t" + value + "\r\n"), 0, value.Length);
         }
     }
 }
