@@ -49,7 +49,7 @@ namespace InputListener
         /// Set hooks over ll input
         /// </summary>
         public void StartListening()
-        {
+        { 
             _hookedKeyboard = SetHook(LowLevelKeyboardProc, HookType.WH_KEYBOARD_LL);
             _hookedMouse = SetHook(LowLevelMouseProc, HookType.WH_MOUSE_LL);
         }
@@ -74,7 +74,7 @@ namespace InputListener
         private void LowLevelKeyboardProc(MessageType msT, IntPtr data)
         {
             KBDLLHOOKSTRUCT dataStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(data, typeof(KBDLLHOOKSTRUCT));
-            Console.WriteLine("lollevelkey");
+
             switch (msT)
             {
                 case MessageType.WM_SYSKEYDOWN:
