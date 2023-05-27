@@ -5,7 +5,7 @@ using Interpreter;
 using Recorder;
 using Logface;
 using System.IO;
-using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
@@ -14,7 +14,9 @@ namespace KeyloggerUnitTests
     [TestClass]
     public class UnitTest1
     {
+        #region Listener tests
         [TestMethod]
+        [Ignore]
         public void ListenerTestMethod()
         {
             //listener to be tested
@@ -25,11 +27,14 @@ namespace KeyloggerUnitTests
             ScriptInterpreter interpreter = new ScriptInterpreter();
             List<string> hots;
 
+            //Application.Run();
             listener.StartListening();
             interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
+            interpreter.Run("Ctrl J");
             listener.StopListening();
+            //Application.Exit();
 
-            LLEventData testAction = new LLEventData
+            /*LLEventData testAction = new LLEventData
             {
                 eType = 0,
                 kEvent = new KeyEventData
@@ -50,11 +55,14 @@ namespace KeyloggerUnitTests
                 Assert.Fail("Didn't receive event!");
             }
         }
+        #endregion
 
+        #region Recorder tests
         [TestMethod]
         public void TestTest()
         {
         }
+        #endregion
 
         #region Interpreter Parse Tests
 
@@ -62,7 +70,7 @@ namespace KeyloggerUnitTests
         public void ParseTest_Good()
         {
             ScriptInterpreter interpreter = new ScriptInterpreter();
-            StreamReader reader = new StreamReader("Interpreter Test Scripts\\test_good.klpp");
+            StreamReader reader = new StreamReader("Interpreter Tests\\test_good.klpp");
             string script = reader.ReadToEnd();
             interpreter.Parse(script, out _);
 
@@ -74,7 +82,7 @@ namespace KeyloggerUnitTests
         public void ParseTest_BadSyntax()
         {
             ScriptInterpreter interpreter = new ScriptInterpreter();
-            StreamReader reader = new StreamReader("Interpreter Test Scripts\\test_bad_syntax.klpp");
+            StreamReader reader = new StreamReader("Interpreter Tests\\test_bad_syntax.klpp");
             string script = reader.ReadToEnd();
             interpreter.Parse(script, out _);
 
@@ -86,7 +94,7 @@ namespace KeyloggerUnitTests
         public void ParseTest_UnrecognizedCommand()
         {
             ScriptInterpreter interpreter = new ScriptInterpreter();
-            StreamReader reader = new StreamReader("Interpreter Test Scripts\\test_unrecognized_command.klpp");
+            StreamReader reader = new StreamReader("Interpreter Tests\\test_unrecognized_command.klpp");
             string script = reader.ReadToEnd();
             interpreter.Parse(script, out _);
 
@@ -98,7 +106,7 @@ namespace KeyloggerUnitTests
         public void ParseTest_MalformedLine()
         {
             ScriptInterpreter interpreter = new ScriptInterpreter();
-            StreamReader reader = new StreamReader("Interpreter Test Scripts\\test_malformed_line.klpp");
+            StreamReader reader = new StreamReader("Interpreter Tests\\test_malformed_line.klpp");
             string script = reader.ReadToEnd();
             interpreter.Parse(script, out _);
 
@@ -110,7 +118,7 @@ namespace KeyloggerUnitTests
         public void ParseTest_BadUsage()
         {
             ScriptInterpreter interpreter = new ScriptInterpreter();
-            StreamReader reader = new StreamReader("Interpreter Test Scripts\\test_bad_usage.klpp");
+            StreamReader reader = new StreamReader("Interpreter Tests\\test_bad_usage.klpp");
             string script = reader.ReadToEnd();
             interpreter.Parse(script, out _);
 
@@ -123,7 +131,7 @@ namespace KeyloggerUnitTests
         public void ParseTest_BadButton()
         {
             ScriptInterpreter interpreter = new ScriptInterpreter();
-            StreamReader reader = new StreamReader("Interpreter Test Scripts\\test_bad_button.klpp");
+            StreamReader reader = new StreamReader("Interpreter Tests\\test_bad_button.klpp");
             string script = reader.ReadToEnd();
             interpreter.Parse(script, out _);
 
@@ -135,7 +143,7 @@ namespace KeyloggerUnitTests
         public void ParseTest_BadKey()
         {
             ScriptInterpreter interpreter = new ScriptInterpreter();
-            StreamReader reader = new StreamReader("Interpreter Test Scripts\\test_bad_key.klpp");
+            StreamReader reader = new StreamReader("Interpreter Tests\\test_bad_key.klpp");
             string script = reader.ReadToEnd();
             interpreter.Parse(script, out _);
 

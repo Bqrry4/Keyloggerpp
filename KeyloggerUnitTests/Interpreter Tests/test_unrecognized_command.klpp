@@ -1,9 +1,9 @@
 Ctrl J::
 {
-    MsgBox "Hello!"
+    Run ("Hello!")
     MsgBox("World", "Title")
-	MousePress("four",200,1)
-    Send ("Lorem Ipsum")
+	MousePress(100,200,1)
+    Send("Lorem Ipsum")
 	MouseRelease(200,100,1)
 	SendInput("Enter")
 	SendInput("Alt T")
