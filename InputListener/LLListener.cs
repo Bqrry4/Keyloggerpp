@@ -334,12 +334,15 @@ namespace InputListener
         [FieldOffset(0)]
         public int eType;
 
+        [MarshalAs(UnmanagedType.I4)]
         [FieldOffset(sizeof(int))]
         public KeyEventData kEvent;
 
+        [MarshalAs(UnmanagedType.I4)]
         [FieldOffset(sizeof(int))]
         public MouseEventData mEvent;
 
+        [MarshalAs(UnmanagedType.I4)]
         [FieldOffset(sizeof(int))]
         public KeyCombination cEvent;
 

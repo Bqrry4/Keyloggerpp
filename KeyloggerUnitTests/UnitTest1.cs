@@ -7,6 +7,7 @@ using Logface;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace KeyloggerUnitTests
 {
