@@ -13,7 +13,7 @@ using InputListener;
 
 namespace Recorder
 {
-    public class Recorder
+    public class Logger
     {
         private static string stopKey = "q";
 
@@ -38,7 +38,7 @@ namespace Recorder
 
         //private Key[] specialKeys = { Key.LWin, Key.RWin, Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
 
-        public Recorder(Queue<LLEventData> eventQueue)
+        public Logger(Queue<LLEventData> eventQueue)
         {
             this.eventQueue = eventQueue;
         }
@@ -46,7 +46,7 @@ namespace Recorder
         /// <summary>
         /// Destructor for properly closing writers
         /// </summary>
-        ~Recorder()
+        ~Logger()
         {
             writers.Clear();
         }
