@@ -208,7 +208,18 @@ namespace Keylogger__
 
         private void buttonHelp_Click(object sender, EventArgs e)
         {
-
+            string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+            string file = Path.Combine(currentDir, @"../../../Keylogger++.chm");
+            string filePath = Path.GetFullPath(file);
+            Console.WriteLine(filePath);
+            try
+            {
+                System.Diagnostics.Process.Start(filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         // About the program section
         private void buttonAbout_Click(object sender, EventArgs e)
