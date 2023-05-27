@@ -1,11 +1,20 @@
-﻿using System;
+﻿/**************************************************************************
+*                                                                        *
+*  File:        LLListener.cs                                            *
+*  Copyright:   (c)Paniș Alexandru                                       *
+*               @Kakerou_CLUB                                            *
+*  Description: Class that encapsulates the capturing of low level       *
+*               input and sending events to a queue given in the         *
+*               constructor.                                             *
+*                                                                        *
+**************************************************************************/
+
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Windows.Input;
-using System.Windows.Interop;
 using static InputListener.LLInput;
 
 namespace InputListener

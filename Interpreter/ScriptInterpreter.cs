@@ -1,4 +1,13 @@
-﻿using Interpreter.Exceptions;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        ScriptInterpreter.cs                                     *
+ *  Copyright:   (c) Olăreț Radu                                          *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Klpp script interpreter           .                      *
+ *                                                                        *
+ **************************************************************************/
+
+using Interpreter.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

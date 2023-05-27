@@ -1,4 +1,13 @@
-﻿using InputListener;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        MousePressCommand.cs                                     *
+ *  Copyright:   (c) Olăreț Radu                                          *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Command that presses the given mouse button at given     *
+ *               location.                                                *
+ **************************************************************************/
+
+using InputListener;
 using System;
 using System.Runtime.InteropServices;
 
