@@ -47,6 +47,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTest1.cs" />
@@ -54,27 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Interpreter Test Scripts\test_bad_button.klpp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Interpreter Test Scripts\test_bad_key.klpp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Interpreter Test Scripts\test_bad_syntax.klpp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Interpreter Test Scripts\test_bad_usage.klpp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Interpreter Test Scripts\test_good.klpp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Interpreter Test Scripts\test_malformed_line.klpp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Interpreter Test Scripts\test_unrecognized_command.klpp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\InputListener\InputListener.csproj">
@@ -84,6 +65,10 @@
     <ProjectReference Include="..\Interpreter\Interpreter.csproj">
       <Project>{68b75468-ce9f-4a28-ba78-48eb3e2e8a66}</Project>
       <Name>Interpreter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Keylogger++\Keylogger++.csproj">
+      <Project>{35de4d6d-2b67-4bad-9846-38dd48ab2398}</Project>
+      <Name>Keylogger++</Name>
     </ProjectReference>
     <ProjectReference Include="..\Logface\IntermediaryFacade.csproj">
       <Project>{a34c6a27-d758-4de5-a993-6e977f8c97cb}</Project>

@@ -32,12 +32,14 @@ namespace Interpreter
         /// <exception cref="AggregateException">If there is an error parsing a line of script</exception>
         public void Parse(in string script, out List<string> hotkeys)
         {
+            CommandFactory.ResetMouseState();
+
             hotkeys = new List<string>();
             //Step 1: Read the hotkey and send it to the Intermediary.
             //Step 2: Read the script line by line and construct Command objects.
             //Step 3: Repeat 1-2 until end of string.
 
-            Regex hotkeyPattern = new Regex("(.+)::\\n{(\\n(?:\\s{4}.+\\n)+)}");
+            Regex hotkeyPattern = new Regex("(.+)::\\n{(\\n(?:\\s*.+\\n)+)}");
 
             Match hotkey = hotkeyPattern.Match(script);
 
@@ -57,21 +59,25 @@ namespace Interpreter
                 foreach(string line in lines)
                 {
                     lineIndex++;
-                    try
+                    if (line != string.Empty)
                     {
-                        IKlppCommand command = CommandFactory.Parse(line);
-                        hotkeyCommandList.Add(command);
-                    }
-                    catch(Exception ex)
-                    {
-                        //MessageBox.Show("Error at line " + lineIndex + ": " + ex.Message);
-                        //break;
-                        throw new AggregateException("Error parsing klpp script at line " + lineIndex + ": " + ex.Message, ex);
+                        try
+                        {
+                            IKlppCommand command = CommandFactory.Parse(line);
+                            hotkeyCommandList.Add(command);
+                        }
+                        catch (Exception ex)
+                        {
+                            //MessageBox.Show("Error at line " + lineIndex + ": " + ex.Message);
+                            //break;
+                            throw new AggregateException("Error parsing klpp script at line " + lineIndex + ": " + ex.Message + "\n\t Line: " + line, ex);
+                        }
                     }
                 }
 
                 _hotkeyScripts.Add(hotkey.Groups[1].Value, hotkeyCommandList);
-                hotkey.NextMatch();
+                //_hotkeyScripts[hotkey.Groups[1].Value] = hotkeyCommandList;
+                hotkey = hotkey.NextMatch();
             }
         }
         /// <summary>

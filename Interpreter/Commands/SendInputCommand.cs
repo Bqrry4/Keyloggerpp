@@ -39,14 +39,16 @@ namespace Interpreter
             foreach (string key in keys)
             {
                 //First check for modifiers as they need to be added to the releaseStack
-                if (key.Equals("Ctrl") || key.Equals("LeftCtrl") || key.Equals("RightCtrl"))
+                if (key.Equals("Ctrl") || key.Equals("LeftCtrl") || key.Equals("RightCtrl") || key.Equals("Win") || key.Equals("LeftWin") || key.Equals("RightWin") ||
+                    key.Equals("Shift") || key.Equals("LeftShift") || key.Equals("RightShift") || key.Equals("Alt") || key.Equals("LeftAlt") || key.Equals("RightAlt"))
                 {
+                    VirtualKeys vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
                     inputArray[index++] = new INPUT
                     {
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = 0xA2, //LCTRL
+                            wVk = (short)vKey,
                             wScan = 0,
                             dwFlags = 0
                         }
@@ -56,83 +58,15 @@ namespace Interpreter
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = 0xA2, //LCTRL
+                            wVk = (short)vKey,
                             wScan = 0,
                             dwFlags = KeyEvent.KETEVENTF_KEYUP
                         }
                     });
-                }
-                else if (key.Equals("Win") || key.Equals("LeftWin") || key.Equals("RightWin"))
-                {
-                    inputArray[index++] = new INPUT
-                    {
-                        type = InputType.INPUT_KEYBOARD,
-                        ki = new KEYBDINPUT
-                        {
-                            wVk = 0x5B, //LWIN
-                            wScan = 0,
-                            dwFlags = 0
-                        }
-                    };
-                    releaseStack.Push(new INPUT
-                    {
-                        type = InputType.INPUT_KEYBOARD,
-                        ki = new KEYBDINPUT
-                        {
-                            wVk = 0x5B, //LWIN
-                            wScan = 0,
-                            dwFlags = KeyEvent.KETEVENTF_KEYUP
-                        }
-                    });
-                }
-                else if (key.Equals("Shift") || key.Equals("LeftShift") || key.Equals("RightShift"))
-                {
-                    inputArray[index++] = new INPUT
-                    {
-                        type = InputType.INPUT_KEYBOARD,
-                        ki = new KEYBDINPUT
-                        {
-                            wVk = 0xA0, //LSHIFT
-                            wScan = 0,
-                            dwFlags = 0
-                        }
-                    };
-                    releaseStack.Push(new INPUT
-                    {
-                        type = InputType.INPUT_KEYBOARD,
-                        ki = new KEYBDINPUT
-                        {
-                            wVk = 0xA0, //LSHIFT
-                            wScan = 0,
-                            dwFlags = KeyEvent.KETEVENTF_KEYUP
-                        }
-                    });
-                }
-                else if (key.Equals("Alt") || key.Equals("LeftAlt") || key.Equals("RightAlt")) 
-                {
-                    inputArray[index++] = new INPUT
-                    {
-                        type = InputType.INPUT_KEYBOARD,
-                        ki = new KEYBDINPUT
-                        {
-                            wVk = 0xA4, //LALT
-                            wScan = 0,
-                            dwFlags = 0
-                        }
-                    };
-                    releaseStack.Push(new INPUT
-                    {
-                        type = InputType.INPUT_KEYBOARD,
-                        ki = new KEYBDINPUT
-                        {
-                            wVk = 0xA4, //LALT
-                            wScan = 0,
-                            dwFlags = KeyEvent.KETEVENTF_KEYUP
-                        }
-                    });
+                    continue;
                 }
                 //Second, check for digits as their VirtualKeys equivalent is not user-friendly
-                else if (key.Length == 1 && '0' <= key[0] && '1' >= key[0])
+                if (key.Length == 1 && '0' <= key[0] && '1' >= key[0])
                 {
                     inputArray[index++] = new INPUT
                     {
@@ -154,9 +88,10 @@ namespace Interpreter
                             dwFlags = KeyEvent.KEYEVENTF_UNICODE | KeyEvent.KETEVENTF_KEYUP
                         }
                     };
+                    continue;
                 }
                 //Last, check for other keys
-                else try
+                try
                     {
                         VirtualKeys vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
                         inputArray[index++] = new INPUT

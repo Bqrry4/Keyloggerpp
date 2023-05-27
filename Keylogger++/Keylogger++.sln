@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntermediaryFacade", "..\Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyloggerUnitTests", "..\KeyloggerUnitTests\KeyloggerUnitTests.csproj", "{18138961-D03E-4906-A0A5-EDBD587C2018}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProj", "..\TestProj\TestProj.csproj", "{043E46EF-1D53-41A4-9578-429C6F9282C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{18138961-D03E-4906-A0A5-EDBD587C2018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18138961-D03E-4906-A0A5-EDBD587C2018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18138961-D03E-4906-A0A5-EDBD587C2018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{043E46EF-1D53-41A4-9578-429C6F9282C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{043E46EF-1D53-41A4-9578-429C6F9282C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{043E46EF-1D53-41A4-9578-429C6F9282C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{043E46EF-1D53-41A4-9578-429C6F9282C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

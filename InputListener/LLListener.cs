@@ -74,7 +74,7 @@ namespace InputListener
         private void LowLevelKeyboardProc(MessageType msT, IntPtr data)
         {
             KBDLLHOOKSTRUCT dataStruct = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(data, typeof(KBDLLHOOKSTRUCT));
-
+            Console.WriteLine("lollevelkey");
             switch (msT)
             {
                 case MessageType.WM_SYSKEYDOWN:
@@ -335,12 +335,15 @@ namespace InputListener
         public int eType;
 
         [FieldOffset(sizeof(int))]
+        [MarshalAs(UnmanagedType.Struct)]
         public KeyEventData kEvent;
 
         [FieldOffset(sizeof(int))]
+        [MarshalAs(UnmanagedType.Struct)]
         public MouseEventData mEvent;
 
         [FieldOffset(sizeof(int))]
+        [MarshalAs(UnmanagedType.Struct)]
         public KeyCombination cEvent;
 
     }

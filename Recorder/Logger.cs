@@ -27,6 +27,11 @@ namespace Recorder
         }
 
         /// <summary>
+        /// This flag is used to know when to stop recording
+        /// </summary>
+        private bool _stop = false;
+
+        /// <summary>
         /// Mutable list of writers
         /// </summary>
         private List<IWriter> _writers = new List<IWriter>();
@@ -148,7 +153,23 @@ namespace Recorder
 
         public void StartRecording()
         {
+            //while stop flag is set to false
+            while(!_stop)
+            {
+                LLEventData action;
+                    
+                if(_eventQueue.TryDequeue(out action))
+                {
+                    Record(action);
+                }
+            }
 
+            ClearWriters();
+        }
+
+        public void StopRecording()
+        {
+            _stop = true;
         }
     }
 }
