@@ -84,13 +84,13 @@ namespace InputListener
                     //Looking for modifiers
                     switch ((VirtualKeys)dataStruct.vkCode)
                     {
-                        case VirtualKeys.LeftWindows:
-                        case VirtualKeys.RightWindows:
+                        case VirtualKeys.LeftWin:
+                        case VirtualKeys.RightWin:
                             _activeModifiers |= 0x1;
                             break;
 
-                        case VirtualKeys.LeftMenu:
-                        case VirtualKeys.RightMenu:
+                        case VirtualKeys.LeftAlt:
+                        case VirtualKeys.RightAlt:
                             _activeModifiers |= 0x2;
                             break;
 
@@ -99,8 +99,8 @@ namespace InputListener
                             _activeModifiers |= 0x4;
                             break;
 
-                        case VirtualKeys.LeftControl:
-                        case VirtualKeys.RightControl:
+                        case VirtualKeys.LeftCtrl:
+                        case VirtualKeys.RightCtrl:
                             _activeModifiers |= 0x8;
                             break;
                             //If it will be needed, i will extend it for separate right and left combination in further releases
@@ -158,21 +158,21 @@ namespace InputListener
                     switch ((VirtualKeys)dataStruct.vkCode)
                     {
 
-                        case VirtualKeys.LeftWindows:
-                        case VirtualKeys.RightWindows:
+                        case VirtualKeys.LeftWin:
+                        case VirtualKeys.RightWin:
                             ushort mask;
                             mask = 0x1;
                             goto ClearModifierMask;
-                        case VirtualKeys.LeftMenu:
-                        case VirtualKeys.RightMenu:
+                        case VirtualKeys.LeftAlt:
+                        case VirtualKeys.RightAlt:
                             mask = 0x2;
                             goto ClearModifierMask;
                         case VirtualKeys.LeftShift:
                         case VirtualKeys.RightShift:
                             mask = 0x4;
                             goto ClearModifierMask;
-                        case VirtualKeys.LeftControl:
-                        case VirtualKeys.RightControl:
+                        case VirtualKeys.LeftCtrl:
+                        case VirtualKeys.RightCtrl:
                             mask = 0x8;
 
                         ClearModifierMask:
@@ -205,19 +205,19 @@ namespace InputListener
                         //WinKey is on?
                         if ((_activeModifiers & 0x1) != 0)
                         {
-                            modifersList.Add((uint)VirtualKeys.LeftWindows);
+                            modifersList.Add((uint)VirtualKeys.LeftWin);
                         }
 
                         //Ctrl is on?
                         if ((_activeModifiers & 0x8) != 0)
                         {
-                            modifersList.Add((uint)VirtualKeys.LeftControl);
+                            modifersList.Add((uint)VirtualKeys.LeftCtrl);
 
                         }
                         //Alt is on?
                         if ((_activeModifiers & 0x2) != 0)
                         {
-                            modifersList.Add((uint)VirtualKeys.LeftMenu);
+                            modifersList.Add((uint)VirtualKeys.LeftAlt);
 
                         }
 
@@ -238,14 +238,14 @@ namespace InputListener
                         //If the last key is a modifier throw it away (Invalid combination)
                         switch ((VirtualKeys)kbE.vkCode)
                         {
-                            case VirtualKeys.LeftWindows:
-                            case VirtualKeys.RightWindows:
-                            case VirtualKeys.LeftMenu:
-                            case VirtualKeys.RightMenu:
+                            case VirtualKeys.LeftWin:
+                            case VirtualKeys.RightWin:
+                            case VirtualKeys.LeftAlt:
+                            case VirtualKeys.RightAlt:
                             case VirtualKeys.LeftShift:
                             case VirtualKeys.RightShift:
-                            case VirtualKeys.LeftControl:
-                            case VirtualKeys.RightControl:
+                            case VirtualKeys.LeftCtrl:
+                            case VirtualKeys.RightCtrl:
 
                                 //throw 
                                 return;

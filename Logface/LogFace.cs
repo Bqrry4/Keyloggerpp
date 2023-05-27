@@ -3,7 +3,7 @@ using Recorder;
 using Interpreter;
 using System.Collections.Concurrent;
 
-namespace Logface
+namespace IntermediaryFacade
 {
     /// <summary>
     /// A Facade pattern over independent modules to encapsulate how they operate together
