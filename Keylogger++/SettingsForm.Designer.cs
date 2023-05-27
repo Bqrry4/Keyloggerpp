@@ -31,7 +31,7 @@ namespace Keylogger__
         /// </summary>
         private void InitializeComponent()
         {
-            Font font = new Font("Cascade Mono", 10, FontStyle.Regular);
+            Font font = new Font("Cascadia Code", 10, FontStyle.Regular);
 
             this.radioButtonLightMode = new System.Windows.Forms.RadioButton();
             this.radioButtonDarkMode = new System.Windows.Forms.RadioButton();
