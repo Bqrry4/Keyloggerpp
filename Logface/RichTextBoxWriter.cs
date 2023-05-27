@@ -8,8 +8,9 @@
 **************************************************************************/
 
 using System.Windows.Forms;
+using Recorder;
 
-namespace Recorder
+namespace Logface
 {
     public class RichTextBoxWriter : IWriter
     {

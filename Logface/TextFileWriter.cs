@@ -10,8 +10,9 @@
 using System;
 using System.IO;
 using System.Text;
+using Recorder;
 
-namespace Recorder
+namespace Logface
 {
     internal class TextFileWriter : IWriter
     {
