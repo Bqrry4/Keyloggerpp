@@ -1,4 +1,13 @@
-﻿using Interpreter.Exceptions;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        ScriptInterpreter.cs                                     *
+ *  Copyright:   (c) Olăreț Radu                                          *
+ *               @Kakerou_CLUB                                            *
+ *  Description: Klpp script interpreter           .                      *
+ *                                                                        *
+ **************************************************************************/
+
+using Interpreter.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +28,23 @@ namespace Interpreter
         /// </summary>
         /// <param name="script">String containing the script to be interpreted</param>
         /// <param name="hotkeys">List of strings representing the triggers to be listened for</param>
+        /// <exception cref="ArgumentException">If the script dorsn't follow klpp script syntax</exception>
         /// <exception cref="AggregateException">If there is an error parsing a line of script</exception>
-        public void Run(in string script, out List<string> hotkeys)
+        public void Parse(in string script, out List<string> hotkeys)
         {
             hotkeys = new List<string>();
             //Step 1: Read the hotkey and send it to the Intermediary.
             //Step 2: Read the script line by line and construct Command objects.
             //Step 3: Repeat 1-2 until end of string.
 
-            Regex hotkeyPattern = new Regex("(.+)::\\n({\\n(?:\\s{4}.+\\n)+})");
+            Regex hotkeyPattern = new Regex("(.+)::\\n{(\\n(?:\\s{4}.+\\n)+)}");
 
             Match hotkey = hotkeyPattern.Match(script);
+
+            if (!hotkey.Success)
+            {
+                throw new ArgumentException("Invalid script syntax!");
+            }
 
             ushort lineIndex = 0;
 
@@ -56,6 +71,7 @@ namespace Interpreter
                 }
 
                 _hotkeyScripts.Add(hotkey.Groups[1].Value, hotkeyCommandList);
+                hotkey.NextMatch();
             }
         }
         /// <summary>
@@ -83,6 +99,11 @@ namespace Interpreter
                     throw new AggregateException("Error executing hotkey " + hotkey, ex);
                 }
             }
+        }
+
+        public void Clear()
+        {
+            _hotkeyScripts.Clear();
         }
     }
 }

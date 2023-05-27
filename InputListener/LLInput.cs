@@ -326,34 +326,20 @@ namespace InputListener
         MiddleButton = 0x04,
         ExtraButton1 = 0x05,
         ExtraButton2 = 0x06,
-        Back = 0x08,
+        Backspace = 0x08,
         Tab = 0x09,
         Clear = 0x0C,
-        Return = 0x0D,
+        Enter = 0x0D,
         Shift = 0x10,
-        Control = 0x11,
+        Ctrl = 0x11,
         /// <summary></summary>
-        Menu = 0x12,
+        Alt = 0x12,
         /// <summary></summary>
         Pause = 0x13,
         /// <summary></summary>
         CapsLock = 0x14,
         /// <summary></summary>
-        Kana = 0x15,
-        /// <summary></summary>
-        Hangeul = 0x15,
-        /// <summary></summary>
-        Hangul = 0x15,
-        /// <summary></summary>
-        Junja = 0x17,
-        /// <summary></summary>
-        Final = 0x18,
-        /// <summary></summary>
-        Hanja = 0x19,
-        /// <summary></summary>
-        Kanji = 0x19,
-        /// <summary></summary>
-        Escape = 0x1B,
+        Esc = 0x1B,
         /// <summary></summary>
         Convert = 0x1C,
         /// <summary></summary>
@@ -467,9 +453,9 @@ namespace InputListener
         /// <summary></summary>
         Z = 0x5A,
         /// <summary></summary>
-        LeftWindows = 0x5B,
+        LeftWin = 0x5B,
         /// <summary></summary>
-        RightWindows = 0x5C,
+        RightWin = 0x5C,
         /// <summary></summary>
         Application = 0x5D,
         /// <summary></summary>
@@ -561,27 +547,17 @@ namespace InputListener
         /// <summary></summary>
         NEC_Equal = 0x92,
         /// <summary></summary>
-        Fujitsu_Jisho = 0x92,
-        /// <summary></summary>
-        Fujitsu_Masshou = 0x93,
-        /// <summary></summary>
-        Fujitsu_Touroku = 0x94,
-        /// <summary></summary>
-        Fujitsu_Loya = 0x95,
-        /// <summary></summary>
-        Fujitsu_Roya = 0x96,
-        /// <summary></summary>
         LeftShift = 0xA0,
         /// <summary></summary>
         RightShift = 0xA1,
         /// <summary></summary>
-        LeftControl = 0xA2,
+        LeftCtrl = 0xA2,
         /// <summary></summary>
-        RightControl = 0xA3,
+        RightCtrl = 0xA3,
         /// <summary></summary>
-        LeftMenu = 0xA4,
+        LeftAlt = 0xA4,
         /// <summary></summary>
-        RightMenu = 0xA5,
+        RightAlt = 0xA5,
         /// <summary></summary>
         BrowserBack = 0xA6,
         /// <summary></summary>
