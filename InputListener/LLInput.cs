@@ -1,8 +1,18 @@
-﻿using System;
+﻿/**************************************************************************
+*                                                                        *
+*  File:        LLInput.cs                                               *
+*  Copyright:   (c)Paniș Alexandru                                       *
+*               @Kakerou_CLUB                                            *
+*  Description: Contains definitions and a little logic for using        *
+*               winApi for low level input.                              *
+*                                                                        *
+**************************************************************************/
+
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Security.Policy;
 using System.Text;
+using System.Windows.Interop;
 
 namespace InputListener
 {
@@ -20,26 +30,6 @@ namespace InputListener
 
         //Callback function prototype for SetWindowsHookEx
         private delegate IntPtr HookCallback(int nCode, UIntPtr wParam, IntPtr lParam);
-
-        public enum MessageType : int
-        {
-            WM_KEYDOWN = 0x0100,
-            WM_KEYUP = 0x0101,
-            WM_SYSKEYDOWN = 0x0104,
-            WM_SYSKEYUP = 0x0105,
-
-            WM_LBUTTONDOWN = 0x0201,
-            WM_LBUTTONUP = 0x0202,
-            WM_RBUTTONDOWN = 0x0204,
-            WM_RBUTTONUP = 0x0205
-        }
-
-        public enum HookType : int
-        {
-            WH_KEYBOARD_LL = 13,
-            WH_MOUSE_LL = 14
-        }
-
 
         /// <summary>
         /// Set the hook to capture low level input from mouse and keyboard
@@ -103,6 +93,16 @@ namespace InputListener
         private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
         [DllImport("kernel32.dll")]
         private static extern uint GetCurrentThreadId();
+
+        [DllImport("user32.dll")] 
+        private static extern int RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
+
+        [DllImport("user32.dll")] 
+        private static extern int UnregisterHotKey(IntPtr hwnd, int id);
+
+        [DllImport("user32.dll")]
+        internal static extern bool GetMessage(ref MSG lpMsg, IntPtr hWnd, uint mMsgFilterInMain, uint mMsgFilterMax);
+
         #endregion
 
         /// <summary>
@@ -170,6 +170,37 @@ namespace InputListener
         [DllImport("user32.dll")]
         public static extern uint SendInput(uint cInputs, INPUT[] pInputs, int cbSize);
 
+    }
+
+    public enum MessageType : int
+    {
+        WM_KEYDOWN = 0x0100,
+        WM_KEYUP = 0x0101,
+        WM_SYSKEYDOWN = 0x0104,
+        WM_SYSKEYUP = 0x0105,
+
+        WM_LBUTTONDOWN = 0x0201,
+        WM_LBUTTONUP = 0x0202,
+        WM_RBUTTONDOWN = 0x0204,
+        WM_RBUTTONUP = 0x0205,
+
+        WM_HOTKEY = 0x0312
+    }
+
+    public enum HookType : int
+    {
+        WH_KEYBOARD_LL = 13,
+        WH_MOUSE_LL = 14
+    }
+
+
+    [Flags]
+    public enum ModifierKeys : uint
+    {
+        MOD_ALT = 0x0001,
+        MOD_CONTROL = 0x0002,
+        MOD_SHIFT = 0x0004,
+        MOD_WIN = 0x0008
     }
 
 
