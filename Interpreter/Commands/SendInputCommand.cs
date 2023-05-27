@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 namespace Interpreter
 {
     /// <summary>
@@ -16,6 +17,10 @@ namespace Interpreter
             _text = text;
         }
 
+        /// <summary>
+        /// Sends the keys given as keystrokes to the eventQueue of the OS
+        /// </summary>
+        /// <exception cref="ArgumentException">When given key does not exist</exception>
         public void Execute()
         {
             INPUT[] inputArray = new INPUT[_text.Length * 2]; //Worst case scenario is one modifier + many text keys, so plenty of space

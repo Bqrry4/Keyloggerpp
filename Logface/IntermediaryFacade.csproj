@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}</ProjectGuid>
+    <ProjectGuid>{A34C6A27-D758-4DE5-A993-6E977F8C97CB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>InputListener</RootNamespace>
-    <AssemblyName>InputListener</AssemblyName>
+    <RootNamespace>Logface</RootNamespace>
+    <AssemblyName>Logface</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -39,12 +39,24 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LLListener.cs" />
-    <Compile Include="LLInput.cs" />
+    <Compile Include="LogFace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InputListener\InputListener.csproj">
+      <Project>{bc89bc5b-cffe-4b0d-8262-56caa8e975ad}</Project>
+      <Name>InputListener</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Interpreter\Interpreter.csproj">
+      <Project>{68b75468-ce9f-4a28-ba78-48eb3e2e8a66}</Project>
+      <Name>Interpreter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Recorder\Recorder.csproj">
+      <Project>{21a8ba92-a6aa-4f60-9cc4-c64edacc6750}</Project>
+      <Name>Recorder</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

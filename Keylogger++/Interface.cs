@@ -148,7 +148,7 @@ namespace Keylogger__
         /// <summary>
         /// Initializes the UI based on settings
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key"></param> Get the type of theme
         private void InitUI(string key)
         {
             if (key == "dark")

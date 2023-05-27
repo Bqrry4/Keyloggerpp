@@ -1,7 +1,6 @@
-﻿using System;
-using System.Net.Configuration;
+﻿using InputListener;
+using System;
 using System.Runtime.InteropServices;
-using InputListener;
 
 namespace Interpreter
 {
@@ -48,7 +47,10 @@ namespace Interpreter
 
             _mouseButton = mouseButton;
         }
-
+        /// <summary>
+        /// Sends a mouse press event for the given button
+        /// </summary>
+        /// <exception cref="ArgumentException">When the command holds an invalid mouseButton value</exception>
         public void Execute()
         {
             INPUT[] input = new INPUT[1];

@@ -30,7 +30,7 @@ namespace Keylogger__
         /// </summary>
         private void InitializeComponent()
         {
-            Font font = new Font("Oswald", 12, FontStyle.Regular);
+            Font font = new Font("Cascade Mono", 12, FontStyle.Regular);
             
             this.buttonRecord = new System.Windows.Forms.Button();
             this.buttonRun = new System.Windows.Forms.Button();

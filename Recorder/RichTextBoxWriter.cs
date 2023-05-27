@@ -27,7 +27,7 @@ namespace Recorder
         public RichTextBoxWriter(RichTextBox output)
         {
             this.output = output;
-            this.output.Text += Recorder.StopKey + "::{\n";
+            this.output.Text += Logger.StopKey + "::{\n";
         }
 
         /// <summary>

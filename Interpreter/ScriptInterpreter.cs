@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 
 namespace Interpreter
 {
@@ -11,7 +10,7 @@ namespace Interpreter
     /// Class that encapsulates klpp script interpreting and running.
     /// <para>Reads the given script line by line and interprets them into commands</para>
     /// </summary>
-    public class Interpreter
+    public class ScriptInterpreter
     {
         private Dictionary<string, List<IKlppCommand>> _hotkeyScripts = new Dictionary<string, List<IKlppCommand>>();
 
@@ -20,16 +19,23 @@ namespace Interpreter
         /// </summary>
         /// <param name="script">String containing the script to be interpreted</param>
         /// <param name="hotkeys">List of strings representing the triggers to be listened for</param>
-        public void Run(in string script, out List<string> hotkeys)
+        /// <exception cref="ArgumentException">If the script dorsn't follow klpp script syntax</exception>
+        /// <exception cref="AggregateException">If there is an error parsing a line of script</exception>
+        public void Parse(in string script, out List<string> hotkeys)
         {
             hotkeys = new List<string>();
             //Step 1: Read the hotkey and send it to the Intermediary.
             //Step 2: Read the script line by line and construct Command objects.
             //Step 3: Repeat 1-2 until end of string.
 
-            Regex hotkeyPattern = new Regex("(.+)::\\n({\\n(?:\\s{4}.+\\n)+})");
+            Regex hotkeyPattern = new Regex("(.+)::\\n{(\\n(?:\\s{4}.+\\n)+)}");
 
             Match hotkey = hotkeyPattern.Match(script);
+
+            if (!hotkey.Success)
+            {
+                throw new ArgumentException("Invalid script syntax!");
+            }
 
             ushort lineIndex = 0;
 
@@ -51,11 +57,12 @@ namespace Interpreter
                     {
                         //MessageBox.Show("Error at line " + lineIndex + ": " + ex.Message);
                         //break;
-                        throw new ArgumentException("Error parsing klpp script at line " + lineIndex + ": " + ex.Message, ex);
+                        throw new AggregateException("Error parsing klpp script at line " + lineIndex + ": " + ex.Message, ex);
                     }
                 }
 
                 _hotkeyScripts.Add(hotkey.Groups[1].Value, hotkeyCommandList);
+                hotkey.NextMatch();
             }
         }
         /// <summary>
@@ -64,6 +71,7 @@ namespace Interpreter
         /// <remarks>This method will be called by the Intermediary when it detects that the given hotkey was pressed.</remarks>
         /// <param name="hotkey">String representing the trigger</param>
         /// <exception cref="HotkeyNotFoundException">If the given hotkey was not registered within the interpreter </exception>
+        /// <exception cref="AggregateException">If an error occurs while executing a command </exception>
         public void Run(in string hotkey)
         {
             List<IKlppCommand> commandList;
@@ -82,6 +90,11 @@ namespace Interpreter
                     throw new AggregateException("Error executing hotkey " + hotkey, ex);
                 }
             }
+        }
+
+        public void Clear()
+        {
+            _hotkeyScripts.Clear();
         }
     }
 }

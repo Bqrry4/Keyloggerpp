@@ -7,6 +7,7 @@
 *                                                                         *
 **************************************************************************/
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using InputListener;
@@ -34,11 +35,11 @@ namespace Recorder
         /// <summary>
         /// Queue for listening events when recording
         /// </summary>
-        private Queue<LLEventData> eventQueue = new Queue<LLEventData>();
+        private ConcurrentQueue<LLEventData> eventQueue = new ConcurrentQueue<LLEventData>();
 
         //private Key[] specialKeys = { Key.LWin, Key.RWin, Key.LeftCtrl, Key.RightCtrl, Key.LeftShift, Key.RightShift, Key.LeftAlt, Key.RightAlt };
 
-        public Logger(Queue<LLEventData> eventQueue)
+        public Logger(ConcurrentQueue<LLEventData> eventQueue)
         {
             this.eventQueue = eventQueue;
         }
