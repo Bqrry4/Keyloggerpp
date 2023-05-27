@@ -334,20 +334,18 @@ namespace InputListener
         [FieldOffset(0)]
         public int eType;
 
-        [FieldOffset(sizeof(int))]
-        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(sizeof(int) * 2)]
         public KeyEventData kEvent;
 
-        [FieldOffset(sizeof(int))]
-        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(sizeof(int) * 2)]
         public MouseEventData mEvent;
 
-        [FieldOffset(sizeof(int))]
-        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(sizeof(int) * 2)]
         public KeyCombination cEvent;
 
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public class KeyEventData
     {
         //the virtual key code
@@ -358,6 +356,7 @@ namespace InputListener
         public byte count;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
     public class MouseEventData
     {
         //Screen coordinates where the mouse was pointing

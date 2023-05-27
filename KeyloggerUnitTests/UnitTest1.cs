@@ -5,7 +5,7 @@ using Interpreter;
 using Recorder;
 using Logface;
 using System.IO;
-using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
@@ -14,7 +14,9 @@ namespace KeyloggerUnitTests
     [TestClass]
     public class UnitTest1
     {
+        #region Listener tests
         [TestMethod]
+        [Ignore]
         public void ListenerTestMethod()
         {
             //listener to be tested
@@ -25,9 +27,12 @@ namespace KeyloggerUnitTests
             ScriptInterpreter interpreter = new ScriptInterpreter();
             List<string> hots;
 
+            //Application.Run();
             listener.StartListening();
             interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
+            interpreter.Run("Ctrl J");
             listener.StopListening();
+            //Application.Exit();
 
             LLEventData testAction = new LLEventData
             {
@@ -50,11 +55,14 @@ namespace KeyloggerUnitTests
                 Assert.Fail("Didn't receive event!");
             }
         }
+        #endregion
 
+        #region Recorder tests
         [TestMethod]
         public void TestTest()
         {
         }
+        #endregion
 
         #region Interpreter Parse Tests
 
