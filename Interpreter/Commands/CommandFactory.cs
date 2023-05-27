@@ -16,6 +16,18 @@ namespace Interpreter
 {
     internal static class CommandFactory
     {
+
+        //0 for mouse1, 1 for mouse2, true for pressed, false for released
+        private static bool[] _mousePressed = new bool[2];
+
+        /// <summary>
+        /// Resets the internal mouse state to released
+        /// </summary>
+        public static void ResetMouseState()
+        {
+            _mousePressed = new bool[2];
+        }
+
         /// <summary>
         /// Takes a line of script representing a Keylogger++ command and creates a corresponding KlppCommand object 
         /// </summary>
@@ -30,8 +42,6 @@ namespace Interpreter
 
             Match match = commandPattern.Match(command);
 
-            //0 for mouse1, 1 for mouse2, true for pressed, false for released
-            bool[] mousePressed = new bool[2]; 
 
             if (match.Success)
             {
@@ -63,11 +73,11 @@ namespace Interpreter
                             {
                                 throw new ArgumentException("Error parsing MousePress: Invalid mouse button: " + mouseButton);
                             }
-                            if (mousePressed[mouseButton - 1])
+                            if (_mousePressed[mouseButton - 1])
                             {
                                 throw new ArgumentException("Error parsing MousePress: Specified button not released yet!");
                             }
-                            mousePressed[mouseButton - 1] = !mousePressed[mouseButton - 1];
+                            _mousePressed[mouseButton - 1] = !_mousePressed[mouseButton - 1];
                         }
                         catch (Exception ex)
                         {
@@ -93,11 +103,11 @@ namespace Interpreter
                             {
                                 throw new ArgumentException("Error parsing MouseRelease: Invalid mouse button: " + mouseButton);
                             }
-                            if (!mousePressed[mouseButton - 1])
+                            if (!_mousePressed[mouseButton - 1])
                             {
-                                throw new ArgumentException("Error parsing MousePress: Specified button not pressed yet!");
+                                throw new ArgumentException("Error parsing MouseRelease: Specified button not pressed yet!");
                             }
-                            mousePressed[mouseButton - 1] = !mousePressed[mouseButton - 1];
+                            _mousePressed[mouseButton - 1] = !_mousePressed[mouseButton - 1];
                         }
                         catch (Exception ex)
                         {
@@ -110,6 +120,7 @@ namespace Interpreter
                             throw new ArgumentException("Syntax error: 'Send' command usage: Send(string text)");
                         }
                         string text = textPattern.Match(argumentString).Groups[0].Value;
+                        text = text.Replace("\"", "");
                         return new SendCommand(text);
                     case "SendInput":
                         if (textPattern.Matches(argumentString).Count > 1)
@@ -118,6 +129,7 @@ namespace Interpreter
                         }
 
                         string inputs = textPattern.Match(argumentString).Groups[0].Value;
+                        inputs = inputs.Replace("\"", "");
                         foreach (string key in inputs.Split(' ')) //sanity check
                         {
                             try
