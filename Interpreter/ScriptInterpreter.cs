@@ -20,7 +20,7 @@ namespace Interpreter
         /// <param name="script">String containing the script to be interpreted</param>
         /// <param name="hotkeys">List of strings representing the triggers to be listened for</param>
         /// <exception cref="AggregateException">If there is an error parsing a line of script</exception>
-        public void Run(in string script, out List<string> hotkeys)
+        public void Parse(in string script, out List<string> hotkeys)
         {
             hotkeys = new List<string>();
             //Step 1: Read the hotkey and send it to the Intermediary.
@@ -83,6 +83,11 @@ namespace Interpreter
                     throw new AggregateException("Error executing hotkey " + hotkey, ex);
                 }
             }
+        }
+
+        public void Clear()
+        {
+            _hotkeyScripts.Clear();
         }
     }
 }
