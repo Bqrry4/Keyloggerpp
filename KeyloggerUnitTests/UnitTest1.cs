@@ -8,6 +8,9 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Text;
 
 namespace KeyloggerUnitTests
 {
@@ -34,7 +37,7 @@ namespace KeyloggerUnitTests
             listener.StopListening();
             //Application.Exit();
 
-            /*LLEventData testAction = new LLEventData
+            LLEventData testAction = new LLEventData
             {
                 eType = 0,
                 kEvent = new KeyEventData
@@ -58,9 +61,61 @@ namespace KeyloggerUnitTests
         #endregion
 
         #region Recorder tests
-        [TestMethod]
-        public void TestTest()
+        public class StringWriter : IWriter
         {
+            private StringBuilder _output;
+
+            public StringWriter(StringBuilder output)
+            {
+                _output = output;
+                _output.Append("{");
+            }
+
+            void IWriter.Close()
+            {
+                _output.Append("}");
+                Console.Write("sdfsdf");
+            }
+
+            void IWriter.Write(string value)
+            {
+                _output.Append(value);
+            }
+        }
+
+        [TestMethod]
+        public void LoggerWritersTest()
+        {
+            ConcurrentQueue<LLEventData> q = new ConcurrentQueue<LLEventData>();
+            Logger logger = new Logger(q);
+
+            StringBuilder test = new StringBuilder();
+            StringWriter writer = new StringWriter(test);
+            logger.AddWriter(writer);
+
+            LLEventData action = new LLEventData
+            {
+                eType = 0,
+                kEvent = new KeyEventData
+                {
+                    count = 1,
+                    uChar = "a",
+                    vkCode = (uint)VirtualKeys.A
+                }
+            };
+
+            q.Enqueue(action);
+
+            Task log = Task.Factory.StartNew(() =>
+            {
+                logger.StartRecording();
+            });
+
+            Thread.Sleep(2000);
+            logger.StopRecording();
+
+            log.Wait();
+            Assert.AreEqual("{Send(\"a\")}", test.ToString());
         }
         #endregion
 
