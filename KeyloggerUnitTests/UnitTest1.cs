@@ -38,7 +38,7 @@ namespace KeyloggerUnitTests
                     uChar = "a",
                     vkCode = (uint)VirtualKeys.A
                 }
-        };
+            };
 
             LLEventData action;
             if(queue.TryDequeue(out action))
