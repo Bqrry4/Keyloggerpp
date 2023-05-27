@@ -73,6 +73,9 @@ namespace Recorder
 
         public void ClearWriters()
         {
+            foreach (IWriter writer in _writers)
+                writer.Close();
+
             _writers.Clear();
         }
 
