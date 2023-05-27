@@ -323,7 +323,7 @@ namespace InputListener
         }
     }
 
-    [System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct LLEventData
     {
         /// <summary>

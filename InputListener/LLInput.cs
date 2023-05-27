@@ -193,17 +193,6 @@ namespace InputListener
         WH_MOUSE_LL = 14
     }
 
-
-    [Flags]
-    public enum ModifierKeys : uint
-    {
-        MOD_ALT = 0x0001,
-        MOD_CONTROL = 0x0002,
-        MOD_SHIFT = 0x0004,
-        MOD_WIN = 0x0008
-    }
-
-
     [StructLayout(LayoutKind.Sequential)]
     public struct Point
     {
@@ -240,7 +229,7 @@ namespace InputListener
     /// <summary>
     /// https://learn.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-input
     /// </summary>
-    [System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Explicit)]
     public struct INPUT
     {
         /// <summary>
