@@ -50,26 +50,30 @@ namespace InputListener
                 string[] keys = hotKey.Split(' ');
                 foreach (string key in keys)
                 {
+
                     //Check for modifiers
-                    if (key.Equals("Ctrl") || key.Equals("LeftCtrl") || key.Equals("RightCtrl"))
+                    switch (key)
                     {
-                        modifiers |= ModifierKeys.Control;
-                        continue;
-                    }
-                    if (key.Equals("Win") || key.Equals("LeftWin") || key.Equals("RightWin"))
-                    {
-                        modifiers |= ModifierKeys.Windows;
-                        continue;
-                    }
-                    if (key.Equals("Shift") || key.Equals("LeftShift") || key.Equals("RightShift"))
-                    {
-                        modifiers |= ModifierKeys.Shift;
-                        continue;
-                    }
-                    if (key.Equals("Alt") || key.Equals("LeftAlt") || key.Equals("RightAlt"))
-                    {
-                        modifiers |= ModifierKeys.Alt;
-                        continue;
+                        case "Ctrl":
+                        case "LeftCtrl":
+                        case "RightCtrl":
+                            modifiers |= ModifierKeys.Control;
+                            break;
+                        case "Win":
+                        case "LeftWin":
+                        case "RightWin":
+                            modifiers |= ModifierKeys.Windows;
+                            break;
+                        case "Shift":
+                        case "LeftShift":
+                        case "RightShift":
+                            modifiers |= ModifierKeys.Shift;
+                            break;
+                        case "Alt":
+                        case "LeftAlt":
+                        case "RightAlt":
+                            modifiers |= ModifierKeys.Alt;
+                            break;
                     }
 
                     //Get the vk of the ordinary key
