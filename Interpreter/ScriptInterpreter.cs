@@ -19,7 +19,7 @@ namespace Interpreter
     /// Class that encapsulates klpp script interpreting and running.
     /// <para>Reads the given script line by line and interprets them into commands</para>
     /// </summary>
-    public class ScriptInterpreter
+    public class ScriptInterpreter : IObserver<string>
     {
         private Dictionary<string, List<IKlppCommand>> _hotkeyScripts = new Dictionary<string, List<IKlppCommand>>();
 
@@ -87,14 +87,13 @@ namespace Interpreter
         /// <param name="hotkey">String representing the trigger</param>
         /// <exception cref="HotkeyNotFoundException">If the given hotkey was not registered within the interpreter </exception>
         /// <exception cref="AggregateException">If an error occurs while executing a command </exception>
-        public void Run(in string hotkey)
+        private void Run(in string hotkey)
         {
-            List<IKlppCommand> commandList;
-            if(!_hotkeyScripts.TryGetValue(hotkey, out commandList))
+            if (!_hotkeyScripts.TryGetValue(hotkey, out List<IKlppCommand> commandList))
             {
                 throw new HotkeyNotFoundException("Hotkey " + hotkey + " is not registered in the interpreter!");
             }
-            foreach(IKlppCommand command in commandList)
+            foreach (IKlppCommand command in commandList)
             {
                 try
                 {
@@ -110,6 +109,28 @@ namespace Interpreter
         public void Clear()
         {
             _hotkeyScripts.Clear();
+        }
+
+        public void OnNext(string value)
+        {
+            try
+            {
+                Run(value);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void OnError(Exception error)
+        {
+            Clear();
+        }
+
+        public void OnCompleted()
+        {
+            Clear();
         }
     }
 }
