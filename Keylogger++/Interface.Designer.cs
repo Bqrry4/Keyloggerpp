@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace Keylogger__
 {
@@ -30,6 +31,7 @@ namespace Keylogger__
         /// </summary>
         private void InitializeComponent()
         {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Interface));
             this.buttonRecord = new System.Windows.Forms.Button();
             this.buttonRun = new System.Windows.Forms.Button();

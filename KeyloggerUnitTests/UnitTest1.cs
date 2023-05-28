@@ -3,7 +3,7 @@ using System;
 using InputListener;
 using Interpreter;
 using Recorder;
-using Logface;
+using IntermediaryFacade;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -41,8 +41,8 @@ namespace KeyloggerUnitTests
             listener.StartListening();
             t.Join();
 
-            interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
-            //interpreter.OnNext();
+            //interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
+            //interpreter.Run("Ctrl J");
             listener.StopListening();
             //Application.Exit();
 

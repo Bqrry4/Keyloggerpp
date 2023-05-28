@@ -12,7 +12,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Recorder;
 
-namespace Logface
+namespace IntermediaryFacade
 {
     public class RichTextBoxWriter : IWriter
     {

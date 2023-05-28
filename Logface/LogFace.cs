@@ -33,16 +33,17 @@ namespace IntermediaryFacade
         private Thread loggerThread = null;
         public void StartRecording()
         {
-            var threadParameters = new ThreadStart(delegate { _logger.StartRecording(); });
-            loggerThread = new Thread(threadParameters);
-            loggerThread.Start();
 
             //loggerThread = new Thread(new ThreadStart(() =>
             //{
             //    _logger.StartRecording();
             //}));
+            loggerThread = new Thread(new ThreadStart(delegate
+            {
+                _logger.StartRecording();
+            }));
 
-            //loggerThread.Start();
+            loggerThread.Start();
 
             _listener.StartListening();
         }
@@ -61,12 +62,12 @@ namespace IntermediaryFacade
         {
             _logger.AddWriter(output);
         }
-
+        
         public void StartRunning(string script)
         {
             try
             {
-                List<string> hotKeys;
+                List<string> hotKeys = new List<string>();
                 _interpreter.Parse(script, out hotKeys);
 
                 //Register the recieved hotKeys from the interpreter
@@ -75,20 +76,21 @@ namespace IntermediaryFacade
                     _hkListener.Register(hKey);
                 });
 
+                //Binding interpretor to wait for hotKeys
+                _hkListener.Subscribe(_interpreter);
 
+                _hkListener.StartListening();
 
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
-
         }
 
         public void StopRunning()
         {
-
+            _hkListener.StopListening();
         }
 
     }
