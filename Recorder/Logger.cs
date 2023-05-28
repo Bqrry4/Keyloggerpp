@@ -144,7 +144,7 @@ namespace Recorder
                             _batching = false;
                         }
 
-                        cmd = "\tSendInput(";
+                        cmd = "\tSendInput(\"";
                         string modifier = ((VirtualKeys)action.kEvent.vkCode).ToString();
                         if (modifier.StartsWith("Left"))
                         {
@@ -159,7 +159,7 @@ namespace Recorder
                             cmd += modifier;
                         }
 
-                        SendToWriters(cmd + ")\r\n");
+                        SendToWriters(cmd + "\")\r\n");
                         break;
                     }
 
@@ -172,7 +172,7 @@ namespace Recorder
                             _batching = false;
                         }
 
-                        SendToWriters("\tSendInput(" + VirtualKeys.Enter + ")\r\n");
+                        SendToWriters("\tSendInput(\"" + VirtualKeys.Enter + "\")\r\n");
                         break;
                     }
 
@@ -227,7 +227,7 @@ namespace Recorder
                         _batching = false;
                     }
 
-                    cmd = "\tSendInput(";
+                    cmd = "\tSendInput(\"";
 
                     foreach(uint k in action.cEvent.modifers)
                     {
@@ -249,11 +249,11 @@ namespace Recorder
                     //if the last key is a digit(not from numpad)
                     if(action.cEvent.key.vkCode >= 48 && action.cEvent.key.vkCode <= 57)
                     {
-                        cmd += (action.cEvent.key.vkCode - 48) + ")\r\n";
+                        cmd += (action.cEvent.key.vkCode - 48) + "\")\r\n";
                     }
                     else
                     {
-                        cmd += (VirtualKeys)action.cEvent.key.vkCode + ")\r\n";
+                        cmd += (VirtualKeys)action.cEvent.key.vkCode + "\")\r\n";
                     }
 
                     //write the same command how many times last key was pressed
