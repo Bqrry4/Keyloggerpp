@@ -15,7 +15,12 @@ namespace Recorder
 {
     public class Logger
     {
-        private static string _stopKey = "q";
+        private bool _batching = false;
+
+        /// <summary>
+        /// Script stop key
+        /// </summary>
+        private static string _stopKey = "Ctrl q";
 
         /// <summary>
         /// Key used to stop a running script (default: 'q')
@@ -130,19 +135,63 @@ namespace Recorder
             switch (action.eType)
             {
                 case 0:// key event
-                    cmd = "\tSend(\"";
-
-                    for (int i = 0; i < action.kEvent.count; i++)
+                    //if was presed a modifier alone
+                    if(action.kEvent.uChar.Equals(""))
                     {
-                        cmd += action.kEvent.uChar;
+                        if (_batching)
+                        {
+                            SendToWriters("\")\r\n");
+                            _batching = false;
+                        }
+
+                        cmd = "\tSendInput(";
+                        string modifier = ((VirtualKeys)action.kEvent.vkCode).ToString();
+                        if (modifier.StartsWith("Left"))
+                        {
+                            cmd += modifier.TrimStart("Left".ToCharArray());
+                        }
+                        else if (modifier.StartsWith("Right"))
+                        {
+                            cmd += modifier.TrimStart("Right".ToCharArray());
+                        }
+                        else
+                        {
+                            cmd += modifier;
+                        }
+
+                        SendToWriters(cmd + ")\r\n");
+                        break;
                     }
 
-                    cmd += "\")\r\n";
+                    //if is batching append new keys
+                    if(_batching)
+                    {
+                        for (int i = 0; i < action.kEvent.count; i++)
+                        {
+                            SendToWriters(action.kEvent.uChar);
+                        }
+                    }
+                    else//start batching
+                    {
+                        cmd = "\tSend(\"";
+                        for (int i = 0; i < action.kEvent.count; i++)
+                        {
+                            cmd += action.kEvent.uChar;
+                        }
+                        SendToWriters(cmd);
 
-                    SendToWriters(cmd);
-
+                        _batching = true;
+                    }
+                    
                     break;
                 case 1:// mouse event
+                    //end Send command, if there is one started, before loggin other event type
+                    if (_batching)
+                    {
+                        SendToWriters("\")\r\n");
+                        _batching = false;
+                    }
+
                     int x = action.mEvent.coords.X, y = action.mEvent.coords.Y;
 
                     if (action.mEvent.status)
@@ -158,11 +207,30 @@ namespace Recorder
 
                     break;
                 case 2://special keys combination
+                    //end Send command, if there is one started, before loggin other event type
+                    if (_batching)
+                    {
+                        SendToWriters("\")\r\n");
+                        _batching = false;
+                    }
+
                     cmd = "\tSendInput(";
 
                     foreach(uint k in action.cEvent.modifers)
                     {
-                        cmd += (VirtualKeys)k + " ";
+                        string modifier = (VirtualKeys)k + " ";
+                        if(modifier.StartsWith("Left"))
+                        {
+                            cmd += modifier.TrimStart("Left".ToCharArray());
+                        }
+                        else if(modifier.StartsWith("Right"))
+                        {
+                            cmd += modifier.TrimStart("Right".ToCharArray());
+                        }
+                        else
+                        {
+                            cmd += modifier;
+                        }
                     }
 
                     //if the last key is a digit(not from numpad)
@@ -172,7 +240,7 @@ namespace Recorder
                     }
                     else
                     {
-                        cmd += action.cEvent.key.uChar + ")\r\n";
+                        cmd += (VirtualKeys)action.cEvent.key.vkCode + ")\r\n";
                     }
 
                     //write the same command how many times last key was pressed
@@ -196,6 +264,13 @@ namespace Recorder
                 {
                     Record(action);
                 }
+            }
+
+            //end Send command, if there is one started, before finishing script
+            if (_batching)
+            {
+                SendToWriters("\")\r\n");
+                _batching = false;
             }
 
             ClearWriters();
