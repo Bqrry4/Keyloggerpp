@@ -104,7 +104,7 @@ namespace Recorder
         {
             foreach (IWriter writer in _writers)
             {
-                writer.Write("}");
+                writer.Write("}\r\n");
                 writer.Close();
             }
 
@@ -160,6 +160,19 @@ namespace Recorder
                         }
 
                         SendToWriters(cmd + ")\r\n");
+                        break;
+                    }
+
+                    //if Enter was pressed
+                    if(action.kEvent.vkCode == (uint)VirtualKeys.Enter)
+                    {
+                        if (_batching)
+                        {
+                            SendToWriters("\")\r\n");
+                            _batching = false;
+                        }
+
+                        SendToWriters("\tSendInput(" + VirtualKeys.Enter + ")\r\n");
                         break;
                     }
 
@@ -255,6 +268,8 @@ namespace Recorder
 
         public void StartRecording()
         {
+            _stop = false;
+
             //while stop flag is set to false
             while(!_stop)
             {
