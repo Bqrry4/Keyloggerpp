@@ -13,7 +13,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using IntermediaryFacade;
-using System.Runtime.InteropServices;
 
 namespace Keylogger__
 {
@@ -64,12 +63,14 @@ namespace Keylogger__
             if (buttonRecord.Text == "Start recording")
             {
                 buttonRecord.Text = "Stop recording";
+                richTextBoxScript.ReadOnly = true;
                 _controller.setOutput(new RichTextBoxWriter(richTextBoxScript));
                 _controller.StartRecording();
             }
             else
             {
                 _controller.StopRecording();
+                richTextBoxScript.ReadOnly = false;
                 buttonRecord.Text = "Start recording";
             }
         }
@@ -79,6 +80,7 @@ namespace Keylogger__
             if (buttonRun.Text == "Start running")
             {
                 buttonRun.Text = "Stop running";
+                
                 _controller.StartRunning(richTextBoxScript.Text);
             }
             else

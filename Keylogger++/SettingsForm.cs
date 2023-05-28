@@ -90,5 +90,20 @@ namespace Keylogger__
             }
             textBoxDir.Text = folderBrowserDialog.SelectedPath;
         }
+
+        private void buttonHelpDev_Click(object sender, EventArgs e)
+        {
+            string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+            string file = Path.Combine(currentDir, @"../../../Keylogger++_Dev.chm");
+            string filePath = Path.GetFullPath(file);
+            try
+            {
+                System.Diagnostics.Process.Start(filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
