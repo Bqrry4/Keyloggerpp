@@ -263,40 +263,6 @@ namespace Keylogger__
             rtb.SelectionLength = 0;
         }
 
-        private void richTextBoxScript_TextChanged(object sender, EventArgs e)
-        {
-            RichTextBox rtb = (RichTextBox)sender;
 
-            string cmdPattern = @"\s(\w+)\(";
-
-            int indexAfterSpec = rtb.Text.IndexOf(':');
-            if (indexAfterSpec > 0)
-            {
-                SetSelectionColor(rtb, 0, indexAfterSpec, Color.FromArgb(220, 20, 70));
-            }
-
-            Regex reg = new Regex(cmdPattern);
-            MatchCollection mathces = reg.Matches(rtb.Text);
-            foreach(Match m in mathces)
-            {
-                SetSelectionColor(rtb, m.Index, m.Length - 1, Color.FromArgb(220, 220, 170));
-            }
-
-            string strPattern = "\"(.)+\"";
-            reg = new Regex(strPattern);
-            mathces = reg.Matches(rtb.Text);
-            foreach (Match m in mathces)
-            {
-                SetSelectionColor(rtb, m.Index, m.Length, Color.FromArgb(214, 157, 133));
-            }
-
-            string intPattern = @"(\d)+";
-            reg = new Regex(intPattern);
-            mathces = reg.Matches(rtb.Text);
-            foreach (Match m in mathces)
-            {
-                SetSelectionColor(rtb, m.Index, m.Length, Color.FromArgb(43, 145, 175));
-            }
-        }
     }
 }

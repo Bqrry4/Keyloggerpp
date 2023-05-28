@@ -117,7 +117,6 @@ namespace Keylogger__
             this.richTextBoxScript.Size = new System.Drawing.Size(626, 426);
             this.richTextBoxScript.TabIndex = 7;
             this.richTextBoxScript.Text = "";
-            this.richTextBoxScript.TextChanged += new System.EventHandler(this.richTextBoxScript_TextChanged);
             // 
             // buttonAbout
             // 
