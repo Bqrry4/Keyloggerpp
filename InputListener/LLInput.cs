@@ -101,7 +101,7 @@ namespace InputListener
         internal static extern int UnregisterHotKey(IntPtr hwnd, int id);
         [DllImport("user32.dll")]
         internal static extern bool GetMessage(ref MSG lpMsg, IntPtr hWnd, uint mMsgFilterInMain, uint mMsgFilterMax);
-
+        
 
         /// <summary>
         /// Returns the Unicode character represented by the current keyboard state
@@ -167,7 +167,10 @@ namespace InputListener
         /// </summary>
         [DllImport("user32.dll")]
         public static extern uint SendInput(uint cInputs, INPUT[] pInputs, int cbSize);
-
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int nIndex);
+        [DllImport("kernel32.dll")]
+        public static extern uint GetLastError();
     }
 
     public enum MessageType : int
@@ -254,11 +257,11 @@ namespace InputListener
     [StructLayout(LayoutKind.Sequential)]
     public struct MOUSEINPUT
     {
-        public long dx;
-        public long dy;
-        public int mouseData;
-        public int dwFlags;
-        public int time;
+        public int dx;
+        public int dy;
+        public uint mouseData;
+        public uint dwFlags;
+        public uint time;
         public UIntPtr dwExtraInfo;
     }
 
@@ -268,10 +271,10 @@ namespace InputListener
     [StructLayout(LayoutKind.Sequential)]
     public struct KEYBDINPUT
     {
-        public short wVk;
-        public short wScan;
+        public ushort wVk;
+        public ushort wScan;
         public KeyEvent dwFlags;
-        public int time;
+        public uint time;
         public UIntPtr dwExtraInfo;
     }
 
@@ -281,19 +284,19 @@ namespace InputListener
     [StructLayout(LayoutKind.Sequential)]
     public struct HARDWAREINPUT
     {
-        public int uMsg;
-        public short wParamL;
-        public short wParamH;
+        public uint uMsg;
+        public ushort wParamL;
+        public ushort wParamH;
     }
 
-    public enum InputType : int
+    public enum InputType : uint
     {
         INPUT_MOUSE = 0,
         INPUT_KEYBOARD = 1,
         INPUT_HARDWARE = 2
     }
     
-    public enum KeyEvent : int
+    public enum KeyEvent : uint
     {
         KEYEVENTF_EXTENDEDKEY = 1,
         KETEVENTF_KEYUP = 2,

@@ -51,8 +51,10 @@ namespace Interpreter
         /// </param>
         public MouseReleaseCommand(ushort posX, ushort posY, byte mouseButton)
         {
-            _posX = posX;
-            _posY = posY;
+            int width = LLInput.GetSystemMetrics(0);
+            int height = LLInput.GetSystemMetrics(1);
+            _posX = (ushort)(((float)posX / width) * 65536);
+            _posY = (ushort)(((float)posY / height) * 65536);
             _mouseButton = mouseButton;
         }
 
@@ -82,12 +84,14 @@ namespace Interpreter
                     dx = _posX,
                     dy = _posY,
                     mouseData = 0,
-                    dwFlags = mouseEvent | 0x8000 //ABSOLUTE
+                    dwFlags = (uint)(mouseEvent | 0x8000 | 0x0001) //ABSOLUTE and MOVE
                 }
             };
 
-            LLInput.SendInput(1, input, Marshal.SizeOf(typeof(INPUT)));
-            //throw new NotImplementedException();
+            if (LLInput.SendInput(1, input, Marshal.SizeOf(typeof(INPUT))) == 0)
+            {
+                throw new AggregateException("Error executing MouseRelease: SendInput failed, error code " + LLInput.GetLastError().ToString());
+            }
         }
     }
 }

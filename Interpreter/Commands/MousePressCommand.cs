@@ -51,8 +51,10 @@ namespace Interpreter
         /// </param>
         public MousePressCommand(ushort posX, ushort posY, byte mouseButton)
         {
-            _posX = posX;
-            _posY = posY;
+            int width = LLInput.GetSystemMetrics(0);
+            int height = LLInput.GetSystemMetrics(1);
+            _posX = (ushort)(((float)posX / width) * 65536);
+            _posY = (ushort)(((float)posY / height) * 65536);
 
             _mouseButton = mouseButton;
         }
@@ -64,9 +66,9 @@ namespace Interpreter
         {
             INPUT[] input = new INPUT[1];
 
-            int mouseEvent = 0x0004;
+            int mouseEvent = 0x0002;
 
-            if (_mouseButton != 1 && _mouseButton != 2) 
+            if (_mouseButton != 1 && _mouseButton != 2)
             {
                 throw new ArgumentException("Error executing MousePress: Invalid mouse button: " + _mouseButton);
             }
@@ -82,10 +84,13 @@ namespace Interpreter
                     dx = _posX,
                     dy = _posY,
                     mouseData = 0,
-                    dwFlags = mouseEvent | 0x8000 //ABSOLUT
+                    dwFlags = (uint)(mouseEvent | 0x8000 | 0x0001) //ABSOLUTE and MOVE
                 }
             };
-            LLInput.SendInput(1, input, Marshal.SizeOf(typeof(INPUT)));
+            if (LLInput.SendInput(1, input, Marshal.SizeOf(typeof(INPUT))) == 0)
+            {
+                throw new AggregateException("Error executing MousePress: SendInput failed, error code " + LLInput.GetLastError().ToString());
+            }
         }
     }
 }

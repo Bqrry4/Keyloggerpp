@@ -48,7 +48,7 @@ namespace Interpreter
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = (short)vKey,
+                            wVk = (ushort)vKey,
                             wScan = 0,
                             dwFlags = 0
                         }
@@ -58,7 +58,7 @@ namespace Interpreter
                         type = InputType.INPUT_KEYBOARD,
                         ki = new KEYBDINPUT
                         {
-                            wVk = (short)vKey,
+                            wVk = (ushort)vKey,
                             wScan = 0,
                             dwFlags = KeyEvent.KETEVENTF_KEYUP
                         }
@@ -74,7 +74,7 @@ namespace Interpreter
                         ki = new KEYBDINPUT
                         {
                             wVk = 0,
-                            wScan = (short)key[0],
+                            wScan = (ushort)key[0],
                             dwFlags = KeyEvent.KEYEVENTF_UNICODE
                         }
                     };
@@ -84,7 +84,7 @@ namespace Interpreter
                         ki = new KEYBDINPUT
                         {
                             wVk = 0,
-                            wScan = (short)key[0],
+                            wScan = (ushort)key[0],
                             dwFlags = KeyEvent.KEYEVENTF_UNICODE | KeyEvent.KETEVENTF_KEYUP
                         }
                     };
@@ -92,39 +92,42 @@ namespace Interpreter
                 }
                 //Last, check for other keys
                 try
+                {
+                    VirtualKeys vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
+                    inputArray[index++] = new INPUT
                     {
-                        VirtualKeys vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
-                        inputArray[index++] = new INPUT
+                        type = InputType.INPUT_KEYBOARD,
+                        ki = new KEYBDINPUT
                         {
-                            type = InputType.INPUT_KEYBOARD,
-                            ki = new KEYBDINPUT
-                            {
-                                wVk = (short)vKey,
-                                wScan = 0,
-                                dwFlags = 0
-                            }
-                        };
-                        inputArray[index++] = new INPUT
-                        {
-                            type = InputType.INPUT_KEYBOARD,
-                            ki = new KEYBDINPUT
-                            {
-                                wVk = (short)vKey,
-                                wScan = 0,
-                                dwFlags = KeyEvent.KETEVENTF_KEYUP
-                            }
-                        };
-                    }
-                    catch (Exception ex)
+                            wVk = (ushort)vKey,
+                            wScan = 0,
+                            dwFlags = 0
+                        }
+                    };
+                    inputArray[index++] = new INPUT
                     {
-                        throw new ArgumentException("Error executing SendInputCommand: Key not recognized: " + key, ex);
-                    }
+                        type = InputType.INPUT_KEYBOARD,
+                        ki = new KEYBDINPUT
+                        {
+                            wVk = (ushort)vKey,
+                            wScan = 0,
+                            dwFlags = KeyEvent.KETEVENTF_KEYUP
+                        }
+                    };
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException("Error executing SendInputCommand: Key not recognized: " + key, ex);
+                }
             }
-            while(releaseStack.Count > 0)
+            while (releaseStack.Count > 0)
             {
                 inputArray[index++] = releaseStack.Pop();
             }
-            LLInput.SendInput((uint)inputArray.Length, inputArray, Marshal.SizeOf(typeof(INPUT)));
+            if (LLInput.SendInput((uint)inputArray.Length, inputArray, Marshal.SizeOf(typeof(INPUT))) == 0)
+            {
+                throw new AggregateException("Error executing SendInputCommand: SendInput failed, error code " + LLInput.GetLastError().ToString());
+            }
         }
     }
 }
