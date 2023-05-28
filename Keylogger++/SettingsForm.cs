@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing;
 
 namespace Keylogger__
 {
@@ -22,6 +23,7 @@ namespace Keylogger__
         public SettingsForm()
         {
             InitializeComponent();
+            DarkTitleBarClass.UseImmersiveDarkMode(this.Handle, true);
             try
             {
                 StreamReader sr = new StreamReader(_settings);
@@ -49,6 +51,7 @@ namespace Keylogger__
             {
                 MessageBox.Show(ex.Message);
             }
+            this.Icon = new Icon(@"../../../favicon.ico");
         }
         // Saves settings to the settings file
         private void buttonSave_Click(object sender, EventArgs e)

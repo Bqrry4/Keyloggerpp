@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Keylogger__
 {
@@ -22,6 +23,7 @@ namespace Keylogger__
         public Interface()
         {
             InitializeComponent();
+            DarkTitleBarClass.UseImmersiveDarkMode(this.Handle, true);
             try
             {
                 StreamReader sr = new StreamReader(_settings);
@@ -47,22 +49,32 @@ namespace Keylogger__
             {
                 MessageBox.Show(ex.Message);
             }
+            this.Icon = new Icon(@"../../../favicon.ico");
+
         }
 
         private void buttonRecord_Click(object sender, EventArgs e)
         {
             if (buttonRecord.Text == "Start recording")
+            {
                 buttonRecord.Text = "Stop recording";
+            }
             else
+            {
                 buttonRecord.Text = "Start recording";
+            }
         }
 
         private void buttonRun_Click(object sender, EventArgs e)
         {
             if (buttonRun.Text == "Start running")
+            {
                 buttonRun.Text = "Stop running";
+            }
             else
+            {
                 buttonRun.Text = "Start running";
+            }
         }
         // Opens a .klpp file
         private void buttonOpenFile_Click(object sender, EventArgs e)
@@ -73,7 +85,9 @@ namespace Keylogger__
             openFileDialog.InitialDirectory = _directory;
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog() != DialogResult.OK)
+            {
                 return;
+            }
             try
             {
                 StreamReader sr = new StreamReader(openFileDialog.FileName);
@@ -95,7 +109,9 @@ namespace Keylogger__
             saveFileDialog.InitialDirectory = _directory;
             saveFileDialog.Filter = "KeyLogger++ files|*.klpp|All files|*.*";
             if (saveFileDialog.ShowDialog() != DialogResult.OK)
+            {
                 return;
+            }
             try
             {
                 StreamWriter sw = new StreamWriter(saveFileDialog.FileName);
@@ -211,7 +227,6 @@ namespace Keylogger__
             string currentDir = AppDomain.CurrentDomain.BaseDirectory;
             string file = Path.Combine(currentDir, @"../../../Keylogger++.chm");
             string filePath = Path.GetFullPath(file);
-            Console.WriteLine(filePath);
             try
             {
                 System.Diagnostics.Process.Start(filePath);
