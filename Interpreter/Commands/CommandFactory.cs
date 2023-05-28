@@ -8,6 +8,7 @@
  **************************************************************************/
 
 using InputListener;
+using Interpreter.Commands;
 using Interpreter.Exceptions;
 using System;
 using System.Text.RegularExpressions;
@@ -156,6 +157,18 @@ namespace Interpreter
                             default:
                                 throw new ArgumentException("Syntax error: 'MsgBox' command usage: MessageBox(string message[, string title])");
                         }
+                    case "Wait":
+                        uint time; 
+                        argumentString = argumentString.Replace(" ", "").Replace("\"", "");
+                        try
+                        {
+                            time = UInt32.Parse(argumentString);
+                        }
+                        catch(Exception ex)
+                        {
+                            throw new ArgumentException("Syntax error: 'Wait' command usage: MouseRelease(uInt32 ms)", ex);
+                        }
+                        return new WaitCommand(time);
                     default:
                         throw new NotImplementedException("Syntax error: Command " + commandName + " not recognized!");
                 }
