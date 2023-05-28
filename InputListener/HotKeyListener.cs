@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Input;
 using System.Windows.Interop;
 using static InputListener.LLInput;
@@ -23,6 +24,10 @@ namespace InputListener
     /// </summary>
     public class HotKeyListener : IObservable<string>
     {
+        //The thread where the listener will run (It must run in a separate thread cuz of the message queue)
+        private Thread _hkThread;
+        private uint _threadNativeID;
+
         //The consumers for hKeys
         private List<IObserver<string>> _observers;
 
@@ -35,26 +40,36 @@ namespace InputListener
             _registeredHKeys = new Dictionary<(ModifierKeys, VirtualKeys), string>();
         }
 
-        ~HotKeyListener()
+/*        ~HotKeyListener()
         {
             StopListening();
-        }
+        }*/
 
         public void StartListening()
         {
-            /*It must register and loop in the same thread to work more information go to
-             https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey
-             */
-            RegHotKeys();
-            Listen();
+            //Create the new thread
+            _hkThread = new Thread(new ThreadStart(delegate
+            {
+                /*It must register and loop in the same thread to work more information go to
+                 https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerhotkey
+                 */
+                RegHotKeys();
+                Listen();
+
+            }));
+
+            //Start the thread
+            _hkThread.Start();
         }
 
 
         public void StopListening()
         {
-            UnRegHotKeys();
+            //Post the WM_QUIT message on the message loop
+            PostThreadMessage(_threadNativeID, 0x0012, IntPtr.Zero, IntPtr.Zero);
+            //Wait for the thread to end
+            _hkThread.Join();
         }
-
 
         //Add a hotkey to the dictionary
         public void Register(string hotKey)
@@ -147,7 +162,10 @@ namespace InputListener
 
         }
 
-        //Clear the registered hotkeys from the system
+        /// <summary>
+        /// Clear the registered hotkeys from the system
+        /// !!MUST BE INVOKED FROM THE SAME THREAD THE RegHotKeys WAS!!
+        /// </summary>
         private void UnRegHotKeys()
         {
             for (int i = 0; i < _registeredHotkeyCount; i++)
@@ -160,6 +178,8 @@ namespace InputListener
         //The message loop, waiting for hotKeys
         private void Listen()
         {
+            _threadNativeID = GetCurrentThreadId();
+
             MSG msg = new MSG();
             while (GetMessage(ref msg, IntPtr.Zero, 0, 0))
             {
@@ -168,17 +188,19 @@ namespace InputListener
                     ModifierKeys mod = (ModifierKeys)((int)msg.lParam & 0xFFFF);
                     VirtualKeys vk = (VirtualKeys)(((int)msg.lParam >> 16) & 0xFFFF);
 
-                    string hotKey = string.Empty;
-                    _registeredHKeys.TryGetValue((mod, vk), out hotKey);
-
-
-                    //Notify those who signed for hk
-                    foreach (var observer in _observers)
+                    string hotKey;
+                    if (_registeredHKeys.TryGetValue((mod, vk), out hotKey))
                     {
-                        observer.OnNext(hotKey);
+                        //Notify those who signed for hk
+                        foreach (var observer in _observers)
+                        {
+                            observer.OnNext(hotKey);
+                        }
                     }
                 }
             }
+            //WM_QUIT recieved
+            UnRegHotKeys();
         }
 
         public IDisposable Subscribe(IObserver<string> observer)
