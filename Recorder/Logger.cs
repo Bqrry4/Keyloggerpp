@@ -56,29 +56,60 @@ namespace Recorder
             _writers.Clear();
         }
 
+        /// <summary>
+        /// Adds a new writer and write first lines to it
+        /// </summary>
+        /// <param name="writer">The new writer</param>
         public void AddWriter(IWriter writer)
         {
             _writers.Add(writer);
+
+            writer.Write(StopKey + "::\r\n{");
         }
 
+        /// <summary>
+        /// Close and remove writer if exists
+        /// </summary>
+        /// <param name="writer">Writer to be romoved</param>
         public void RemoveWriter(IWriter writer)
         {
+            writer.Close();
             _writers.Remove(writer);
         }
 
+        /// <summary>
+        /// Close and remove writer if exists
+        /// </summary>
+        /// <param name="index">Index of writer</param>
         public void RemoveWriter(int index)
         {
-            _writers.RemoveAt(index);
+            try 
+            {
+                IWriter writer = _writers[index];
+                writer.Close();
+                _writers.Remove(writer);
+            }
+            catch (Exception) { }
         }
 
+        /// <summary>
+        /// Writes an "}" at the end of outputs and close writers
+        /// </summary>
         public void ClearWriters()
         {
             foreach (IWriter writer in _writers)
+            {
+                writer.Write("\r\n}");
                 writer.Close();
+            }
 
             _writers.Clear();
         }
 
+        /// <summary>
+        /// Sent to writers a command
+        /// </summary>
+        /// <param name="command">Command to be written</param>
         private void SendToWriters(string command)
         {
             foreach (IWriter w in _writers)
@@ -99,14 +130,14 @@ namespace Recorder
             switch (action.eType)
             {
                 case 0:// key event
-                    cmd = "Send(\"";
+                    cmd = "\tSend(\"";
 
                     for (int i = 0; i < action.kEvent.count; i++)
                     {
                         cmd += action.kEvent.uChar;
                     }
 
-                    cmd += "\")";
+                    cmd += "\")\r\n";
 
                     SendToWriters(cmd);
 
@@ -116,18 +147,18 @@ namespace Recorder
 
                     if (action.mEvent.status)
                     {
-                        cmd = "ClickRelease(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")";
+                        cmd = "\tClickRelease(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n";
                     }
                     else
                     {
-                        cmd = "ClickPress(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")";
+                        cmd = "\tClickPress(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n";
                     }
 
                     SendToWriters(cmd);
 
                     break;
                 case 2://special keys combination
-                    cmd = "SendInput(";
+                    cmd = "\tSendInput(";
 
                     foreach(uint k in action.cEvent.modifers)
                     {
@@ -137,11 +168,11 @@ namespace Recorder
                     //if the last key is a digit(not from numpad)
                     if(action.cEvent.key.vkCode >= 48 && action.cEvent.key.vkCode <= 57)
                     {
-                        cmd += (action.cEvent.key.vkCode - 48) + ")";
+                        cmd += (action.cEvent.key.vkCode - 48) + ")\r\n";
                     }
                     else
                     {
-                        cmd += action.cEvent.key.uChar + ")";
+                        cmd += action.cEvent.key.uChar + ")\r\n";
                     }
 
                     //write the same command how many times last key was pressed

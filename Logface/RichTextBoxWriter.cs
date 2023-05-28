@@ -7,6 +7,7 @@
 *                                                                         *
 **************************************************************************/
 
+using System;
 using System.Windows.Forms;
 using Recorder;
 
@@ -23,24 +24,33 @@ namespace Logface
         public RichTextBoxWriter(RichTextBox output)
         {
             this._output = output;
-            this._output.Text += Logger.StopKey + "::\n{\n";
         }
 
         /// <summary>
-        /// Write last line of code "}"
+        /// Unused in this class
         /// </summary>
-        public void Close()
+        public void Close() {}
+
+        private void CrossThreadWrite(string str)
         {
-            this._output.Text += "}";
+
         }
 
         /// <summary>
-        /// Write the script command and a tab before it
+        /// Write the command using deleget for thread safety
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Command to be written</param>
         public void Write(string value)
         {
-            _output.Text += "\t" + value + "\r\n";
+            if(_output.InvokeRequired)
+            {
+                Action safeWrite = delegate { Write(value); };
+                _output.Invoke(safeWrite);
+            }
+            else
+            {
+                _output.Text += value;
+            }
         }
     }
 }
