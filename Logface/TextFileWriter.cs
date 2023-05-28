@@ -28,9 +28,6 @@ namespace Logface
             try
             {
                 _output = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-
-                string firstLine = Logger.StopKey + "::\n{\n";
-                _output.Write(Encoding.UTF8.GetBytes(firstLine), 0, firstLine.Length);
             }
             catch(Exception e)
             {
@@ -39,17 +36,20 @@ namespace Logface
         }
 
         /// <summary>
-        /// Write last line of script and close FileStream to save changes
+        /// Close FileStream to save changes
         /// </summary>
         void IWriter.Close()
         {
-            _output.Write(Encoding.UTF8.GetBytes("}"), 0, "}".Length);
             _output.Close();
         }
 
+        /// <summary>
+        /// Writes a command to file
+        /// </summary>
+        /// <param name="value">Command to be written</param>
         void IWriter.Write(string value)
         {
-            _output.Write(Encoding.UTF8.GetBytes("\t" + value + "\r\n"), 0, value.Length);
+            _output.Write(Encoding.UTF8.GetBytes(value), 0, value.Length);
         }
     }
 }

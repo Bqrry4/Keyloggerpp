@@ -1,2 +1,2 @@
 # Keylogger plusplus
-Some computer engineering students' attemp at an AHK-like app with a built-in macro recorder
+Some computer engineering students' attempt at an AHK-like app with a built-in macro recorder
