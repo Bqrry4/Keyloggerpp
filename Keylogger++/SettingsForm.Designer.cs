@@ -32,9 +32,6 @@ namespace Keylogger__
         /// </summary>
         private void InitializeComponent()
         {
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            Font font = new Font("Cascadia Code", 9, FontStyle.Regular);
-
             this.radioButtonLightMode = new System.Windows.Forms.RadioButton();
             this.radioButtonDarkMode = new System.Windows.Forms.RadioButton();
             this.buttonSave = new System.Windows.Forms.Button();
@@ -42,6 +39,7 @@ namespace Keylogger__
             this.buttonBrowseDir = new System.Windows.Forms.Button();
             this.textBoxDir = new System.Windows.Forms.TextBox();
             this.groupBoxDir = new System.Windows.Forms.GroupBox();
+            this.buttonHelpDev = new System.Windows.Forms.Button();
             this.groupBoxUI.SuspendLayout();
             this.groupBoxDir.SuspendLayout();
             this.SuspendLayout();
@@ -49,10 +47,10 @@ namespace Keylogger__
             // radioButtonLightMode
             // 
             this.radioButtonLightMode.AutoSize = true;
-            this.radioButtonLightMode.Font = font;
+            this.radioButtonLightMode.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.radioButtonLightMode.Location = new System.Drawing.Point(6, 19);
             this.radioButtonLightMode.Name = "radioButtonLightMode";
-            this.radioButtonLightMode.Size = new System.Drawing.Size(106, 24);
+            this.radioButtonLightMode.Size = new System.Drawing.Size(95, 20);
             this.radioButtonLightMode.TabIndex = 0;
             this.radioButtonLightMode.TabStop = true;
             this.radioButtonLightMode.Text = "Light mode";
@@ -61,10 +59,10 @@ namespace Keylogger__
             // radioButtonDarkMode
             // 
             this.radioButtonDarkMode.AutoSize = true;
-            this.radioButtonDarkMode.Font = font;
+            this.radioButtonDarkMode.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.radioButtonDarkMode.Location = new System.Drawing.Point(6, 48);
             this.radioButtonDarkMode.Name = "radioButtonDarkMode";
-            this.radioButtonDarkMode.Size = new System.Drawing.Size(105, 24);
+            this.radioButtonDarkMode.Size = new System.Drawing.Size(88, 20);
             this.radioButtonDarkMode.TabIndex = 1;
             this.radioButtonDarkMode.TabStop = true;
             this.radioButtonDarkMode.Text = "Dark mode";
@@ -72,7 +70,7 @@ namespace Keylogger__
             // 
             // buttonSave
             // 
-            this.buttonSave.Font = font;
+            this.buttonSave.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonSave.Location = new System.Drawing.Point(234, 222);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(110, 28);
@@ -94,7 +92,7 @@ namespace Keylogger__
             // 
             // buttonBrowseDir
             // 
-            this.buttonBrowseDir.Font = font;
+            this.buttonBrowseDir.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonBrowseDir.Location = new System.Drawing.Point(251, 21);
             this.buttonBrowseDir.Name = "buttonBrowseDir";
             this.buttonBrowseDir.Size = new System.Drawing.Size(75, 30);
@@ -105,10 +103,10 @@ namespace Keylogger__
             // 
             // textBoxDir
             // 
-            this.textBoxDir.Font = font;
+            this.textBoxDir.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.textBoxDir.Location = new System.Drawing.Point(0, 23);
             this.textBoxDir.Name = "textBoxDir";
-            this.textBoxDir.Size = new System.Drawing.Size(245, 26);
+            this.textBoxDir.Size = new System.Drawing.Size(245, 21);
             this.textBoxDir.TabIndex = 5;
             // 
             // groupBoxDir
@@ -122,14 +120,27 @@ namespace Keylogger__
             this.groupBoxDir.TabStop = false;
             this.groupBoxDir.Text = "Directory";
             // 
+            // buttonHelpDev
+            // 
+            this.buttonHelpDev.Font = new System.Drawing.Font("Cascadia Code", 9F);
+            this.buttonHelpDev.Location = new System.Drawing.Point(12, 222);
+            this.buttonHelpDev.Name = "buttonHelpDev";
+            this.buttonHelpDev.Size = new System.Drawing.Size(118, 28);
+            this.buttonHelpDev.TabIndex = 7;
+            this.buttonHelpDev.Text = "Developer Help";
+            this.buttonHelpDev.UseVisualStyleBackColor = true;
+            this.buttonHelpDev.Click += new System.EventHandler(this.buttonHelpDev_Click);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(356, 262);
+            this.Controls.Add(this.buttonHelpDev);
             this.Controls.Add(this.groupBoxDir);
             this.Controls.Add(this.groupBoxUI);
             this.Controls.Add(this.buttonSave);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SettingsForm";
             this.Text = "Settings";
             this.groupBoxUI.ResumeLayout(false);
@@ -149,5 +160,6 @@ namespace Keylogger__
         private System.Windows.Forms.Button buttonBrowseDir;
         private System.Windows.Forms.TextBox textBoxDir;
         private System.Windows.Forms.GroupBox groupBoxDir;
+        private Button buttonHelpDev;
     }
 }
