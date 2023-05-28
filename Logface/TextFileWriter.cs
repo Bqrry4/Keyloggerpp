@@ -12,7 +12,7 @@ using System.IO;
 using System.Text;
 using Recorder;
 
-namespace Logface
+namespace IntermediaryFacade
 {
     internal class TextFileWriter : IWriter
     {

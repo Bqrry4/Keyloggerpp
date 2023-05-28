@@ -33,7 +33,7 @@ namespace IntermediaryFacade
         public void StartRecording()
         {
 
-            loggerThread = new Thread(new ThreadStart(() =>
+            loggerThread = new Thread(new ThreadStart(delegate
             {
                 _logger.StartRecording();
             }));
@@ -51,21 +51,21 @@ namespace IntermediaryFacade
             _logger.StopRecording();
 
             //Wait the thread to stop
-            loggerThread.Join();
+            //Thread.Sleep((int)3000);
 
-            Console.WriteLine("asf");
+            //loggerThread.Join();
         }
 
         public void setOutput(IWriter output)
         {
             _logger.AddWriter(output);
         }
-
+        
         public void StartRunning(string script)
         {
             try
             {
-                List<string> hotKeys;
+                List<string> hotKeys = new List<string>();
                 _interpreter.Parse(script, out hotKeys);
 
                 //Register the recieved hotKeys from the interpreter
@@ -74,7 +74,10 @@ namespace IntermediaryFacade
                     _hkListener.Register(hKey);
                 });
 
+                //Binding interpretor to wait for hotKeys
+                _hkListener.Subscribe(_interpreter);
 
+                _hkListener.StartListening();
 
             }
             catch (Exception ex)
@@ -87,7 +90,7 @@ namespace IntermediaryFacade
 
         public void StopRunning()
         {
-
+            _hkListener.StopListening();
         }
 
     }

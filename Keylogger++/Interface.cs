@@ -13,7 +13,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using IntermediaryFacade;
-using Logface;
 using System.Runtime.InteropServices;
 
 namespace Keylogger__
@@ -80,9 +79,11 @@ namespace Keylogger__
             if (buttonRun.Text == "Start running")
             {
                 buttonRun.Text = "Stop running";
+                _controller.StartRunning(richTextBoxScript.Text);
             }
             else
             {
+                _controller.StopRunning();
                 buttonRun.Text = "Start running";
             }
         }

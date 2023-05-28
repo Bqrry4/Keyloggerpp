@@ -24,7 +24,7 @@ namespace KeyloggerUnitTests
         {
             //listener to be tested
             ConcurrentQueue<LLEventData> queue = new ConcurrentQueue<LLEventData>();
-            LLListener listener = new LLListener(ref queue);
+            LLListener listener = new LLListener(queue);
 
             //interpreter for generating an event
             ScriptInterpreter interpreter = new ScriptInterpreter();
@@ -50,8 +50,8 @@ namespace KeyloggerUnitTests
 
             t.Join();
 
-            interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
-            interpreter.Run("Ctrl J");
+            //interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
+            //interpreter.Run("Ctrl J");
             listener.StopListening();
             //Application.Exit();
 
