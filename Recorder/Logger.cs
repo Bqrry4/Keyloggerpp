@@ -147,11 +147,11 @@ namespace Recorder
 
                     if (action.mEvent.status)
                     {
-                        cmd = "\tClickRelease(" + x + ", " + y + ", " + action.mEvent.buttonID + ")\r\n";
+                        cmd = "\tMouseRelease(" + x + ", " + y + ", " + action.mEvent.buttonID + ")\r\n";
                     }
                     else
                     {
-                        cmd = "\tClickPress(" + x + ", " + y + ", " + action.mEvent.buttonID + ")\r\n";
+                        cmd = "\tMousePress(" + x + ", " + y + ", " + action.mEvent.buttonID + ")\r\n";
                     }
 
                     SendToWriters(cmd);
@@ -204,6 +204,7 @@ namespace Recorder
         public void StopRecording()
         {
             _stop = true;
+            Console.WriteLine("stop to true");
         }
     }
 }
