@@ -24,7 +24,7 @@ namespace InputListener
     public class HotKeyListener : IObservable<string>
     {
         //The consumers for hKeys
-        private List<IObserver<string>> _observers; 
+        private List<IObserver<string>> _observers;
 
         private Dictionary<(ModifierKeys modifier, VirtualKeys vKey), string> _registeredHKeys;
         private int _registeredHotkeyCount = 0;
@@ -68,32 +68,56 @@ namespace InputListener
                 //Check for modifiers
                 switch (key)
                 {
+                    case "ctrl":
                     case "Ctrl":
                     case "LeftCtrl":
                     case "RightCtrl":
                         modifiers |= ModifierKeys.Control;
-                        break;
+                        continue;
+
+                    case "win":
                     case "Win":
                     case "LeftWin":
                     case "RightWin":
                         modifiers |= ModifierKeys.Windows;
-                        break;
+                        continue;
+                    case "shift":
                     case "Shift":
                     case "LeftShift":
                     case "RightShift":
                         modifiers |= ModifierKeys.Shift;
-                        break;
+                        continue;
+                    case "alt":
                     case "Alt":
                     case "LeftAlt":
                     case "RightAlt":
                         modifiers |= ModifierKeys.Alt;
-                        break;
+                        continue;
                 }
 
                 //Get the vk of the ordinary key
                 try
                 {
-                    vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
+                    //Check if its a digit or a char
+                    if (key.Length == 1)
+                    {
+                        //Check if its a digit on key
+                        if ('0' <= key[0] && '1' >= key[0])
+                        {
+                            //Ascii for a digit correspond to its virtual Key
+                            vKey = (VirtualKeys)key[0];
+                        }
+                        //Then its a character
+                        else
+                        {
+                            vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key.ToUpper());
+                        }
+                    }
+                    //Something else
+                    else
+                    {
+                        vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
+                    }
 
                 }
                 catch (Exception ex)
@@ -149,7 +173,7 @@ namespace InputListener
 
 
                     //Notify those who signed for hk
-                    foreach(var observer in _observers)
+                    foreach (var observer in _observers)
                     {
                         observer.OnNext(hotKey);
                     }

@@ -43,7 +43,7 @@ namespace IntermediaryFacade
                 _logger.StartRecording();
             }));
 
-            //loggerThread.Start();
+            loggerThread.Start();
 
             _listener.StartListening();
         }
