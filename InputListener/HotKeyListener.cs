@@ -19,7 +19,7 @@ using static InputListener.LLInput;
 namespace InputListener
 {
     /// <summary>
-    /// 
+    /// A class that register hotkeys and notify a subscriber when it was produced
     /// </summary>
     public class HotKeyListener : IObservable<string>
     {
