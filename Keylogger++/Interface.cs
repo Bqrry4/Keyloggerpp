@@ -13,6 +13,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using IntermediaryFacade;
+using System.Windows.Documents;
+using System.Text.RegularExpressions;
 
 namespace Keylogger__
 {
@@ -55,7 +57,6 @@ namespace Keylogger__
                 MessageBox.Show(ex.Message);
             }
             this.Icon = new Icon(@"../../../favicon.ico");
-
         }
 
         private void buttonRecord_Click(object sender, EventArgs e)
@@ -249,6 +250,53 @@ namespace Keylogger__
         private void buttonAbout_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Program that allows user to make custom hotkeys", "About keylogger");
+        }
+
+        private void SetSelectionColor(RichTextBox rtb, int start, int length, Color color)
+        {
+            rtb.SelectionStart = start;
+            rtb.SelectionLength = length;
+
+            rtb.SelectionColor = color;
+
+            rtb.SelectionStart = rtb.TextLength;
+            rtb.SelectionLength = 0;
+        }
+
+        private void richTextBoxScript_TextChanged(object sender, EventArgs e)
+        {
+            RichTextBox rtb = (RichTextBox)sender;
+
+            string cmdPattern = @"\s(\w+)\(";
+
+            int indexAfterSpec = rtb.Text.IndexOf(':');
+            if (indexAfterSpec > 0)
+            {
+                SetSelectionColor(rtb, 0, indexAfterSpec, Color.FromArgb(220, 20, 70));
+            }
+
+            Regex reg = new Regex(cmdPattern);
+            MatchCollection mathces = reg.Matches(rtb.Text);
+            foreach(Match m in mathces)
+            {
+                SetSelectionColor(rtb, m.Index, m.Length - 1, Color.FromArgb(220, 220, 170));
+            }
+
+            string strPattern = "\"(.)+\"";
+            reg = new Regex(strPattern);
+            mathces = reg.Matches(rtb.Text);
+            foreach (Match m in mathces)
+            {
+                SetSelectionColor(rtb, m.Index, m.Length, Color.FromArgb(214, 157, 133));
+            }
+
+            string intPattern = @"(\d)+";
+            reg = new Regex(intPattern);
+            mathces = reg.Matches(rtb.Text);
+            foreach (Match m in mathces)
+            {
+                SetSelectionColor(rtb, m.Index, m.Length, Color.FromArgb(43, 145, 175));
+            }
         }
     }
 }

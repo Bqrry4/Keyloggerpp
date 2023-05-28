@@ -111,12 +111,13 @@ namespace Keylogger__
             // 
             // richTextBoxScript
             // 
-            this.richTextBoxScript.Font = new System.Drawing.Font("Cascadia Code", 9F);
+            this.richTextBoxScript.Font = new System.Drawing.Font("Cascadia Code", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBoxScript.Location = new System.Drawing.Point(162, 12);
             this.richTextBoxScript.Name = "richTextBoxScript";
             this.richTextBoxScript.Size = new System.Drawing.Size(626, 426);
             this.richTextBoxScript.TabIndex = 7;
             this.richTextBoxScript.Text = "";
+            this.richTextBoxScript.TextChanged += new System.EventHandler(this.richTextBoxScript_TextChanged);
             // 
             // buttonAbout
             // 
@@ -170,9 +171,9 @@ namespace Keylogger__
         private System.Windows.Forms.Button buttonSaveFile;
         private System.Windows.Forms.Button buttonSettings;
         private System.Windows.Forms.Button buttonHelp;
-        private System.Windows.Forms.RichTextBox richTextBoxScript;
         private System.Windows.Forms.Button buttonAbout;
         private System.Windows.Forms.Button buttonApplySettings;
+        private System.Windows.Forms.RichTextBox richTextBoxScript;
     }
 }
 
