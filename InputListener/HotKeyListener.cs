@@ -1,8 +1,16 @@
-﻿using System;
+﻿/**************************************************************************
+*                                                                        *
+*  File:        HotKeyListener.cs                                        *
+*  Copyright:   (c)Paniș Alexandru                                       *
+*               @Kakerou_CLUB                                            *
+*  Description: Listener for hotkeys that implemets observer pattern,    *
+*               so it notify all the subscribers of a hotkey that was    *
+*               registered                                               *
+*                                                                        *
+**************************************************************************/
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Interop;
 using static InputListener.LLInput;
@@ -10,14 +18,20 @@ using static InputListener.LLInput;
 
 namespace InputListener
 {
-    public class HotKeyListener
+    /// <summary>
+    /// 
+    /// </summary>
+    public class HotKeyListener : IObservable<string>
     {
+        //The consumers for hKeys
+        private List<IObserver<string>> _observers; 
 
         private Dictionary<(ModifierKeys modifier, VirtualKeys vKey), string> _registeredHKeys;
         private int _registeredHotkeyCount = 0;
 
         public HotKeyListener()
         {
+            _observers = new List<IObserver<string>>();
             _registeredHKeys = new Dictionary<(ModifierKeys, VirtualKeys), string>();
         }
 
@@ -41,56 +55,61 @@ namespace InputListener
             UnRegHotKeys();
         }
 
-        public void Register(List<string> hotKeys)
+
+        //Add a hotkey to the dictionary
+        public void Register(string hotKey)
         {
-            foreach (string hotKey in hotKeys)
+            ModifierKeys modifiers = ModifierKeys.None;
+            VirtualKeys vKey;
+            string[] keys = hotKey.Split(' ');
+            foreach (string key in keys)
             {
-                ModifierKeys modifiers = ModifierKeys.None;
-                VirtualKeys vKey;
-                string[] keys = hotKey.Split(' ');
-                foreach (string key in keys)
+
+                //Check for modifiers
+                switch (key)
                 {
-
-                    //Check for modifiers
-                    switch (key)
-                    {
-                        case "Ctrl":
-                        case "LeftCtrl":
-                        case "RightCtrl":
-                            modifiers |= ModifierKeys.Control;
-                            break;
-                        case "Win":
-                        case "LeftWin":
-                        case "RightWin":
-                            modifiers |= ModifierKeys.Windows;
-                            break;
-                        case "Shift":
-                        case "LeftShift":
-                        case "RightShift":
-                            modifiers |= ModifierKeys.Shift;
-                            break;
-                        case "Alt":
-                        case "LeftAlt":
-                        case "RightAlt":
-                            modifiers |= ModifierKeys.Alt;
-                            break;
-                    }
-
-                    //Get the vk of the ordinary key
-                    try
-                    {
-                        vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ArgumentException("Error at registering a Hotkey: Key not recognized: " + key, ex);
-                    }
-
-                    //Seems like a valid one, adding to the collection (￣ヘ￣)
-                    _registeredHKeys.Add((modifiers, vKey), hotKey);
+                    case "Ctrl":
+                    case "LeftCtrl":
+                    case "RightCtrl":
+                        modifiers |= ModifierKeys.Control;
+                        break;
+                    case "Win":
+                    case "LeftWin":
+                    case "RightWin":
+                        modifiers |= ModifierKeys.Windows;
+                        break;
+                    case "Shift":
+                    case "LeftShift":
+                    case "RightShift":
+                        modifiers |= ModifierKeys.Shift;
+                        break;
+                    case "Alt":
+                    case "LeftAlt":
+                    case "RightAlt":
+                        modifiers |= ModifierKeys.Alt;
+                        break;
                 }
+
+                //Get the vk of the ordinary key
+                try
+                {
+                    vKey = (VirtualKeys)Enum.Parse(typeof(VirtualKeys), key);
+
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException("Error at registering a Hotkey: Key not recognized: " + key, ex);
+                }
+
+                //Seems like a valid one, adding to the collection (￣ヘ￣)
+                _registeredHKeys.Add((modifiers, vKey), hotKey);
             }
+        }
+
+        public void Clear()
+        {
+            _registeredHKeys.Clear();
+            _registeredHotkeyCount = 0;
         }
 
         //Register the hotkeys to the system
@@ -128,10 +147,22 @@ namespace InputListener
                     string hotKey = string.Empty;
                     _registeredHKeys.TryGetValue((mod, vk), out hotKey);
 
+
                     //Notify those who signed for hk
+                    foreach(var observer in _observers)
+                    {
+                        observer.OnNext(hotKey);
+                    }
                 }
             }
         }
 
+        public IDisposable Subscribe(IObserver<string> observer)
+        {
+            if (!_observers.Contains(observer))
+                _observers.Add(observer);
+            // return new Unsubscriber(_observers, observer);
+            return null;
+        }
     }
 }

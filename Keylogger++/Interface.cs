@@ -12,12 +12,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using IntermediaryFacade;
+using Logface;
 using System.Runtime.InteropServices;
 
 namespace Keylogger__
 {
     public partial class Interface : Form
     {
+        /// <summary>
+        /// The Controller part like in the MVC
+        /// </summary>
+        private LogFace _controller = new LogFace();
+
         private string _directory;
         private const string _settings = @"../../settings.txt";
         public Interface()
@@ -58,9 +65,12 @@ namespace Keylogger__
             if (buttonRecord.Text == "Start recording")
             {
                 buttonRecord.Text = "Stop recording";
+                _controller.setOutput(new RichTextBoxWriter(richTextBoxScript));
+                _controller.StartRecording();
             }
             else
             {
+                _controller.StopRecording();
                 buttonRecord.Text = "Start recording";
             }
         }

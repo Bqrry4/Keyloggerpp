@@ -19,19 +19,37 @@ namespace KeyloggerUnitTests
     {
         #region Listener tests
         [TestMethod]
-        [Ignore]
+        //[Ignore]
         public void ListenerTestMethod()
         {
             //listener to be tested
             ConcurrentQueue<LLEventData> queue = new ConcurrentQueue<LLEventData>();
-            LLListener listener = new LLListener(queue);
+            LLListener listener = new LLListener(ref queue);
 
             //interpreter for generating an event
             ScriptInterpreter interpreter = new ScriptInterpreter();
             List<string> hots;
 
-            //Application.Run();
             listener.StartListening();
+            //Application.Run();
+
+            LLEventData dd;
+
+            Thread t = new Thread(new ThreadStart(() =>
+            {
+                while (!queue.TryDequeue(out dd))
+                {
+
+                }
+                Console.WriteLine("dfds");
+
+
+            }));
+
+            t.Start();
+
+            t.Join();
+
             interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
             interpreter.Run("Ctrl J");
             listener.StopListening();
