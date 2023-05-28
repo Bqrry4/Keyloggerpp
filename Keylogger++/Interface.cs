@@ -191,7 +191,6 @@ namespace Keylogger__
                 buttonApplySettings.BackColor = Color.FromArgb(47, 54, 64);
                 buttonAbout.BackColor = Color.FromArgb(47, 54, 64);
                 buttonHelp.BackColor = Color.FromArgb(47, 54, 64);
-                buttonExit.BackColor = Color.FromArgb(47, 54, 64);
                 richTextBoxScript.BackColor = Color.FromArgb(47, 54, 64);
 
                 this.BackColor = Color.FromArgb(47, 54, 64);
@@ -203,7 +202,6 @@ namespace Keylogger__
                 buttonApplySettings.ForeColor = Color.FromArgb(245, 246, 250);
                 buttonAbout.ForeColor = Color.FromArgb(245, 246, 250);
                 buttonHelp.ForeColor = Color.FromArgb(245, 246, 250);
-                buttonExit.ForeColor = Color.FromArgb(245, 246, 250);
                 richTextBoxScript.ForeColor = Color.FromArgb(245, 246, 250);
 
             }
@@ -218,7 +216,6 @@ namespace Keylogger__
                 buttonApplySettings.BackColor = Color.FromArgb(245, 246, 250);
                 buttonAbout.BackColor = Color.FromArgb(245, 246, 250);
                 buttonHelp.BackColor = Color.FromArgb(245, 246, 250);
-                buttonExit.BackColor = Color.FromArgb(245, 246, 250);
                 richTextBoxScript.BackColor = Color.FromArgb(245, 246, 250);
 
                 this.BackColor = Color.FromArgb(245, 246, 250);
@@ -230,7 +227,6 @@ namespace Keylogger__
                 buttonApplySettings.ForeColor = Color.FromArgb(47, 54, 64);
                 buttonAbout.ForeColor = Color.FromArgb(47, 54, 64);
                 buttonHelp.ForeColor = Color.FromArgb(47, 54, 64);
-                buttonExit.ForeColor = Color.FromArgb(47, 54, 64);
                 richTextBoxScript.ForeColor = Color.FromArgb(47, 54, 64);
             }
         }
@@ -253,11 +249,6 @@ namespace Keylogger__
         private void buttonAbout_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Program that allows user to make custom hotkeys", "About keylogger");
-        }
-
-        private void buttonExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
     }
 }
