@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System;
 using System.Threading;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace IntermediaryFacade
 {
@@ -47,16 +48,16 @@ namespace IntermediaryFacade
 
 
 
-        private Thread loggerThread = null;
+        private Thread _loggerThread = null;
         public void StartRecording()
         {
 
-            loggerThread = new Thread(new ThreadStart(delegate
+            _loggerThread = new Thread(new ThreadStart(delegate
             {
                 _logger.StartRecording();
             }));
 
-            loggerThread.Start();
+            _loggerThread.Start();
 
             _listener.StartListening();
         }
@@ -68,14 +69,19 @@ namespace IntermediaryFacade
             _logger.StopRecording();
 
             //Wait the thread to stop
-            loggerThread.Join();
+            _loggerThread.Join();
         }
 
+        /// <summary>
+        /// Set where the output will be written
+        /// </summary>
+        /// <param name="output"></param>
         public void setOutput(IWriter output)
         {
             _logger.AddWriter(output);
         }
-        
+
+
         public void StartRunning(string script)
         {
             try
@@ -102,6 +108,8 @@ namespace IntermediaryFacade
         public void StopRunning()
         {
             _hkListener.StopListening();
+            _hkListener.Clear();
+            _interpreter.Clear();
         }
 
     }

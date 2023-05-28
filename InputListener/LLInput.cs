@@ -96,7 +96,7 @@ namespace InputListener
         [DllImport("user32.dll")]
         private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
         [DllImport("kernel32.dll")]
-        private static extern uint GetCurrentThreadId();
+        internal static extern uint GetCurrentThreadId();
         #endregion
 
         [DllImport("user32.dll")]
@@ -105,7 +105,8 @@ namespace InputListener
         internal static extern int UnregisterHotKey(IntPtr hwnd, int id);
         [DllImport("user32.dll")]
         internal static extern bool GetMessage(ref MSG lpMsg, IntPtr hWnd, uint mMsgFilterInMain, uint mMsgFilterMax);
-        
+        [DllImport("user32.dll")]
+        internal static extern bool PostThreadMessage(uint idThread, uint Msg, IntPtr wParam, IntPtr lParam);
 
         /// <summary>
         /// Returns the Unicode character represented by the current keyboard state
