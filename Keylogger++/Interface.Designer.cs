@@ -30,8 +30,7 @@ namespace Keylogger__
         /// </summary>
         private void InitializeComponent()
         {
-            Font font = new Font("Cascadia Code", 9, FontStyle.Regular);
-            
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Interface));
             this.buttonRecord = new System.Windows.Forms.Button();
             this.buttonRun = new System.Windows.Forms.Button();
             this.buttonOpenFile = new System.Windows.Forms.Button();
@@ -46,6 +45,7 @@ namespace Keylogger__
             // 
             // buttonRecord
             // 
+            this.buttonRecord.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonRecord.Location = new System.Drawing.Point(12, 28);
             this.buttonRecord.Name = "buttonRecord";
             this.buttonRecord.Size = new System.Drawing.Size(129, 33);
@@ -53,10 +53,10 @@ namespace Keylogger__
             this.buttonRecord.Text = "Start recording";
             this.buttonRecord.UseVisualStyleBackColor = true;
             this.buttonRecord.Click += new System.EventHandler(this.buttonRecord_Click);
-            this.buttonRecord.Font = font;
             // 
             // buttonRun
             // 
+            this.buttonRun.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonRun.Location = new System.Drawing.Point(12, 67);
             this.buttonRun.Name = "buttonRun";
             this.buttonRun.Size = new System.Drawing.Size(129, 32);
@@ -64,10 +64,10 @@ namespace Keylogger__
             this.buttonRun.Text = "Start running";
             this.buttonRun.UseVisualStyleBackColor = true;
             this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
-            this.buttonRun.Font = font;
             // 
             // buttonOpenFile
             // 
+            this.buttonOpenFile.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonOpenFile.Location = new System.Drawing.Point(12, 105);
             this.buttonOpenFile.Name = "buttonOpenFile";
             this.buttonOpenFile.Size = new System.Drawing.Size(129, 32);
@@ -75,10 +75,10 @@ namespace Keylogger__
             this.buttonOpenFile.Text = "Open file";
             this.buttonOpenFile.UseVisualStyleBackColor = true;
             this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
-            this.buttonOpenFile.Font = font;
             // 
             // buttonSaveFile
             // 
+            this.buttonSaveFile.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonSaveFile.Location = new System.Drawing.Point(12, 143);
             this.buttonSaveFile.Name = "buttonSaveFile";
             this.buttonSaveFile.Size = new System.Drawing.Size(129, 30);
@@ -86,10 +86,10 @@ namespace Keylogger__
             this.buttonSaveFile.Text = "Save file";
             this.buttonSaveFile.UseVisualStyleBackColor = true;
             this.buttonSaveFile.Click += new System.EventHandler(this.buttonSaveFile_Click);
-            this.buttonSaveFile.Font = font;
             // 
             // buttonSettings
             // 
+            this.buttonSettings.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonSettings.Location = new System.Drawing.Point(12, 238);
             this.buttonSettings.Name = "buttonSettings";
             this.buttonSettings.Size = new System.Drawing.Size(129, 34);
@@ -97,10 +97,10 @@ namespace Keylogger__
             this.buttonSettings.Text = "Settings";
             this.buttonSettings.UseVisualStyleBackColor = true;
             this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
-            this.buttonSettings.Font = font;
             // 
             // buttonHelp
             // 
+            this.buttonHelp.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonHelp.Location = new System.Drawing.Point(10, 318);
             this.buttonHelp.Name = "buttonHelp";
             this.buttonHelp.Size = new System.Drawing.Size(128, 36);
@@ -108,10 +108,10 @@ namespace Keylogger__
             this.buttonHelp.Text = "Help";
             this.buttonHelp.UseVisualStyleBackColor = true;
             this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
-            this.buttonHelp.Font = font;
             // 
             // buttonExit
             // 
+            this.buttonExit.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonExit.Location = new System.Drawing.Point(9, 399);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(128, 29);
@@ -119,19 +119,19 @@ namespace Keylogger__
             this.buttonExit.Text = "Exit";
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            this.buttonExit.Font = font;
             // 
             // richTextBoxScript
             // 
+            this.richTextBoxScript.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.richTextBoxScript.Location = new System.Drawing.Point(162, 12);
             this.richTextBoxScript.Name = "richTextBoxScript";
             this.richTextBoxScript.Size = new System.Drawing.Size(626, 426);
             this.richTextBoxScript.TabIndex = 7;
             this.richTextBoxScript.Text = "";
-            this.richTextBoxScript.Font = font;
             // 
             // buttonAbout
             // 
+            this.buttonAbout.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonAbout.Location = new System.Drawing.Point(10, 360);
             this.buttonAbout.Name = "buttonAbout";
             this.buttonAbout.Size = new System.Drawing.Size(127, 33);
@@ -139,10 +139,10 @@ namespace Keylogger__
             this.buttonAbout.Text = "About";
             this.buttonAbout.UseVisualStyleBackColor = true;
             this.buttonAbout.Click += new System.EventHandler(this.buttonAbout_Click);
-            this.buttonAbout.Font = font;
             // 
             // buttonApplySettings
             // 
+            this.buttonApplySettings.Font = new System.Drawing.Font("Cascadia Code", 9F);
             this.buttonApplySettings.Location = new System.Drawing.Point(12, 278);
             this.buttonApplySettings.Name = "buttonApplySettings";
             this.buttonApplySettings.Size = new System.Drawing.Size(129, 34);
@@ -150,7 +150,6 @@ namespace Keylogger__
             this.buttonApplySettings.Text = "Apply settings";
             this.buttonApplySettings.UseVisualStyleBackColor = true;
             this.buttonApplySettings.Click += new System.EventHandler(this.buttonApplySettings_Click);
-            this.buttonApplySettings.Font = font;
             // 
             // Interface
             // 
@@ -167,6 +166,7 @@ namespace Keylogger__
             this.Controls.Add(this.buttonOpenFile);
             this.Controls.Add(this.buttonRun);
             this.Controls.Add(this.buttonRecord);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Interface";
             this.Text = "Keylogger";
             this.ResumeLayout(false);
