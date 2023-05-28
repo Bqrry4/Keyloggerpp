@@ -89,5 +89,15 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logface\IntermediaryFacade.csproj">
+      <Project>{a34c6a27-d758-4de5-a993-6e977f8c97cb}</Project>
+      <Name>IntermediaryFacade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Recorder\Recorder.csproj">
+      <Project>{21a8ba92-a6aa-4f60-9cc4-c64edacc6750}</Project>
+      <Name>Recorder</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
