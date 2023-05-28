@@ -86,8 +86,6 @@ namespace IntermediaryFacade
             {
                 throw ex;
             }
-
-
         }
 
         public void StopRunning()
