@@ -31,7 +31,6 @@ namespace Keylogger__
         /// </summary>
         private void InitializeComponent()
         {
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Interface));
             this.buttonRecord = new System.Windows.Forms.Button();
             this.buttonRun = new System.Windows.Forms.Button();
@@ -39,7 +38,6 @@ namespace Keylogger__
             this.buttonSaveFile = new System.Windows.Forms.Button();
             this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonHelp = new System.Windows.Forms.Button();
-            this.buttonExit = new System.Windows.Forms.Button();
             this.richTextBoxScript = new System.Windows.Forms.RichTextBox();
             this.buttonAbout = new System.Windows.Forms.Button();
             this.buttonApplySettings = new System.Windows.Forms.Button();
@@ -111,17 +109,6 @@ namespace Keylogger__
             this.buttonHelp.UseVisualStyleBackColor = true;
             this.buttonHelp.Click += new System.EventHandler(this.buttonHelp_Click);
             // 
-            // buttonExit
-            // 
-            this.buttonExit.Font = new System.Drawing.Font("Cascadia Code", 9F);
-            this.buttonExit.Location = new System.Drawing.Point(9, 399);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(128, 29);
-            this.buttonExit.TabIndex = 6;
-            this.buttonExit.Text = "Exit";
-            this.buttonExit.UseVisualStyleBackColor = true;
-            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            // 
             // richTextBoxScript
             // 
             this.richTextBoxScript.Font = new System.Drawing.Font("Cascadia Code", 9F);
@@ -161,13 +148,13 @@ namespace Keylogger__
             this.Controls.Add(this.buttonApplySettings);
             this.Controls.Add(this.buttonAbout);
             this.Controls.Add(this.richTextBoxScript);
-            this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonHelp);
             this.Controls.Add(this.buttonSettings);
             this.Controls.Add(this.buttonSaveFile);
             this.Controls.Add(this.buttonOpenFile);
             this.Controls.Add(this.buttonRun);
             this.Controls.Add(this.buttonRecord);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Interface";
             this.Text = "Keylogger";
@@ -183,7 +170,6 @@ namespace Keylogger__
         private System.Windows.Forms.Button buttonSaveFile;
         private System.Windows.Forms.Button buttonSettings;
         private System.Windows.Forms.Button buttonHelp;
-        private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.RichTextBox richTextBoxScript;
         private System.Windows.Forms.Button buttonAbout;
         private System.Windows.Forms.Button buttonApplySettings;
