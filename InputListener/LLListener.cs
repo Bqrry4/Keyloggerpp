@@ -80,7 +80,6 @@ namespace InputListener
                 case MessageType.WM_SYSKEYDOWN:
                 case MessageType.WM_KEYDOWN:
 
-
                     //Looking for modifiers
                     switch ((VirtualKeys)dataStruct.vkCode)
                     {
@@ -295,31 +294,34 @@ namespace InputListener
                     msE.buttonID = 0;
                     msE.status = false;
 
-                    break;
+                    goto PushEvent;
+
                 case MessageType.WM_LBUTTONUP:
                     msE.buttonID = 0;
                     msE.status = true;
 
-                    break;
+                    goto PushEvent;
 
                 case MessageType.WM_RBUTTONDOWN:
                     msE.buttonID = 1;
                     msE.status = false;
 
-                    break;
+                    goto PushEvent;
                 case MessageType.WM_RBUTTONUP:
                     msE.status = true;
                     msE.buttonID = 1;
 
-                    break;
-            }
 
-            //Push Event to the queue
-            _eventQueue.Enqueue(new LLEventData
-            {
-                eType = 1,
-                mEvent= msE
-            });
+                PushEvent:
+                    //Push Event to the queue
+                    _eventQueue.Enqueue(new LLEventData
+                    {
+                        eType = 1,
+                        mEvent = msE
+                    });
+                    break;
+
+            }
         }
     }
 

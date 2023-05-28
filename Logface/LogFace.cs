@@ -52,6 +52,8 @@ namespace IntermediaryFacade
 
             //Wait the thread to stop
             loggerThread.Join();
+
+            Console.WriteLine("asf");
         }
 
         public void setOutput(IWriter output)
