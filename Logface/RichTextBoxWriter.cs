@@ -8,6 +8,7 @@
 **************************************************************************/
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using Recorder;
 
@@ -45,7 +46,14 @@ namespace Logface
             if(_output.InvokeRequired)
             {
                 Action safeWrite = delegate { Write(value); };
-                object tst = _output.Invoke(safeWrite);
+                try
+                {
+                    object tst = _output.BeginInvoke(safeWrite);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else
             {

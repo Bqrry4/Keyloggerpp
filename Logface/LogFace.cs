@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System;
 using System.Threading;
+using System.ComponentModel;
 
 namespace IntermediaryFacade
 {
@@ -32,16 +33,18 @@ namespace IntermediaryFacade
         private Thread loggerThread = null;
         public void StartRecording()
         {
-
-            loggerThread = new Thread(new ThreadStart(() =>
-            {
-                _logger.StartRecording();
-            }));
-
+            var threadParameters = new ThreadStart(delegate { _logger.StartRecording(); });
+            loggerThread = new Thread(threadParameters);
             loggerThread.Start();
 
-            _listener.StartListening();
+            //loggerThread = new Thread(new ThreadStart(() =>
+            //{
+            //    _logger.StartRecording();
+            //}));
 
+            //loggerThread.Start();
+
+            _listener.StartListening();
         }
 
         public void StopRecording()
@@ -52,8 +55,6 @@ namespace IntermediaryFacade
 
             //Wait the thread to stop
             loggerThread.Join();
-
-            Console.WriteLine("asf");
         }
 
         public void setOutput(IWriter output)

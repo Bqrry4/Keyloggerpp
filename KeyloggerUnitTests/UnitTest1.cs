@@ -24,34 +24,25 @@ namespace KeyloggerUnitTests
         {
             //listener to be tested
             ConcurrentQueue<LLEventData> queue = new ConcurrentQueue<LLEventData>();
-            LLListener listener = new LLListener(ref queue);
+            LLListener listener = new LLListener(queue);
 
             //interpreter for generating an event
             ScriptInterpreter interpreter = new ScriptInterpreter();
             List<string> hots;
 
-            listener.StartListening();
-            //Application.Run();
-
+            //thread for event listening
             LLEventData dd;
-
             Thread t = new Thread(new ThreadStart(() =>
             {
-                while (!queue.TryDequeue(out dd))
-                {
-
-                }
-                Console.WriteLine("dfds");
-
-
+                while (!queue.TryDequeue(out dd)){}
             }));
-
             t.Start();
 
+            listener.StartListening();
             t.Join();
 
             interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
-            interpreter.Run("Ctrl J");
+            //interpreter.OnNext();
             listener.StopListening();
             //Application.Exit();
 
