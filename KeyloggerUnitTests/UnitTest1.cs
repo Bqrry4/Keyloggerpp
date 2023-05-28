@@ -3,7 +3,7 @@ using System;
 using InputListener;
 using Interpreter;
 using Recorder;
-using Logface;
+using IntermediaryFacade;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;

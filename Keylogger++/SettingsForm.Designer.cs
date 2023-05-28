@@ -1,5 +1,6 @@
 ﻿
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Keylogger__
 {
@@ -31,6 +32,7 @@ namespace Keylogger__
         /// </summary>
         private void InitializeComponent()
         {
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
             Font font = new Font("Cascadia Code", 9, FontStyle.Regular);
 
             this.radioButtonLightMode = new System.Windows.Forms.RadioButton();
