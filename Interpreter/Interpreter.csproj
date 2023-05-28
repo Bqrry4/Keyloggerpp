@@ -49,6 +49,7 @@
     <Compile Include="Commands\MousePressCommand.cs" />
     <Compile Include="Commands\CommandFactory.cs" />
     <Compile Include="Commands\IKlppCommand.cs" />
+    <Compile Include="Commands\WaitCommand.cs" />
     <Compile Include="Exceptions\HotkeyNotFoundException.cs" />
     <Compile Include="Exceptions\MalformedLineException.cs" />
     <Compile Include="ScriptInterpreter.cs" />
