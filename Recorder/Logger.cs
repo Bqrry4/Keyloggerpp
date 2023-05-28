@@ -204,7 +204,6 @@ namespace Recorder
         public void StopRecording()
         {
             _stop = true;
-            Console.WriteLine("stop to true");
         }
     }
 }

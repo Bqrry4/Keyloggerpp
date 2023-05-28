@@ -30,24 +30,15 @@ namespace KeyloggerUnitTests
             ScriptInterpreter interpreter = new ScriptInterpreter();
             List<string> hots;
 
-            listener.StartListening();
-            //Application.Run();
-
+            //thread for event listening
             LLEventData dd;
-
             Thread t = new Thread(new ThreadStart(() =>
             {
-                while (!queue.TryDequeue(out dd))
-                {
-
-                }
-                Console.WriteLine("dfds");
-
-
+                while (!queue.TryDequeue(out dd)){}
             }));
-
             t.Start();
 
+            listener.StartListening();
             t.Join();
 
             //interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
