@@ -29,34 +29,38 @@ namespace InputListener
         public delegate void ProcessHookMessage(MessageType msT, IntPtr data);
 
         //Callback function prototype for SetWindowsHookEx
-        private delegate IntPtr HookCallback(int nCode, UIntPtr wParam, IntPtr lParam);
+        public delegate IntPtr HookCallback(int nCode, UIntPtr wParam, IntPtr lParam);
+
 
         /// <summary>
         /// Set the hook to capture low level input from mouse and keyboard
         /// </summary>
         /// <param name="proc">A function to process the message</param>
         /// <param name="hookType"></param>
-        /// <returns>A pointer to registered hook, it must be freed with Unhook function</returns>
-        public static IntPtr SetHook(ProcessHookMessage proc, HookType hookType)
+        /// <returns>
+        ///     A pointer to registered hook, it must be freed with Unhook function
+        ///     A registered callback that must be stored to avoid garbage collecting the delegate
+        /// </returns>
+        public static (IntPtr, HookCallback) SetHook(ProcessHookMessage proc, HookType hookType)
         {
+
+            //This callback must be stored somewhere to not be garbage collected
+            HookCallback hCallback = (int nCode, UIntPtr wParam, IntPtr lParam) =>
+            {
+                //If nCode >=0, the wParam and lParam parameters contain information about a keyboard message.
+                if (nCode >= 0)
+                {
+                    MessageType msT = (MessageType)wParam.ToUInt32();
+                    proc(msT, lParam);
+                }
+
+                return CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
+            };
 
             using (Process curProcess = Process.GetCurrentProcess())
             using (ProcessModule curModule = curProcess.MainModule)
             {
-                return SetWindowsHookEx((int)hookType,
-                (int nCode, UIntPtr wParam, IntPtr lParam) =>
-                {
-                    //If nCode >=0, the wParam and lParam parameters contain information about a keyboard message.
-                    if (nCode >= 0)
-                    {
-                        MessageType msT = (MessageType)wParam.ToUInt32();
-                        proc(msT, lParam);
-
-                    }
-
-                    return CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
-                },
-                GetModuleHandle(curModule.ModuleName), 0);
+                return (SetWindowsHookEx((int)hookType, hCallback, GetModuleHandle(curModule.ModuleName), 0), hCallback);
             }
         }
 

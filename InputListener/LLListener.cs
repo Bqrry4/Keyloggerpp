@@ -1,4 +1,4 @@
-﻿/**************************************************************************
+﻿/*************************************************************************
 *                                                                        *
 *  File:        LLListener.cs                                            *
 *  Copyright:   (c)Paniș Alexandru                                       *
@@ -31,6 +31,10 @@ namespace InputListener
         private IntPtr _hookedKeyboard;
         private IntPtr _hookedMouse;
 
+        //Must store the callbacks as the delegates are garbage collected
+        private HookCallback _keyboardCallback;
+        private HookCallback _mouseCallback;
+
         private List<KeyEventData> _currentKeyEvent = new List<KeyEventData>(2);
 
         /// <summary>
@@ -50,8 +54,8 @@ namespace InputListener
         /// </summary>
         public void StartListening()
         { 
-            _hookedKeyboard = SetHook(LowLevelKeyboardProc, HookType.WH_KEYBOARD_LL);
-            _hookedMouse = SetHook(LowLevelMouseProc, HookType.WH_MOUSE_LL);
+            (_hookedKeyboard, _keyboardCallback) = SetHook(LowLevelKeyboardProc, HookType.WH_KEYBOARD_LL);
+            (_hookedMouse, _mouseCallback) = SetHook(LowLevelMouseProc, HookType.WH_MOUSE_LL);
         }
         /// <summary>
         /// Unhook to stop recieving callbacks
@@ -357,7 +361,7 @@ namespace InputListener
         //How many times it was multiplied when the key was pressed
         public byte count;
     }
-
+    
     [StructLayout(LayoutKind.Sequential)]
     public class MouseEventData
     {

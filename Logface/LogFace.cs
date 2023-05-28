@@ -1,4 +1,16 @@
-﻿using InputListener;
+﻿/*************************************************************************
+*                                                                        *
+*  File:        LogFace.cs                                               *
+*  Copyright:   (c)Paniș Alexandru                                       *
+*               @Kakerou_CLUB                                            *
+*  Description: A facade pattern that encapsulate the logic on how       * 
+*               the rest of modules are working together                 *
+*                                                                        *
+**************************************************************************/
+
+
+
+using InputListener;
 using Recorder;
 using Interpreter;
 using System.Collections.Concurrent;
@@ -28,16 +40,17 @@ namespace IntermediaryFacade
 
             _interpreter = new ScriptInterpreter();
             _hkListener = new HotKeyListener();
+
+            //Binding interpretor to consume the hotKeys events
+            _hkListener.Subscribe(_interpreter);
         }
+
+
 
         private Thread loggerThread = null;
         public void StartRecording()
         {
 
-            //loggerThread = new Thread(new ThreadStart(() =>
-            //{
-            //    _logger.StartRecording();
-            //}));
             loggerThread = new Thread(new ThreadStart(delegate
             {
                 _logger.StartRecording();
@@ -76,14 +89,12 @@ namespace IntermediaryFacade
                     _hkListener.Register(hKey);
                 });
 
-                //Binding interpretor to wait for hotKeys
-                _hkListener.Subscribe(_interpreter);
-
                 _hkListener.StartListening();
 
             }
             catch (Exception ex)
             {
+                //pass it to the heavens
                 throw ex;
             }
         }
