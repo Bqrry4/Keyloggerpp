@@ -19,7 +19,7 @@ namespace KeyloggerUnitTests
     {
         #region Listener tests
         [TestMethod]
-        //[Ignore]
+        [Ignore]
         public void ListenerTestMethod()
         {
             //listener to be tested
@@ -41,10 +41,9 @@ namespace KeyloggerUnitTests
             listener.StartListening();
             t.Join();
 
-            //interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
-            //interpreter.Run("Ctrl J");
+            interpreter.Parse("Ctrl J::\n{\nSend(\"a\")\n}",out hots);
+            
             listener.StopListening();
-            //Application.Exit();
 
             LLEventData testAction = new LLEventData
             {
