@@ -45,7 +45,7 @@ namespace Logface
             if(_output.InvokeRequired)
             {
                 Action safeWrite = delegate { Write(value); };
-                _output.Invoke(safeWrite);
+                object tst = _output.Invoke(safeWrite);
             }
             else
             {

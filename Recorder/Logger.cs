@@ -64,7 +64,7 @@ namespace Recorder
         {
             _writers.Add(writer);
 
-            writer.Write(StopKey + "::\r\n{");
+            writer.Write(StopKey + "::\r\n{\r\n");
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Recorder
         {
             foreach (IWriter writer in _writers)
             {
-                writer.Write("\r\n}");
+                writer.Write("}");
                 writer.Close();
             }
 
@@ -147,11 +147,11 @@ namespace Recorder
 
                     if (action.mEvent.status)
                     {
-                        cmd = "\tClickRelease(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n";
+                        cmd = "\tClickRelease(" + x + ", " + y + ", " + action.mEvent.buttonID + ")\r\n";
                     }
                     else
                     {
-                        cmd = "\tClickPress(\"" + x + ", " + y + ", " + action.mEvent.buttonID + "\")\r\n";
+                        cmd = "\tClickPress(" + x + ", " + y + ", " + action.mEvent.buttonID + ")\r\n";
                     }
 
                     SendToWriters(cmd);
