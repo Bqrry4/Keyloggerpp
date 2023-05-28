@@ -52,7 +52,7 @@ namespace Interpreter
 
             while (hotkey.Success)
             {
-                hotkeys.Append(hotkey.Groups[1].Value);
+                hotkeys.Add(hotkey.Groups[1].Value);
                 string[] lines = hotkey.Groups[2].Value.Split('\n');
                 List<IKlppCommand> hotkeyCommandList = new List<IKlppCommand>();
 
