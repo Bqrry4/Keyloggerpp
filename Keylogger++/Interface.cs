@@ -57,27 +57,40 @@ namespace Keylogger__
             this.Icon = new Icon(@"../../../favicon.ico");
         }
 
+
+        /// <summary>
+        /// state of the app
+        /// Idle = 0;
+        /// Recordin = 1;
+        /// Running = 2;
+        /// </summary>
+        private int _state = 0;
         private void buttonRecord_Click(object sender, EventArgs e)
         {
             if (buttonRecord.Text == "Start recording")
             {
-                buttonRecord.Text = "Stop recording";
-                try
+                if (_state == 0)
                 {
-                    richTextBoxScript.ReadOnly = true;
-                    _controller.setOutput(new RichTextBoxWriter(richTextBoxScript));
-                    _controller.StartRecording();
+                    _state = 1;
+                    buttonRecord.Text = "Stop recording";
+                    try
+                    {
+                        richTextBoxScript.ReadOnly = true;
+                        _controller.setOutput(new RichTextBoxWriter(richTextBoxScript));
+                        _controller.StartRecording();
 
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error starting input recording: " + ex.Message, "Exception");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error starting input recording: " + ex.Message, "Exception");
+                    }
                 }
             }
             else
             {
                 try
                 {
+                    _state = 0;
                     _controller.StopRecording();
                     richTextBoxScript.ReadOnly = false;
                 }
@@ -93,20 +106,28 @@ namespace Keylogger__
         {
             if (buttonRun.Text == "Start running")
             {
-                buttonRun.Text = "Stop running";
-                try
+                if (_state == 0)
                 {
-                    _controller.StartRunning(richTextBoxScript.Text);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error running script: " + ex.Message, "Exception");
+
+                    _state = 2;
+
+                    buttonRun.Text = "Stop running";
+                    try
+                    {
+                        _controller.StartRunning(richTextBoxScript.Text);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error running script: " + ex.Message, "Exception");
+                    }
+
                 }
             }
             else
             {
                 try
                 {
+                    _state = 0;
                     _controller.StopRunning();
                 }
                 catch (Exception ex)
@@ -278,5 +299,17 @@ namespace Keylogger__
             MessageBox.Show("Program that allows user to make custom hotkeys", "About keylogger");
         }
 
+        private void Interface_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if(_state == 1)
+            {
+                _controller.StopRecording();
+            }
+
+            if(_state == 2) 
+            {
+                _controller.StopRunning();
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ using System.Text;
 namespace KeyloggerUnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class ModuleTests
     {
         #region Listener tests
         [TestMethod]

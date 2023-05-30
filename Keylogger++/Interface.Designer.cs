@@ -158,6 +158,7 @@ namespace Keylogger__
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Interface";
             this.Text = "Keylogger";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Interface_FormClosed);
             this.ResumeLayout(false);
 
         }
