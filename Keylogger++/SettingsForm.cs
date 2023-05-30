@@ -49,7 +49,7 @@ namespace Keylogger__
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error initializing app with settings: " + ex.Message, "Exception");
             }
             this.Icon = new Icon(@"../../../favicon.ico");
         }
@@ -73,11 +73,11 @@ namespace Keylogger__
                 sw.WriteLine("Dark mode = " + _darkMode);
                 sw.WriteLine("Default directory = " + textBoxDir.Text);
                 sw.Close();
-                this.Hide();
+                this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error saving file: " + ex.Message, "Exception");
             }
         }
         // Change directory browser
@@ -102,7 +102,7 @@ namespace Keylogger__
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Erorr opening developer help file: " + ex.Message, "Exception");
             }
         }
     }

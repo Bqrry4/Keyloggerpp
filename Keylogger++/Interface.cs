@@ -13,8 +13,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using IntermediaryFacade;
-using System.Windows.Documents;
-using System.Text.RegularExpressions;
 
 namespace Keylogger__
 {
@@ -64,14 +62,29 @@ namespace Keylogger__
             if (buttonRecord.Text == "Start recording")
             {
                 buttonRecord.Text = "Stop recording";
-                richTextBoxScript.ReadOnly = true;
-                _controller.setOutput(new RichTextBoxWriter(richTextBoxScript));
-                _controller.StartRecording();
+                try
+                {
+                    richTextBoxScript.ReadOnly = true;
+                    _controller.setOutput(new RichTextBoxWriter(richTextBoxScript));
+                    _controller.StartRecording();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error starting input recording: " + ex.Message, "Exception");
+                }
             }
             else
             {
-                _controller.StopRecording();
-                richTextBoxScript.ReadOnly = false;
+                try
+                {
+                    _controller.StopRecording();
+                    richTextBoxScript.ReadOnly = false;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error stopping recording: " + ex.Message, "Exception");
+                }
                 buttonRecord.Text = "Start recording";
             }
         }
@@ -81,12 +94,25 @@ namespace Keylogger__
             if (buttonRun.Text == "Start running")
             {
                 buttonRun.Text = "Stop running";
-                
-                _controller.StartRunning(richTextBoxScript.Text);
+                try
+                {
+                    _controller.StartRunning(richTextBoxScript.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error running script: " + ex.Message, "Exception");
+                }
             }
             else
             {
-                _controller.StopRunning();
+                try
+                {
+                    _controller.StopRunning();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error stopping script running: " + ex.Message, "Exception");
+                }
                 buttonRun.Text = "Start running";
             }
         }
@@ -109,9 +135,9 @@ namespace Keylogger__
                 richTextBoxScript.Text = content;
                 sr.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error reading file");
+                MessageBox.Show("Error reading file: " + ex.Message, "Exception");
             }
         }
         // Saves the script as a *.klpp file
@@ -133,9 +159,9 @@ namespace Keylogger__
                 sw.Write(content);
                 sw.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error writing file");
+                MessageBox.Show("Error writing file: " + ex.Message, "Exception");
             }
         }
 
@@ -170,9 +196,9 @@ namespace Keylogger__
                 }
                 _directory = strings[2].Substring(20);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error reading settings file");
+                MessageBox.Show("Error reading settings file: " + ex.Message, "Exception");
             }
         }
         /// <summary>
@@ -243,7 +269,7 @@ namespace Keylogger__
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error getting help file:" + ex.Message, "Exception");
             }
         }
         // About the program section
@@ -251,18 +277,6 @@ namespace Keylogger__
         {
             MessageBox.Show("Program that allows user to make custom hotkeys", "About keylogger");
         }
-
-        private void SetSelectionColor(RichTextBox rtb, int start, int length, Color color)
-        {
-            rtb.SelectionStart = start;
-            rtb.SelectionLength = length;
-
-            rtb.SelectionColor = color;
-
-            rtb.SelectionStart = rtb.TextLength;
-            rtb.SelectionLength = 0;
-        }
-
 
     }
 }
