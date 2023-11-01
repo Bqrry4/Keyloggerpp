@@ -2,6 +2,7 @@
 
 using Avalonia;
 using Avalonia.ReactiveUI;
+using KeyloggerIDE.Views;
 
 namespace KeyloggerIDE.Desktop;
 

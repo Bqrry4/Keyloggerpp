@@ -12,5 +12,27 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
-  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Border>
+        <DockPanel>
+            <Border Name="MenuBar" Padding="4" DockPanel.Dock="Top">
+                <WrapPanel>
+                    <Image Source="../Assets/avalonia-logo.ico" Width="20" Height="20" ></Image>
+                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
+                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
+                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
+                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
+                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
+                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
+                </WrapPanel>
+            </Border>
+            <Border Name="Explorer" DockPanel.Dock="Left" Padding="4">
+                <Border DockPanel.Dock="Top">
+                    <TextBlock>path</TextBlock>
+                </Border>
+            </Border>
+            <Border Name="Editor" DockPanel.Dock="Right" Padding="4">
+                <TextBlock>editor</TextBlock>
+            </Border>
+        </DockPanel>
+	</Border>
 </UserControl>
