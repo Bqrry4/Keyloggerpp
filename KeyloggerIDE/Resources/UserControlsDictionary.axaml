@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Add Resources Here -->
+	
+		<MenuFlyout x:Key="SharedMenuFlyout">
+			<MenuItem Header="New File" InputGesture="Ctrl+N" />
+			<MenuItem Header="Open" InputGesture="Ctrl+O" />
+			<MenuItem Header="Add" InputGesture="Ctrl+A" />
+			<MenuItem Header="Save" InputGesture="Ctrl+S" />
+			<MenuItem Header="Save as" />
+			<MenuItem Header="Exit" />
+		</MenuFlyout>
+		<Flyout Placement="Bottom" x:Key="BasicFlyout">
+			<Panel Width="10" Height="10">
+				<TextBlock Text="Flyout Content!" />
+			</Panel>
+		</Flyout>
+	
+</ResourceDictionary>

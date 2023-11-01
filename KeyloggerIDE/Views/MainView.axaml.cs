@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using System.Diagnostics;
 
 namespace KeyloggerIDE.Views;
 

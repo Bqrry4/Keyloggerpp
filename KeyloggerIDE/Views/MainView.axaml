@@ -12,17 +12,22 @@
     <vm:MainViewModel />
   </Design.DataContext>
 
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Resources/UserControlsDictionary.axaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	
+	
     <Border>
         <DockPanel>
             <Border Name="MenuBar" Padding="4" DockPanel.Dock="Top">
                 <WrapPanel>
                     <Image Source="../Assets/avalonia-logo.ico" Width="20" Height="20" ></Image>
-                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
-                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
-                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
-                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
-                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
-                    <Button Background="Transparent" FontSize="12" VerticalAlignment="Center">File</Button>
+					<Button Content="File" Flyout="{StaticResource SharedMenuFlyout}" FontSize="12" Padding="7" />
                 </WrapPanel>
             </Border>
             <Border Name="Explorer" DockPanel.Dock="Left" Padding="4">
