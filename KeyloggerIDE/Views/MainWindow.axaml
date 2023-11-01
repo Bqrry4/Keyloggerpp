@@ -12,4 +12,8 @@
         Background="Transparent"
         ExtendClientAreaToDecorationsHint="True">
 	<views:MainView />
+    
+    <!--<Window.Styles>
+        <StyleInclude Source="/Styles/EditorStyle.axaml"/>
+    </Window.Styles>-->
 </Window>
