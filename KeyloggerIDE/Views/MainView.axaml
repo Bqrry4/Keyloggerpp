@@ -36,7 +36,25 @@
                 </Border>
             </Border>
             <Border Name="Editor" DockPanel.Dock="Right" Padding="4">
-                <TextBlock>editor</TextBlock>
+                <DockPanel>
+                    <Border Name="TabView" DockPanel.Dock="Top">
+                        <TabControl FontSize="12">
+                            <TabItem Header="new tab" FontSize="12">
+                                <Border>
+                                    <TextBlock>lool</TextBlock>
+								</Border>
+                            </TabItem>
+                            <TabItem Header="tab2"><TextBlock>bubn</TextBlock></TabItem>
+                            <TabItem Header="+"></TabItem>
+                        </TabControl>
+                    </Border>
+                    <Border Name="LineNum" DockPanel.Dock="Left">
+                        <DockPanel></DockPanel>
+                    </Border>
+                    <Border Name="TextEditor">
+
+                    </Border>
+                </DockPanel>
             </Border>
         </DockPanel>
 	</Border>
