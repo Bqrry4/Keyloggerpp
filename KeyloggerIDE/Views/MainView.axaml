@@ -19,17 +19,38 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</UserControl.Resources>
-
-	
 	
     <Border>
         <DockPanel>
             <Border Name="MenuBar" Padding="4" DockPanel.Dock="Top">
                 <WrapPanel>
-                    <Image Source="../Assets/avalonia-logo.ico" Width="20" Height="20" ></Image>
-					<Button Content="File" Flyout="{StaticResource SharedMenuFlyout}" FontSize="12" Padding="7" />
+                    <Image Source="/Assets/favicon.ico" Width="20" Height="20" ></Image>
+					<Button Content="File" Flyout="{StaticResource FileMenuFlyout}" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Button Content="Edit" Flyout="{StaticResource EditMenuFlyout}" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Button Content="Debug" Flyout="{StaticResource DebugMenuFlyout}" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Button Content="About" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Button Content="Help" FontSize="12" Padding="7" CornerRadius="10"/>
                 </WrapPanel>
             </Border>
+			<Border Name="IconBar" Padding="4" DockPanel.Dock="Top">
+				<WrapPanel>
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+						<Image Source="/Assets/folder.png" Width="20" Height="15"/>
+					</Button>
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+						<Image Source="/Assets/diskette.png" Width="20" Height="15"/>
+					</Button>
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+						<Image Source="/Assets/undo.png" Width="20" Height="15"/>
+					</Button>
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+						<Image Source="/Assets/redo.png" Width="20" Height="15"/>
+					</Button>
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+						<Image Source="/Assets/execute.png" Width="20" Height="15"/>
+					</Button>
+				</WrapPanel>
+			</Border>
             <Border Name="Explorer" DockPanel.Dock="Left" Padding="4">
                 <Border DockPanel.Dock="Top">
                     <TextBlock>path</TextBlock>
