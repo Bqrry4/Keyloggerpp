@@ -30,19 +30,19 @@
 					<Button Content="File" Flyout="{StaticResource SharedMenuFlyout}" FontSize="12" Padding="7" />
                 </WrapPanel>
             </Border>
+
             <Border Name="Explorer" DockPanel.Dock="Left" Padding="4">
                 <Border DockPanel.Dock="Top">
                     <TextBlock>path</TextBlock>
                 </Border>
             </Border>
+
             <Border Name="Editor" DockPanel.Dock="Right" Padding="4">
                 <DockPanel>
                     <Border Name="TabView" DockPanel.Dock="Top">
                         <TabControl FontSize="12">
-                            <TabItem Header="new tab" FontSize="12">
-                                <Border>
+                            <TabItem Header="new tab" FontSize="12" Theme="{StaticResource Test}">
                                     <TextBlock>lool</TextBlock>
-								</Border>
                             </TabItem>
                             <TabItem Header="tab2"><TextBlock>bubn</TextBlock></TabItem>
                             <TabItem Header="+"></TabItem>

@@ -1,0 +1,22 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+	<!--<Style Selector="Border#Editor TabItem Border">
+        <Style.Resources>
+            <ControlTheme x:Key="Test" TargetType="TabItem">
+                <Setter Property="BorderThickness" Value="0,2,0,0"/>
+                <Setter Property="BorderBrush" Value="Red"/>
+            </ControlTheme>
+        </Style.Resources>
+        <Setter Property="Theme" Value="{StaticResource Test}"/>
+    </Style>-->
+
+    <!--<Style Selector="Border#TabView">
+        <Setter Property="Theme" Value="{DynamicResource Test}" />
+    </Style>-->
+</Styles>

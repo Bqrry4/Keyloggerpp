@@ -13,7 +13,7 @@
         ExtendClientAreaToDecorationsHint="True">
 	<views:MainView />
     
-    <!--<Window.Styles>
-        <StyleInclude Source="/Styles/EditorStyle.axaml"/>
-    </Window.Styles>-->
+    <Window.Styles>
+        <StyleInclude Source="/Styles/Styles.axaml"/>
+    </Window.Styles>
 </Window>

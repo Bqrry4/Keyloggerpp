@@ -6,6 +6,6 @@
 
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="/Styles/EditorStyle.axaml"/>
+        <StyleInclude Source="/Styles/Styles.axaml"/>
     </Application.Styles>
 </Application>

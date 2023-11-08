@@ -15,5 +15,9 @@
 				<TextBlock Text="Flyout Content!" />
 			</Panel>
 		</Flyout>
-	
+
+	<ControlTheme x:Key="Test" TargetType="TabItem">
+        <Setter Property="BorderThickness" Value="2,2,0,0"/>
+        <Setter Property="BorderBrush" Value="Red"/>
+    </ControlTheme>
 </ResourceDictionary>
