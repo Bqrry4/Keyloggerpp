@@ -52,5 +52,5 @@
 			<TextBlock Text="Flyout Content!" />
 		</Panel>
 	</Flyout>
-	
+
 </ResourceDictionary>

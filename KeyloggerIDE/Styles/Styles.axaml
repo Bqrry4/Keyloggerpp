@@ -15,8 +15,4 @@
         </Style.Resources>
         <Setter Property="Theme" Value="{StaticResource Test}"/>
     </Style>-->
-
-    <!--<Style Selector="Border#TabView">
-        <Setter Property="Theme" Value="{DynamicResource Test}" />
-    </Style>-->
 </Styles>

@@ -61,9 +61,11 @@
                 <DockPanel>
                     <Border Name="TabView" DockPanel.Dock="Top">
                         <TabControl FontSize="12">
-                            <TabItem Header="new tab" FontSize="12" Theme="{StaticResource Test}">
+                            <Border Classes="bubn">
+                                <TabItem Header="new tab" FontSize="12">
                                     <TextBlock>lool</TextBlock>
-                            </TabItem>
+                                </TabItem>
+							</Border>
                             <TabItem Header="tab2"><TextBlock>bubn</TextBlock></TabItem>
                             <TabItem Header="+"></TabItem>
                         </TabControl>
