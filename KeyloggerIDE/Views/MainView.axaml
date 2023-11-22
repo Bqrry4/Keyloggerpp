@@ -60,32 +60,51 @@
 					</Button>
 				</WrapPanel>
 			</Border>
-            <Border Name="Explorer" DockPanel.Dock="Left" Padding="4">
-                <Border DockPanel.Dock="Top">
-                    <TextBlock>path</TextBlock>
-                </Border>
-            </Border>
-            <Border Name="Editor" DockPanel.Dock="Right" Padding="4">
-                <DockPanel>
-                    <Border Name="TabView" DockPanel.Dock="Top">
-                        <TabControl FontSize="12">
-                            <TabItem Header="new tab" FontSize="12">
-                                <Border>
-                                    <TextBlock>lool</TextBlock>
-								</Border>
-                            </TabItem>
-                            <TabItem Header="tab2"><TextBlock>bubn</TextBlock></TabItem>
-                            <TabItem Header="+"></TabItem>
-                        </TabControl>
-                    </Border>
-                    <Border Name="LineNum" DockPanel.Dock="Left">
-                        <DockPanel></DockPanel>
-                    </Border>
-                    <Border Name="TextEditor">
 
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
+                <Border Name="Explorer" Grid.Column="0" Grid.Row="0" DockPanel.Dock="Left" Padding="4">
+                    <Border DockPanel.Dock="Top">
+                        <TextBlock>path</TextBlock>
                     </Border>
-                </DockPanel>
-            </Border>
+                </Border>
+
+                <GridSplitter Grid.Column="1" ResizeDirection="Columns"></GridSplitter>
+
+                <Border Name="Editor" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Right" Padding="4">
+                    <DockPanel>
+                        <Border Name="TabView" DockPanel.Dock="Top">
+                            <TabControl>
+                                <TabControl.Styles>
+                                    <Style Selector="TabItem">
+                                        <Setter Property="MinHeight" Value="20"/>
+                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                    </Style>
+                                </TabControl.Styles>
+
+                                <TabItem Header="new tab*" FontSize="12"></TabItem>
+                                <TabItem Header="+"></TabItem>
+                            </TabControl>
+                        </Border>
+
+                        <Border Name="LineNum" DockPanel.Dock="Left">
+                            <ListBox Focusable="False">
+                                <ListBox.Styles>
+                                    <Style Selector="ListBoxItem">
+                                        <Setter Property="Padding" Value="0"/>
+                                        <Setter Property="FontSize" Value="12"/>
+                                    </Style>
+                                </ListBox.Styles>
+
+                                <TextBlock>1</TextBlock>
+                            </ListBox>
+                        </Border>
+
+                        <Border Name="TextEditor">
+                            <TextBox AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>
+                        </Border>
+                    </DockPanel>
+                </Border>
+            </Grid>
         </DockPanel>
 	</Border>
 </UserControl>
