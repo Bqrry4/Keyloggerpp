@@ -16,7 +16,6 @@
 	<MenuFlyout x:Key="FileMenuFlyout">
 		<MenuItem Header="New File" InputGesture="Ctrl+N" />
 		<MenuItem Header="Open" InputGesture="Ctrl+O" />
-		<MenuItem Header="Add" InputGesture="Ctrl+A" />
 		<MenuItem Header="Save" InputGesture="Ctrl+S" />
 		<MenuItem Header="Save as" />
 		<MenuItem Header="Exit" />
