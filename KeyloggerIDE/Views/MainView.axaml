@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:KeyloggerIDE.ViewModels"
-             xmlns:customControls="clr-namespace:KeyloggerIDE.CustomControls"
+			 xmlns:v="clr-namespace:KeyloggerIDE.Views;assembly=KeyloggerIDE"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyloggerIDE.Views.MainView"
              x:DataType="vm:MainViewModel">
@@ -29,7 +29,15 @@
 					<Button Content="File" Flyout="{StaticResource FileMenuFlyout}" FontSize="12" Padding="7" CornerRadius="10"/>
 					<Button Content="Edit" Flyout="{StaticResource EditMenuFlyout}" FontSize="12" Padding="7" CornerRadius="10"/>
 					<Button Content="Debug" Flyout="{StaticResource DebugMenuFlyout}" FontSize="12" Padding="7" CornerRadius="10"/>
-					<Button Content="About" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Button Content="About" Click="OnAboutButton_Click" Name="aboutButton" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Popup Name="About"
+						   WindowManagerAddShadowHint="False"
+						   Width="400"
+						   Height="200"
+						   PlacementMode="Bottom"
+						   PlacementTarget="{Binding ElementName=aboutButton}" >
+						<v:CustomPresenter />
+					</Popup>
 					<Button Content="Help" FontSize="12" Padding="7" CornerRadius="10"/>
                 </WrapPanel>
             </Border>

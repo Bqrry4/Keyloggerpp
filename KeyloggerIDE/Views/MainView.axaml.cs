@@ -9,26 +9,43 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
-using KeyloggerIDE.CustomControls;
 using KeyloggerIDE.ViewModels;
 using static KeyloggerIDE.ViewModels.TabControlViewModel;
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
+using System.Diagnostics;
 
 namespace KeyloggerIDE.Views;
 
 public partial class MainView : UserControl
 {
-    private const string SavefilePath = "savefile.xml";
-
-    //private ObservableCollection<TabControlPageViewModelItem> files = new ObservableCollection<TabControlPageViewModelItem>();
     private TabControlViewModel tabControlViewModel;
+
+    private Popup? popup;
 
     public MainView()
     {
         InitializeComponent();
+        popup = this.FindControl<Popup>("About");
 
-        
+        // init tab control
         TabView.DataContext = tabControlViewModel = new TabControlViewModel();
         tabControlViewModel.initTabControl();
+    }
+
+    private void OnAboutButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (popup != null)
+        {
+            if (popup.IsOpen)
+            {
+                popup.IsOpen = false;
+            }
+            else
+            {
+                popup.IsOpen = true;
+            }
+        }
     }
 
     private void TextBox_OnTextChanged(object? sender, TextChangedEventArgs e)
