@@ -70,38 +70,67 @@
 
                 <GridSplitter Grid.Column="1" ResizeDirection="Columns"></GridSplitter>
 
-                <Border Name="Editor" Grid.Column="2" Grid.Row="0" DockPanel.Dock="Right" Padding="4">
-                    <DockPanel>
-                        <Border Name="TabView" DockPanel.Dock="Top">
-                            <TabControl>
-                                <TabControl.Styles>
+                <Border Grid.Column="2" Grid.Row="0" DockPanel.Dock="Right" Padding="4">
+                    <DockPanel Name="Editor">
+                        <Border DockPanel.Dock="Top">
+                            <TabControl Name="TabView" ItemsSource="{Binding (vm:TabControlViewModel).Tabs}">
+								<TabControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock Text="{Binding Header}" />
+                                            <TextBlock Text="{Binding Status}"/>
+										</DockPanel>
+                                    </DataTemplate>
+                                </TabControl.ItemTemplate>
+                                <TabControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                                                <Border DockPanel.Dock="Left">
+                                                    <ItemsControl Focusable="True">
+                                                        <ItemsControl.Styles>
+                                                            <Style Selector="ListBoxItem">
+                                                                <Setter Property="Padding" Value="0"/>
+                                                                <Setter Property="FontSize" Value="12"/>
+                                                            </Style>
+                                                        </ItemsControl.Styles>
+                                                    </ItemsControl>
+                                                </Border>
+                                            </ScrollViewer>
+                                            <ScrollViewer>
+                                                <TextBox Text="{Binding Content, Mode=TwoWay}" LineHeight="12" TextChanged="TextBox_OnTextChanged" TextChanging="TextBox_OnTextChanging" TextWrapping="NoWrap" AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>
+                                            </ScrollViewer>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+
+								<TabControl.Styles>
                                     <Style Selector="TabItem">
                                         <Setter Property="MinHeight" Value="20"/>
                                         <Setter Property="VerticalAlignment" Value="Top"/>
                                     </Style>
                                 </TabControl.Styles>
-
-                                <TabItem Header="new tab*" FontSize="12"></TabItem>
-                                <TabItem Header="+"></TabItem>
                             </TabControl>
                         </Border>
 
-                        <Border Name="LineNum" DockPanel.Dock="Left">
-                            <ListBox Focusable="False">
-                                <ListBox.Styles>
-                                    <Style Selector="ListBoxItem">
-                                        <Setter Property="Padding" Value="0"/>
-                                        <Setter Property="FontSize" Value="12"/>
-                                    </Style>
-                                </ListBox.Styles>
+                        <!--<ScrollViewer Name="LineNrScroll" VerticalScrollBarVisibility="Hidden">
+                            <Border DockPanel.Dock="Left">
+                                <ItemsControl Name="LineIndexes" Focusable="True">
+                                    <ItemsControl.Styles>
+                                        <Style Selector="ListBoxItem">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </Style>
+                                    </ItemsControl.Styles>
+                                </ItemsControl>
+                            </Border>
+                        </ScrollViewer>-->
 
-                                <TextBlock>1</TextBlock>
-                            </ListBox>
-                        </Border>
-
-                        <Border Name="TextEditor">
-                            <TextBox AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>
-                        </Border>
+                        <!--<ScrollViewer Name="EditorScroll">
+                            <Border>
+                                <TextBox Name="TextEditor" LineHeight="12" TextChanged="TextBox_OnTextChanged" TextWrapping="NoWrap" AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>
+                            </Border>
+						</ScrollViewer>-->
                     </DockPanel>
                 </Border>
             </Grid>
