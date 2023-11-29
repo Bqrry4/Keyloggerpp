@@ -36,7 +36,7 @@
 						   Height="200"
 						   PlacementMode="Bottom"
 						   PlacementTarget="{Binding ElementName=aboutButton}" >
-						<v:CustomPresenter />
+						<v:CustomPopup />
 					</Popup>
 					<Button Content="Help" FontSize="12" Padding="7" CornerRadius="10"/>
                 </WrapPanel>
