@@ -12,20 +12,38 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using AvaloniaEdit;
+using AvaloniaEdit.Document;
 
 namespace KeyloggerIDE.ViewModels
 {
     public class TabControlViewModel
     {
+        /// <summary>
+        /// Path to file which stores opened tabs info
+        /// </summary>
         private const string SavefilePath = "savefile.xml";
 
-        private ObservableCollection<TabControlPageViewModelItem> tabs = new ObservableCollection<TabControlPageViewModelItem>();
+        /// <summary>
+        /// Index of selected tab (used for selection changed event)
+        /// </summary>
+        private int _selectedIndex = 0;
 
-        public ObservableCollection<TabControlPageViewModelItem> Tabs
-        {
-            get => tabs;
-        }
+        /// <summary>
+        /// Prevent handling events that are happening on initialization
+        /// </summary>
+        private bool _initComplete = false;
 
+        private readonly ObservableCollection<TabControlPageViewModelItem> _tabs = new();
+
+        /// <summary>
+        /// Observable collection bound to tab control
+        /// </summary>
+        public ObservableCollection<TabControlPageViewModelItem> Tabs => _tabs;
+
+        /// <summary>
+        /// Tab item model class for binding
+        /// </summary>
         public class TabControlPageViewModelItem : INotifyPropertyChanged
         {
             public event PropertyChangedEventHandler? PropertyChanged;
@@ -68,7 +86,11 @@ namespace KeyloggerIDE.ViewModels
             }
         }
 
-        public void initTabControl()
+        /// <summary>
+        /// Init tabs from save file
+        /// </summary>
+        /// <param name="editor">TextEditor control</param>
+        public void InitTabControl(TextEditor editor)
         {
             // init tabs from savefile
             if (!File.Exists(SavefilePath))
@@ -91,19 +113,22 @@ namespace KeyloggerIDE.ViewModels
                     StreamReader sr = new StreamReader(item.Attributes["path"].Value);
                     string content = sr.ReadToEnd();
 
-                    tabs.Add(new TabControlPageViewModelItem
+                    _tabs.Add(new TabControlPageViewModelItem
                     {
-                        Header = item.InnerText, 
-                        FilePath = item.Attributes["path"].Value, 
+                        Header = item.InnerText,
+                        FilePath = item.Attributes["path"].Value,
                         Content = content,
                         Status = "",
                         IsSaved = true
                     });
                 }
+
+                // set editor text to last opened file
+                editor.Text = _tabs.First().Content;
             }
             else
             {
-                tabs.Add(new TabControlPageViewModelItem
+                _tabs.Add(new TabControlPageViewModelItem
                 {
                     Header = "new tab",
                     FilePath = "",
@@ -113,7 +138,7 @@ namespace KeyloggerIDE.ViewModels
                 });
             }
 
-            tabs.Add(new TabControlPageViewModelItem
+            _tabs.Add(new TabControlPageViewModelItem
             {
                 Header = "+", 
                 FilePath = "", 
@@ -121,39 +146,8 @@ namespace KeyloggerIDE.ViewModels
                 Status = "",
                 IsSaved = true
             });
-        }
 
-        /// <summary>
-        /// Handle scroll for line numeration 
-        /// </summary>
-        /// <param name="sender">target text box</param>
-        /// <param name="e">(currently unused)</param>
-        public void handleScroll(object? sender, TextChangedEventArgs e)
-        {
-            TextBox textBox = (TextBox)sender;
-            ItemsControl lineNums = textBox.Parent.Parent.GetLogicalDescendants().OfType<ItemsControl>().First();
-
-            // count number of lines in the text
-            int lineCount = textBox.Text.Count(c => c == '\n') + 1;
-            if (lineNums.Items.Count < lineCount) // add needed line numbers
-            {
-                for (int i = lineNums.Items.Count + 1; i <= lineCount; ++i)
-                {
-                    lineNums.Items.Add(i);
-                }
-            }
-            else if (lineNums.Items.Count > lineCount) // remove surplus
-            {
-                for (int i = lineNums.Items.Count - 1; i >= lineCount; --i)
-                {
-                    lineNums.Items.RemoveAt(i);
-                }
-            }
-
-            // scroll to the same position
-            ScrollViewer lineScroll = (ScrollViewer)lineNums.Parent.Parent;
-            ScrollViewer editorScroll = (ScrollViewer)textBox.Parent;
-            lineScroll.Offset = editorScroll.Offset;
+            _initComplete = true;
         }
 
         /// <summary>
@@ -161,48 +155,83 @@ namespace KeyloggerIDE.ViewModels
         /// </summary>
         /// <param name="sender">target text box</param>
         /// <param name="tabView">target tab control</param>
-        public void changeFileStatus(object? sender, TabControl tabView)
+        public void ChangeFileStatus(object? sender, TabControl tabView)
         {
-            TextBox textBox = (TextBox)sender;
-            if (tabs[tabView.SelectedIndex].IsSaved && tabs[tabView.SelectedIndex].Content != textBox.Text)
+            TextEditor editor = (TextEditor)sender;
+            if (_tabs[tabView.SelectedIndex].IsSaved && editor.Text != _tabs[tabView.SelectedIndex].Content)
             {
-                tabs[tabView.SelectedIndex].IsSaved = false;
+                _tabs[tabView.SelectedIndex].IsSaved = false;
+            }
+        }
+
+        /// <summary>
+        /// Save all opened tabs
+        /// </summary>
+        /// <param name="tabView">tab control</param>
+        /// <param name="editor">avalonia editor</param>
+        public void SaveAll(TabControl tabView, TextEditor editor)
+        {
+            for (int i = 0; i < _tabs.Count - 1; ++i)
+            {
+                Save(tabView, editor, _tabs[i]);
+            }
+        }
+
+        /// <summary>
+        /// Save file as
+        /// </summary>
+        /// <param name="tabView">tab control</param>
+        /// <param name="editor">avalonia editor</param>
+        /// <param name="page">target tab, can be omitted in which case will be selected tab</param>
+        public async void SaveAs(TabControl tabView, TextEditor editor, TabControlPageViewModelItem? page)
+        {
+            if (page == null)
+            {
+                page = _tabs[tabView.SelectedIndex];
+            }
+
+            // get file dialog from TopLevel
+            TopLevel topLevel = TopLevel.GetTopLevel(tabView);
+            var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                Title = page.Header
+            });
+
+            if (file is not null)
+            {
+                // Open writing stream from the file.
+                await using var stream = await file.OpenWriteAsync();
+                using var streamWriter = new StreamWriter(stream);
+
+                // Write some content to the file.
+                await streamWriter.WriteAsync(editor.Text);
+
+                page.Header = file.Name;
+                page.FilePath = file.Path.AbsolutePath;
+                page.IsSaved = true;
             }
         }
 
         /// <summary>
         /// Save file associated with selected tab
         /// </summary>
-        /// <param name="tabView">target tab control</param>
-        async public void Save(TabControl tabView)
+        /// <param name="tabView">tab control</param>
+        /// <param name="editor">avalonia editor</param>
+        /// <param name="page">target tab, can be omitted in which case will be selected tab</param>
+        public void Save(TabControl tabView, TextEditor editor, TabControlPageViewModelItem? page = null)
         {
             if (tabView.SelectedItem == null)
                 return;
 
+            if (page == null)
+            {
+                page = _tabs[tabView.SelectedIndex];
+            }
+
             // if file path is null or empty, open a save file dialog
-            TabControlPageViewModelItem page = (TabControlPageViewModelItem)tabView.SelectedItem;
             if (string.IsNullOrEmpty(page.FilePath))
             {
-                // get file dialog from TopLevel
-                TopLevel topLevel = TopLevel.GetTopLevel(tabView);
-                var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
-                {
-                    Title = page.Header
-                });
-
-                if (file is not null)
-                {
-                    // Open writing stream from the file.
-                    await using var stream = await file.OpenWriteAsync();
-                    using var streamWriter = new StreamWriter(stream);
-
-                    // Write some content to the file.
-                    streamWriter.Write(page.Content);
-
-                    page.Header = file.Name;
-                    page.FilePath = file.Path.AbsolutePath;
-                    page.IsSaved = true;
-                }
+                SaveAs(tabView, editor, page);
             }
             else
             {
@@ -212,6 +241,42 @@ namespace KeyloggerIDE.ViewModels
                 sw.Close();
 
                 page.IsSaved = true;
+            }
+        }
+
+        /// <summary>
+        /// Change editor file according to tab selection
+        /// </summary>
+        /// <param name="tabView">tab control</param>
+        /// <param name="editor">avalonia editor</param>
+        public void ChangeSelection(TabControl tabView, TextEditor editor)
+        {
+            // if '+' was selected, add new tab
+            if (tabView.SelectedIndex == _tabs.Count - 1 && _initComplete)
+            {
+                _tabs.Add(new TabControlPageViewModelItem
+                {
+                    Header = "new tab",
+                    FilePath = "",
+                    Content = "",
+                    Status = "*",
+                    IsSaved = false
+                });
+
+                // move '+' tab to the end
+                _tabs.Move(_tabs.Count - 2, _tabs.Count - 1);
+            }
+            // change editor text according to selected tab
+            else if (tabView.SelectedIndex != _selectedIndex && _initComplete)
+            {
+                _tabs[_selectedIndex].Content = editor.Text;
+                bool b = _tabs[tabView.SelectedIndex].IsSaved;
+                editor.Text = _tabs[tabView.SelectedIndex].Content;
+                if (b)
+                {
+                    _tabs[tabView.SelectedIndex].IsSaved = true;
+                }
+                _selectedIndex = tabView.SelectedIndex;
             }
         }
     }

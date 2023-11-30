@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:AvaloniaEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              xmlns:vm="clr-namespace:KeyloggerIDE.ViewModels"
 			 xmlns:v="clr-namespace:KeyloggerIDE.Views;assembly=KeyloggerIDE"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -73,7 +74,7 @@
                 <Border Grid.Column="2" Grid.Row="0" DockPanel.Dock="Right" Padding="4">
                     <DockPanel Name="Editor">
                         <Border DockPanel.Dock="Top">
-                            <TabControl Name="TabView" ItemsSource="{Binding (vm:TabControlViewModel).Tabs}">
+                            <TabControl Name="TabView" SelectionChanged="TabView_OnSelectionChanged" ItemsSource="{Binding (vm:TabControlViewModel).Tabs}">
 								<TabControl.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel>
@@ -83,9 +84,14 @@
                                     </DataTemplate>
                                 </TabControl.ItemTemplate>
                                 <TabControl.ContentTemplate>
+									<DataTemplate>
+                                        <TextBlock />
+                                    </DataTemplate>
+                                </TabControl.ContentTemplate>
+                                <!--<TabControl.ContentTemplate>
                                     <DataTemplate>
                                         <DockPanel>
-                                            <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                                            ~1~<ScrollViewer VerticalScrollBarVisibility="Hidden">
                                                 <Border DockPanel.Dock="Left">
                                                     <ItemsControl Focusable="True">
                                                         <ItemsControl.Styles>
@@ -96,13 +102,14 @@
                                                         </ItemsControl.Styles>
                                                     </ItemsControl>
                                                 </Border>
-                                            </ScrollViewer>
+                                            </ScrollViewer>@1@
                                             <ScrollViewer>
-                                                <TextBox Text="{Binding Content, Mode=TwoWay}" LineHeight="12" TextChanged="TextBox_OnTextChanged" TextChanging="TextBox_OnTextChanging" TextWrapping="NoWrap" AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>
+                                                ~1~<TextBox Text="{Binding Content, Mode=TwoWay}" LineHeight="12" TextChanged="TextBox_OnTextChanged" TextChanging="TextBox_OnTextChanging" TextWrapping="NoWrap" AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>@1@
+                                                
                                             </ScrollViewer>
                                         </DockPanel>
                                     </DataTemplate>
-                                </TabControl.ContentTemplate>
+                                </TabControl.ContentTemplate>-->
 
 								<TabControl.Styles>
                                     <Style Selector="TabItem">
@@ -113,7 +120,9 @@
                             </TabControl>
                         </Border>
 
-                        <!--<ScrollViewer Name="LineNrScroll" VerticalScrollBarVisibility="Hidden">
+						<AvaloniaEdit:TextEditor Name="AvalonEditor" TextChanged="AvalonEditor_OnTextChanged" ShowLineNumbers="True"/>
+
+						<!--<ScrollViewer Name="LineNrScroll" VerticalScrollBarVisibility="Hidden">
                             <Border DockPanel.Dock="Left">
                                 <ItemsControl Name="LineIndexes" Focusable="True">
                                     <ItemsControl.Styles>

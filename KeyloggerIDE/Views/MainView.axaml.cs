@@ -30,7 +30,7 @@ public partial class MainView : UserControl
 
         // init tab control
         TabView.DataContext = tabControlViewModel = new TabControlViewModel();
-        tabControlViewModel.initTabControl();
+        tabControlViewModel.InitTabControl(AvalonEditor);
     }
 
     private void OnAboutButton_Click(object sender, RoutedEventArgs e)
@@ -48,13 +48,16 @@ public partial class MainView : UserControl
         }
     }
 
-    private void TextBox_OnTextChanged(object? sender, TextChangedEventArgs e)
+    private void TabView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        tabControlViewModel.handleScroll(sender, e);
+        if (TabView != null)
+        {
+            tabControlViewModel.ChangeSelection(TabView, AvalonEditor);
+        }
     }
 
-    private void TextBox_OnTextChanging(object? sender, TextChangingEventArgs e)
+    private void AvalonEditor_OnTextChanged(object? sender, EventArgs e)
     {
-        tabControlViewModel.changeFileStatus(sender, TabView);
+        tabControlViewModel.ChangeFileStatus(sender, TabView);
     }
 }
