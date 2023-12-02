@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
+using AvaloniaEdit.Highlighting.Xshd;
+using AvaloniaEdit.Highlighting;
+using System.Reflection;
 
 namespace KeyloggerIDE.ViewModels
 {
@@ -147,6 +150,15 @@ namespace KeyloggerIDE.ViewModels
                 IsSaved = true
             });
 
+            // load syntax highlighting rules
+            using (FileStream s = File.Open("syntax_definition.xshd", FileMode.Open))
+            {
+                using (XmlTextReader reader = new XmlTextReader(s))
+                {
+                    editor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
+            
             _initComplete = true;
         }
 
@@ -265,6 +277,8 @@ namespace KeyloggerIDE.ViewModels
 
                 // move '+' tab to the end
                 _tabs.Move(_tabs.Count - 2, _tabs.Count - 1);
+
+                tabView.SelectedIndex = _tabs.Count - 2;
             }
             // change editor text according to selected tab
             else if (tabView.SelectedIndex != _selectedIndex && _initComplete)

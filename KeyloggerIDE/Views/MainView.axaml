@@ -88,28 +88,6 @@
                                         <TextBlock />
                                     </DataTemplate>
                                 </TabControl.ContentTemplate>
-                                <!--<TabControl.ContentTemplate>
-                                    <DataTemplate>
-                                        <DockPanel>
-                                            ~1~<ScrollViewer VerticalScrollBarVisibility="Hidden">
-                                                <Border DockPanel.Dock="Left">
-                                                    <ItemsControl Focusable="True">
-                                                        <ItemsControl.Styles>
-                                                            <Style Selector="ListBoxItem">
-                                                                <Setter Property="Padding" Value="0"/>
-                                                                <Setter Property="FontSize" Value="12"/>
-                                                            </Style>
-                                                        </ItemsControl.Styles>
-                                                    </ItemsControl>
-                                                </Border>
-                                            </ScrollViewer>@1@
-                                            <ScrollViewer>
-                                                ~1~<TextBox Text="{Binding Content, Mode=TwoWay}" LineHeight="12" TextChanged="TextBox_OnTextChanged" TextChanging="TextBox_OnTextChanging" TextWrapping="NoWrap" AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>@1@
-                                                
-                                            </ScrollViewer>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </TabControl.ContentTemplate>-->
 
 								<TabControl.Styles>
                                     <Style Selector="TabItem">
@@ -121,25 +99,6 @@
                         </Border>
 
 						<AvaloniaEdit:TextEditor Name="AvalonEditor" TextChanged="AvalonEditor_OnTextChanged" ShowLineNumbers="True"/>
-
-						<!--<ScrollViewer Name="LineNrScroll" VerticalScrollBarVisibility="Hidden">
-                            <Border DockPanel.Dock="Left">
-                                <ItemsControl Name="LineIndexes" Focusable="True">
-                                    <ItemsControl.Styles>
-                                        <Style Selector="ListBoxItem">
-                                            <Setter Property="Padding" Value="0"/>
-                                            <Setter Property="FontSize" Value="12"/>
-                                        </Style>
-                                    </ItemsControl.Styles>
-                                </ItemsControl>
-                            </Border>
-                        </ScrollViewer>-->
-
-                        <!--<ScrollViewer Name="EditorScroll">
-                            <Border>
-                                <TextBox Name="TextEditor" LineHeight="12" TextChanged="TextBox_OnTextChanged" TextWrapping="NoWrap" AcceptsReturn="True" AcceptsTab="True" CornerRadius="0" Padding="0" Margin="0"/>
-                            </Border>
-						</ScrollViewer>-->
                     </DockPanel>
                 </Border>
             </Grid>
