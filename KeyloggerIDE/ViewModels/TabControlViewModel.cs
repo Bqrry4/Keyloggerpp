@@ -151,7 +151,7 @@ namespace KeyloggerIDE.ViewModels
             });
 
             // load syntax highlighting rules
-            using (FileStream s = File.Open("syntax_definition.xshd", FileMode.Open))
+            using (FileStream s = File.Open(@"syntax_definition.xshd", FileMode.Open))
             {
                 using (XmlTextReader reader = new XmlTextReader(s))
                 {

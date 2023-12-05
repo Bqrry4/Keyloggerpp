@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using KeyloggerIDE.ViewModels;
-using static KeyloggerIDE.ViewModels.TabControlViewModel;
-using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
-using System.Diagnostics;
-using AvaloniaEdit.CodeCompletion;
 using AvaloniaEdit;
-using DynamicData;
+using AvaloniaEdit.CodeCompletion;
+using KeyloggerIDE.ViewModels;
+using System;
+using System.Collections.Generic;
+using IntermediaryFacade;
 
 namespace KeyloggerIDE.Views;
 
@@ -29,6 +20,12 @@ public partial class MainView : UserControl
     private IList<ICompletionData> _data = new List<ICompletionData>();
 
     private Popup? popup;
+
+    private Button btn;
+
+    private MenuItem menuItem;
+
+    // private LogFace _controller = new LogFace();
 
     public MainView()
     {
@@ -104,4 +101,51 @@ public partial class MainView : UserControl
             };
         }
     }
+
+    public void btn_OnClick(object? sender, EventArgs e) 
+    {
+        btn = (sender as Button)!;
+        var currentTab = this.FindControl<TabControl>("TabView")!;
+        var editor = this.FindControl<TextEditor>("AvalonEditor")!;
+
+        switch (btn.Name)
+        {
+            case "NewFile":
+                break;
+            case "Save":
+                tabControlViewModel.Save(currentTab, editor, null);
+                break;
+            case "SaveAs":
+                tabControlViewModel.SaveAs(currentTab, editor, null);
+                break;
+            case "Open":
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void menuItem_OnClick(object? sender, EventArgs e)
+    {
+        menuItem = (sender as MenuItem)!;
+        var currentTab = this.FindControl<TabControl>("TabView")!;
+        var editor = this.FindControl<TextEditor>("AvalonEditor")!;
+
+        switch (menuItem.Name)
+        {
+            case "Menu_NewFile":
+                break;
+            case "Menu_Save":
+                tabControlViewModel.Save(currentTab, editor, null);
+                break;
+            case "Menu_SaveAs":
+                tabControlViewModel.SaveAs(currentTab, editor, null);
+                break;
+            case "Menu_Open":
+                break;
+            default:
+                break;
+        }
+    }
+
 }
