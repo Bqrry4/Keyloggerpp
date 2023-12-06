@@ -16,6 +16,7 @@ using Avalonia.Interactivity;
 using System.Diagnostics;
 using AvaloniaEdit.CodeCompletion;
 using AvaloniaEdit;
+using AvaloniaEdit.Editing;
 using DynamicData;
 
 namespace KeyloggerIDE.Views;
@@ -25,8 +26,6 @@ public partial class MainView : UserControl
     private TabControlViewModel tabControlViewModel;
 
     private CompletionWindow completionWindow;
-
-    private IList<ICompletionData> _data = new List<ICompletionData>();
 
     private Popup? popup;
 
@@ -39,18 +38,8 @@ public partial class MainView : UserControl
         TabView.DataContext = tabControlViewModel = new TabControlViewModel();
         tabControlViewModel.InitTabControl(AvalonEditor);
 
-        // set editor callbacks and completions data
+        // set editor callbacks
         AvalonEditor.TextArea.TextEntering += editor_TextArea_TextEntered;
-        initCompletionData();
-    }
-
-    private void initCompletionData()
-    {
-        _data.Add(new MyCompletionData("MsgBox", "Shows a message box"));
-        _data.Add(new MyCompletionData("MousePress", "Mouse press event(without release)"));
-        _data.Add(new MyCompletionData("MouseRelease", "Mouse release event"));
-        _data.Add(new MyCompletionData("Send", "Send text to be typed"));
-        _data.Add(new MyCompletionData("SendInput", "Send key combinations with Ctrl or Alt"));
     }
 
     private void OnAboutButton_Click(object sender, RoutedEventArgs e)
@@ -83,20 +72,17 @@ public partial class MainView : UserControl
 
     void editor_TextArea_TextEntered(object sender, TextInputEventArgs e)
     {
-        if (char.IsAsciiLetter(e.Text[0]) && completionWindow == null)
+        if (char.IsAsciiLetter(e.Text[0]))
         {
             // Open code completion after the user has entered a matching letter:
             completionWindow = new CompletionWindow(AvalonEditor.TextArea);
             IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
 
-            // find matching entries
-            foreach (MyCompletionData keyword in _data)
-            {
-                if (keyword.Text.StartsWith(e.Text[0]))
-                {
-                    data.Add(keyword);
-                }
-            }
+            data.Add(new MyCompletionData("MsgBox", "Shows a message box"));
+            data.Add(new MyCompletionData("MousePress", "Mouse press event(without release)"));
+            data.Add(new MyCompletionData("MouseRelease", "Mouse release event"));
+            data.Add(new MyCompletionData("Send", "Send text to be typed"));
+            data.Add(new MyCompletionData("SendInput", "Send key combinations with Ctrl or Alt"));
 
             completionWindow.Show();
             completionWindow.Closed += delegate {

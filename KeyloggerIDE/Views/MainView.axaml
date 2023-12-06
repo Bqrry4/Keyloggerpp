@@ -90,9 +90,9 @@
                                 </TabControl.ContentTemplate>
 
 								<TabControl.Styles>
-                                    <Style Selector="TabItem">
-                                        <Setter Property="MinHeight" Value="20"/>
-                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                    <Style Selector="TabControl WrapPanel">
+                                        <Setter Property="MaxHeight" Value="20"/>
+                                        <!--<Setter Property="VerticalAlignment" Value="Top"/>-->
                                     </Style>
                                 </TabControl.Styles>
                             </TabControl>

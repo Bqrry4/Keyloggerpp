@@ -257,6 +257,31 @@ namespace KeyloggerIDE.ViewModels
         }
 
         /// <summary>
+        /// Open file from system
+        /// </summary>
+        /// <param name="tabView">tab control</param>
+        /// <param name="path">absolute file path</param>
+        public void Open(TabControl tabView, string path)
+        {
+            StreamReader sr = new StreamReader(path);
+            string content = sr.ReadToEnd();
+
+            _tabs.Add(new TabControlPageViewModelItem
+            {
+                Header = path.Substring(path.LastIndexOf('\\') + 1),
+                FilePath = path,
+                Content = content,
+                Status = "",
+                IsSaved = true
+            });
+
+            // move '+' tab to the end
+            _tabs.Move(_tabs.Count - 2, _tabs.Count - 1);
+
+            tabView.SelectedIndex = _tabs.Count - 2;
+        }
+
+        /// <summary>
         /// Change editor file according to tab selection
         /// </summary>
         /// <param name="tabView">tab control</param>
