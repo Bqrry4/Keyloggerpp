@@ -15,4 +15,7 @@
         </Style.Resources>
         <Setter Property="Theme" Value="{StaticResource Test}"/>
     </Style>-->
+    <Style Selector="TabControl WrapPanel">
+        <Setter Property="MaxHeight" Value="20"/>
+    </Style>
 </Styles>
