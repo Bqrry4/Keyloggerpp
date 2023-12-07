@@ -78,10 +78,10 @@
 					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
 						<Image Source="/Assets/redo.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Run" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+					<Button Name="Run" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="Run_OnClick" >
 						<Image Source="/Assets/execute.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Record" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+					<Button Name="Record" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="Record_OnClick" >
 						<Image Source="/Assets/record.png" Width="20" Height="15"/>
 					</Button>
 				</WrapPanel>
