@@ -38,7 +38,7 @@ namespace IntermediaryFacade
         }
 
         /// <summary>
-        /// Write the command using deleget for thread safety
+        /// Write the command using delegate for thread safety
         /// </summary>
         /// <param name="value">Command to be written</param>
         public void Write(string value)
