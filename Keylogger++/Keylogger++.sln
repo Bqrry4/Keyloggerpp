@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyloggerUnitTests", "..\KeyloggerUnitTests\KeyloggerUnitTests.csproj", "{18138961-D03E-4906-A0A5-EDBD587C2018}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyloggerIDE", "..\KeyloggerIDE\KeyloggerIDE.csproj", "{20891E27-FC3D-43F5-92AB-D3E3E83A4301}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A34C6A27-D758-4DE5-A993-6E977F8C97CB} = {A34C6A27-D758-4DE5-A993-6E977F8C97CB}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyloggerIDE.Desktop", "..\KeyloggerIDE.Desktop\KeyloggerIDE.Desktop.csproj", "{034E2075-6E82-43B2-899A-C8984FAA4B28}"
 EndProject

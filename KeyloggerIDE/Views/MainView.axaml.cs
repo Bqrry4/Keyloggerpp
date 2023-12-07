@@ -110,7 +110,7 @@ public partial class MainView : UserControl
         }
     }
 
-    public void menuItem_OnClick(object? sender, EventArgs e)
+    public void menuItem_OnClick(object? sender, RoutedEventArgs e)
     {
         menuItem = (sender as MenuItem)!;
         var currentTab = this.FindControl<TabControl>("TabView")!;
@@ -132,5 +132,4 @@ public partial class MainView : UserControl
                 break;
         }
     }
-
 }
