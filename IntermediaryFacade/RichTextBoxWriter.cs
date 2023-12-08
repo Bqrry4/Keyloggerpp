@@ -9,8 +9,10 @@
 
 using System;
 using System.Threading;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using Recorder;
+
+#if !DEBUG
 
 namespace IntermediaryFacade
 {
@@ -62,3 +64,5 @@ namespace IntermediaryFacade
         }
     }
 }
+
+#endif

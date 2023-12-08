@@ -27,7 +27,7 @@ public partial class MainView : UserControl
 
     private MenuItem _menuItem;
 
-    // private readonly LogFace _controller = new();
+    private readonly LogFace _controller = new();
 
     private readonly TextEditor _editor;
 
@@ -169,27 +169,27 @@ public partial class MainView : UserControl
     {
         if (_state == 0)
         {
-            //_controller.StartRunning(_editor.Text);
+            _controller.StartRunning(_editor.Text);
             _state = 1;
         }
         else
         {
-            //_controller.StopRunning();
+            _controller.StopRunning();
             _state = 0;
         }
     }
 
     private void Record_OnClick(object? sender, RoutedEventArgs e)
     {
-        //_controller.setOutput(new AvalonEditorWriter(_editor));
+        _controller.setOutput(new AvalonEditorWriter(_editor));
         if (_state == 0)
         {
-            //_controller.StartRecording();
+            _controller.StartRecording();
             _state = 2;
         }
         else
         {
-            //_controller.StopRecording();
+            _controller.StopRecording();
             _state = 0;
         }
     }

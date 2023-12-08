@@ -5,22 +5,19 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Keylogger++", "Keylogger++.csproj", "{35DE4D6D-2B67-4BAD-9846-38DD48AB2398}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "..\Interpreter\Interpreter.csproj", "{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputListener", "..\InputListener\InputListener.csproj", "{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recorder", "..\Recorder\Recorder.csproj", "{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntermediaryFacade", "..\Logface\IntermediaryFacade.csproj", "{A34C6A27-D758-4DE5-A993-6E977F8C97CB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyloggerUnitTests", "..\KeyloggerUnitTests\KeyloggerUnitTests.csproj", "{18138961-D03E-4906-A0A5-EDBD587C2018}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyloggerIDE", "..\KeyloggerIDE\KeyloggerIDE.csproj", "{20891E27-FC3D-43F5-92AB-D3E3E83A4301}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A34C6A27-D758-4DE5-A993-6E977F8C97CB} = {A34C6A27-D758-4DE5-A993-6E977F8C97CB}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyloggerIDE.Desktop", "..\KeyloggerIDE.Desktop\KeyloggerIDE.Desktop.csproj", "{034E2075-6E82-43B2-899A-C8984FAA4B28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recorder", "..\Recorder\Recorder.csproj", "{AF8CC7FF-BEA8-4E01-89C8-3292AF4D86E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "..\Interpreter\Interpreter.csproj", "{694E36C8-1C9F-4D17-8E62-7AF795C1974C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntermediaryFacade", "..\IntermediaryFacade\IntermediaryFacade.csproj", "{0AD8C16E-66B3-4C59-BB0F-7B7FDBA62F14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputListener", "..\InputListener\InputListener.csproj", "{415A3D36-C0B8-4EE8-81B1-803A0F36D8B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,22 +29,6 @@ Global
 		{35DE4D6D-2B67-4BAD-9846-38DD48AB2398}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35DE4D6D-2B67-4BAD-9846-38DD48AB2398}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35DE4D6D-2B67-4BAD-9846-38DD48AB2398}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68B75468-CE9F-4A28-BA78-48EB3E2E8A66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC89BC5B-CFFE-4B0D-8262-56CAA8E975AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21A8BA92-A6AA-4F60-9CC4-C64EDACC6750}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A34C6A27-D758-4DE5-A993-6E977F8C97CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A34C6A27-D758-4DE5-A993-6E977F8C97CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A34C6A27-D758-4DE5-A993-6E977F8C97CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A34C6A27-D758-4DE5-A993-6E977F8C97CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18138961-D03E-4906-A0A5-EDBD587C2018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18138961-D03E-4906-A0A5-EDBD587C2018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18138961-D03E-4906-A0A5-EDBD587C2018}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,6 +41,22 @@ Global
 		{034E2075-6E82-43B2-899A-C8984FAA4B28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{034E2075-6E82-43B2-899A-C8984FAA4B28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{034E2075-6E82-43B2-899A-C8984FAA4B28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF8CC7FF-BEA8-4E01-89C8-3292AF4D86E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF8CC7FF-BEA8-4E01-89C8-3292AF4D86E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF8CC7FF-BEA8-4E01-89C8-3292AF4D86E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF8CC7FF-BEA8-4E01-89C8-3292AF4D86E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694E36C8-1C9F-4D17-8E62-7AF795C1974C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694E36C8-1C9F-4D17-8E62-7AF795C1974C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694E36C8-1C9F-4D17-8E62-7AF795C1974C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694E36C8-1C9F-4D17-8E62-7AF795C1974C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AD8C16E-66B3-4C59-BB0F-7B7FDBA62F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AD8C16E-66B3-4C59-BB0F-7B7FDBA62F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AD8C16E-66B3-4C59-BB0F-7B7FDBA62F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AD8C16E-66B3-4C59-BB0F-7B7FDBA62F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{415A3D36-C0B8-4EE8-81B1-803A0F36D8B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{415A3D36-C0B8-4EE8-81B1-803A0F36D8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{415A3D36-C0B8-4EE8-81B1-803A0F36D8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{415A3D36-C0B8-4EE8-81B1-803A0F36D8B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

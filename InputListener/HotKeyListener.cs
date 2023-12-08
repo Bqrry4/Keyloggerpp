@@ -13,8 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Input;
-using System.Windows.Interop;
+//using System.Windows.Interop;
+using System.Runtime.InteropServices;
+using System.Drawing;
 using static InputListener.LLInput;
+using System.Security;
 
 
 namespace InputListener
@@ -209,6 +212,66 @@ namespace InputListener
                 _observers.Add(observer);
             // return new Unsubscriber(_observers, observer);
             return null;
+        }
+    }
+
+    public enum ModifierKeys
+    {
+        //
+        // Summary:
+        //     No modifiers are pressed.
+        None = 0x0,
+        //
+        // Summary:
+        //     The ALT key.
+        Alt = 0x1,
+        //
+        // Summary:
+        //     The CTRL key.
+        Control = 0x2,
+        //
+        // Summary:
+        //     The SHIFT key.
+        Shift = 0x4,
+        //
+        // Summary:
+        //     The Windows logo key.
+        Windows = 0x8
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MSG
+    {
+        [SecurityCritical]
+        public IntPtr hwnd;
+
+        [SecurityCritical]
+        public int message;
+
+        [SecurityCritical]
+        public IntPtr wParam;
+
+        [SecurityCritical]
+        public IntPtr lParam;
+
+        [SecurityCritical]
+        public int time;
+
+        [SecurityCritical]
+        public int pt_x;
+
+        [SecurityCritical]
+        public int pt_y;
+
+        internal MSG(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, int time, int pt_x, int pt_y)
+        {
+            hwnd = hwnd;
+            message = message;
+            wParam = wParam;
+            lParam = lParam;
+            time = time;
+            pt_x = pt_x;
+            pt_y = pt_y;
         }
     }
 }

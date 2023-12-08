@@ -35,7 +35,7 @@ namespace KeyloggerIDE.Views
         /// <param name="text">Text to be written</param>
         public void Write(string text)
         {
-            Output.Text += text;
+            //Output.Text += text;
         }
     }
 }

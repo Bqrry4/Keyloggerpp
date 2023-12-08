@@ -11,7 +11,7 @@
     <RootNamespace>KeyloggerUnitTests</RootNamespace>
     <AssemblyName>KeyloggerUnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-	<LangVersion>8.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
@@ -80,25 +80,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InputListener\InputListener.csproj">
-      <Project>{bc89bc5b-cffe-4b0d-8262-56caa8e975ad}</Project>
-      <Name>InputListener</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Interpreter\Interpreter.csproj">
-      <Project>{68b75468-ce9f-4a28-ba78-48eb3e2e8a66}</Project>
-      <Name>Interpreter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Keylogger++\Keylogger++.csproj">
       <Project>{35de4d6d-2b67-4bad-9846-38dd48ab2398}</Project>
       <Name>Keylogger++</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Logface\IntermediaryFacade.csproj">
-      <Project>{a34c6a27-d758-4de5-a993-6e977f8c97cb}</Project>
-      <Name>IntermediaryFacade</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Recorder\Recorder.csproj">
-      <Project>{21a8ba92-a6aa-4f60-9cc4-c64edacc6750}</Project>
-      <Name>Recorder</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
