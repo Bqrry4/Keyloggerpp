@@ -57,7 +57,7 @@
 						   WindowManagerAddShadowHint="False"
 						   Width="400"
 						   Height="200"
-						   PlacementMode="Bottom"
+						   Placement="Bottom"
 						   PlacementTarget="{Binding ElementName=aboutButton}" >
 						<v:CustomPresenter />
 					</Popup>
@@ -90,7 +90,13 @@
             <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
                 <Border Name="Explorer" Grid.Column="0" Grid.Row="0" DockPanel.Dock="Left" Padding="4">
                     <Border DockPanel.Dock="Top">
-                        <TextBlock>path</TextBlock>
+                        <TreeView ItemsSource="{Binding Folder}">
+							<TreeView.ItemTemplate>
+								<TreeDataTemplate ItemsSource="{Binding SubFiles}">
+									<TextBlock Text="{Binding FileName}"/>
+                                </TreeDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
                     </Border>
                 </Border>
 
