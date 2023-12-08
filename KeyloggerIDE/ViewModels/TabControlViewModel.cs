@@ -268,7 +268,7 @@ namespace KeyloggerIDE.ViewModels
 
             _tabs.Add(new TabControlPageViewModelItem
             {
-                Header = path.Substring(path.LastIndexOf('\\') + 1),
+                Header = path.Substring(path.LastIndexOf('/') + 1),
                 FilePath = path,
                 Content = content,
                 Status = "",

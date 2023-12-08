@@ -7,13 +7,17 @@ using AvaloniaEdit.CodeCompletion;
 using KeyloggerIDE.ViewModels;
 using System;
 using System.Collections.Generic;
+using Avalonia.Platform.Storage;
 using IntermediaryFacade;
+using KeyloggerIDE.Models;
 
 namespace KeyloggerIDE.Views;
 
 public partial class MainView : UserControl
 {
     private readonly TabControlViewModel _tabControlViewModel;
+
+    private readonly MainViewModel _mainViewModel = new();
 
     private CompletionWindow _completionWindow;
 
@@ -109,10 +113,22 @@ public partial class MainView : UserControl
             case "SaveAs":
                 _tabControlViewModel.SaveAs(_tab, _editor, null);
                 break;
-            case "Open":
-                _tabControlViewModel.Open(_tab, path);
-                break;
         }
+    }
+
+    private async void btnOpen_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(_tab);
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open file"
+        });
+
+        if (files.Count >= 1)
+            _tabControlViewModel.Open(_tab, files[0].Path.AbsolutePath);
+
+
     }
 
     private void menuItem_OnClick(object? sender, RoutedEventArgs e)
@@ -121,17 +137,31 @@ public partial class MainView : UserControl
         string path = "";
         switch (_menuItem.Name)
         {
-            case "Menu_NewFile":
+            case "MenuNewFile":
                 break;
-            case "Menu_Save":
+            case "MenuSave":
                 _tabControlViewModel.Save(_tab, _editor, null);
                 break;
-            case "Menu_SaveAs":
+            case "MenuSaveAs":
                 _tabControlViewModel.SaveAs(_tab, _editor, null);
                 break;
-            case "Menu_Open":
-                _tabControlViewModel.Open(_tab, path);
-                break;
+        }
+    }
+
+    private async void menuOpen_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(_tab);
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open file"
+        });
+
+        if (files.Count >= 1)
+        {
+            _tabControlViewModel.Open(_tab, files[0].Path.AbsolutePath);
+            _mainViewModel.createSolExp(files[0].Path.AbsolutePath);
+
         }
     }
 
