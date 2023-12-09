@@ -129,7 +129,7 @@
                             </TabControl>
                         </Border>
 
-						<AvaloniaEdit:TextEditor Name="AvalonEditor"  TextChanged="AvalonEditor_OnTextChanged" ShowLineNumbers="True"/>
+						<AvaloniaEdit:TextEditor Name="AvalonEditor" TextChanged="AvalonEditor_OnTextChanged" ShowLineNumbers="True"/>
                     </DockPanel>
                 </Border>
             </Grid>

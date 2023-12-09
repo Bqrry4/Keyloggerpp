@@ -32,6 +32,8 @@ namespace Interpreter
         /// <exception cref="AggregateException">If there is an error parsing a line of script</exception>
         public void Parse(in string script, out List<string> hotkeys)
         {
+            string cscript = script.Replace("\r", "");
+
             CommandFactory.ResetMouseState();
 
             hotkeys = new List<string>();
@@ -41,7 +43,7 @@ namespace Interpreter
 
             Regex hotkeyPattern = new Regex("(.+)::\\n{(\\n(?:\\s*.+\\n)+)}");
 
-            Match hotkey = hotkeyPattern.Match(script);
+            Match hotkey = hotkeyPattern.Match(cscript);
 
             if (!hotkey.Success)
             {
@@ -53,7 +55,8 @@ namespace Interpreter
             while (hotkey.Success)
             {
                 hotkeys.Add(hotkey.Groups[1].Value);
-                string[] lines = hotkey.Groups[2].Value.Split('\n');
+                //string[] lines = hotkey.Groups[2].Value.Split('\n');
+                var lines = Regex.Split(hotkey.Groups[2].Value, "(?:\\r)?\\n");
                 List<IKlppCommand> hotkeyCommandList = new List<IKlppCommand>();
 
                 foreach(string line in lines)

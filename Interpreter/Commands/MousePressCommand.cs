@@ -9,6 +9,7 @@
 
 using InputListener;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Interpreter
@@ -87,6 +88,7 @@ namespace Interpreter
                     dwFlags = (uint)(mouseEvent | 0x8000 | 0x0001) //ABSOLUTE and MOVE
                 }
             };
+
             if (LLInput.SendInput(1, input, Marshal.SizeOf(typeof(INPUT))) == 0)
             {
                 throw new AggregateException("Error executing MousePress: SendInput failed, error code " + LLInput.GetLastError().ToString());

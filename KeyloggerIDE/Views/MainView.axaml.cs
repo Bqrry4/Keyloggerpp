@@ -7,6 +7,8 @@ using AvaloniaEdit.CodeCompletion;
 using KeyloggerIDE.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using IntermediaryFacade;
 using KeyloggerIDE.Models;
@@ -181,9 +183,9 @@ public partial class MainView : UserControl
 
     private void Record_OnClick(object? sender, RoutedEventArgs e)
     {
-        _controller.setOutput(new AvalonEditorWriter(_editor));
         if (_state == 0)
         {
+            _controller.setOutput(new AvalonEditorWriter(_editor));
             _controller.StartRecording();
             _state = 2;
         }

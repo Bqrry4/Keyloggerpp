@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
+
 namespace InputListener
 {
     /// <summary>
@@ -245,13 +246,13 @@ namespace InputListener
         [FieldOffset(0)]
         public InputType type;
 
-        [FieldOffset(sizeof(int))]
+        [FieldOffset(8)]
         public MOUSEINPUT mi;
 
-        [FieldOffset(sizeof(int))]
+        [FieldOffset(8)]
         public KEYBDINPUT ki;
 
-        [FieldOffset(sizeof(int))]
+        [FieldOffset(8)]
         public HARDWAREINPUT hi;
     }
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvaloniaEdit;
 using Recorder;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace KeyloggerIDE.Views
 {
@@ -22,6 +24,7 @@ namespace KeyloggerIDE.Views
         public AvalonEditorWriter(TextEditor output)
         {
             Output = output;
+            Dispatcher.UIThread.Invoke(new Action(() => { Output.Text = ""; }));
         }
 
         /// <summary>
@@ -33,9 +36,9 @@ namespace KeyloggerIDE.Views
         /// Write to output
         /// </summary>
         /// <param name="text">Text to be written</param>
-        public void Write(string text)
+        public async void Write(string text)
         {
-            //Output.Text += text;
+            await Dispatcher.UIThread.InvokeAsync(new Action(() => { Output.Text += text; }));
         }
     }
 }
