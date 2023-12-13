@@ -7,7 +7,7 @@
  *               and titles.                                              *
  **************************************************************************/
 
-using System.Windows.Forms;
+//using System.Windows.Forms;
 
 namespace Interpreter
 {
@@ -31,7 +31,7 @@ namespace Interpreter
         /// </summary>
         public void Execute()
         {
-            MessageBox.Show(_message, _title);
+            //MessageBox.Show(_message, _title);
         }
     }
 }

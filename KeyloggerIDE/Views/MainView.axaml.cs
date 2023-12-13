@@ -7,32 +7,46 @@ using AvaloniaEdit.CodeCompletion;
 using KeyloggerIDE.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform.Storage;
 using IntermediaryFacade;
+using KeyloggerIDE.Models;
 
 namespace KeyloggerIDE.Views;
 
 public partial class MainView : UserControl
 {
-    private TabControlViewModel tabControlViewModel;
+    private readonly TabControlViewModel _tabControlViewModel;
 
-    private CompletionWindow completionWindow;
+    private readonly MainViewModel _mainViewModel = new();
 
-    private Popup? popup;
+    private CompletionWindow _completionWindow;
 
-    private Button btn;
+    private readonly Popup? _popup;
 
-    private MenuItem menuItem;
+    private Button _btn;
 
-    // private LogFace _controller = new LogFace();
+    private MenuItem _menuItem;
+
+    private readonly LogFace _controller = new();
+
+    private readonly TextEditor _editor;
+
+    private readonly TabControl _tab;
+
+    private int _state = 0;
 
     public MainView()
     {
         InitializeComponent();
-        popup = this.FindControl<Popup>("About");
+        _popup = this.FindControl<Popup>("About");
+        _editor = this.FindControl<TextEditor>("AvalonEditor")!;
+        _tab = this.FindControl<TabControl>("TabView")!;
 
         // init tab control and editor
-        TabView.DataContext = tabControlViewModel = new TabControlViewModel();
-        tabControlViewModel.InitTabControl(AvalonEditor);
+        TabView.DataContext = _tabControlViewModel = new TabControlViewModel();
+        _tabControlViewModel.InitTabControl(AvalonEditor);
 
         // set editor callbacks
         AvalonEditor.TextArea.TextEntering += editor_TextArea_TextEntered;
@@ -40,15 +54,15 @@ public partial class MainView : UserControl
 
     private void OnAboutButton_Click(object sender, RoutedEventArgs e)
     {
-        if (popup != null)
+        if (_popup != null)
         {
-            if (popup.IsOpen)
+            if (_popup.IsOpen)
             {
-                popup.IsOpen = false;
+                _popup.IsOpen = false;
             }
             else
             {
-                popup.IsOpen = true;
+                _popup.IsOpen = true;
             }
         }
     }
@@ -57,22 +71,22 @@ public partial class MainView : UserControl
     {
         if (TabView != null)
         {
-            tabControlViewModel.ChangeSelection(TabView, AvalonEditor);
+            _tabControlViewModel.ChangeSelection(TabView, AvalonEditor);
         }
     }
 
     private void AvalonEditor_OnTextChanged(object? sender, EventArgs e)
     {
-        tabControlViewModel.ChangeFileStatus(sender, TabView);
+        _tabControlViewModel.ChangeFileStatus(sender, TabView);
     }
 
-    void editor_TextArea_TextEntered(object sender, TextInputEventArgs e)
+    private void editor_TextArea_TextEntered(object sender, TextInputEventArgs e)
     {
         if (char.IsAsciiLetter(e.Text[0]))
         {
             // Open code completion after the user has entered a matching letter:
-            completionWindow = new CompletionWindow(AvalonEditor.TextArea);
-            IList<ICompletionData> data = completionWindow.CompletionList.CompletionData;
+            _completionWindow = new CompletionWindow(AvalonEditor.TextArea);
+            IList<ICompletionData> data = _completionWindow.CompletionList.CompletionData;
 
             data.Add(new MyCompletionData("MsgBox", "Shows a message box"));
             data.Add(new MyCompletionData("MousePress", "Mouse press event(without release)"));
@@ -80,57 +94,105 @@ public partial class MainView : UserControl
             data.Add(new MyCompletionData("Send", "Send text to be typed"));
             data.Add(new MyCompletionData("SendInput", "Send key combinations with Ctrl or Alt"));
 
-            completionWindow.Show();
-            completionWindow.Closed += delegate {
-                completionWindow = null;
+            _completionWindow.Show();
+            _completionWindow.Closed += delegate {
+                _completionWindow = null;
             };
         }
     }
 
-    public void btn_OnClick(object? sender, EventArgs e) 
+    private void btn_OnClick(object? sender, RoutedEventArgs e) 
     {
-        btn = (sender as Button)!;
-        var currentTab = this.FindControl<TabControl>("TabView")!;
-        var editor = this.FindControl<TextEditor>("AvalonEditor")!;
-
-        switch (btn.Name)
+        _btn = (sender as Button)!;
+        string path = "";
+        switch (_btn.Name)
         {
             case "NewFile":
                 break;
             case "Save":
-                tabControlViewModel.Save(currentTab, editor, null);
+                _tabControlViewModel.Save(_tab, _editor, null);
                 break;
             case "SaveAs":
-                tabControlViewModel.SaveAs(currentTab, editor, null);
-                break;
-            case "Open":
-                break;
-            default:
+                _tabControlViewModel.SaveAs(_tab, _editor, null);
                 break;
         }
     }
 
-    public void menuItem_OnClick(object? sender, EventArgs e)
+    private async void btnOpen_OnClick(object? sender, RoutedEventArgs e)
     {
-        menuItem = (sender as MenuItem)!;
-        var currentTab = this.FindControl<TabControl>("TabView")!;
-        var editor = this.FindControl<TextEditor>("AvalonEditor")!;
+        var topLevel = TopLevel.GetTopLevel(_tab);
 
-        switch (menuItem.Name)
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            case "Menu_NewFile":
+            Title = "Open file"
+        });
+
+        if (files.Count >= 1)
+            _tabControlViewModel.Open(_tab, files[0].Path.AbsolutePath);
+
+
+    }
+
+    private void menuItem_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _menuItem = (sender as MenuItem)!;
+        string path = "";
+        switch (_menuItem.Name)
+        {
+            case "MenuNewFile":
                 break;
-            case "Menu_Save":
-                tabControlViewModel.Save(currentTab, editor, null);
+            case "MenuSave":
+                _tabControlViewModel.Save(_tab, _editor, null);
                 break;
-            case "Menu_SaveAs":
-                tabControlViewModel.SaveAs(currentTab, editor, null);
-                break;
-            case "Menu_Open":
-                break;
-            default:
+            case "MenuSaveAs":
+                _tabControlViewModel.SaveAs(_tab, _editor, null);
                 break;
         }
     }
 
+    private async void menuOpen_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(_tab);
+
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open file"
+        });
+
+        if (files.Count >= 1)
+        {
+            _tabControlViewModel.Open(_tab, files[0].Path.AbsolutePath);
+            _mainViewModel.createSolExp(files[0].Path.AbsolutePath);
+
+        }
+    }
+
+    private void Run_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_state == 0)
+        {
+            _controller.StartRunning(_editor.Text);
+            _state = 1;
+        }
+        else
+        {
+            _controller.StopRunning();
+            _state = 0;
+        }
+    }
+
+    private void Record_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_state == 0)
+        {
+            _controller.setOutput(new AvalonEditorWriter(_editor));
+            _controller.StartRecording();
+            _state = 2;
+        }
+        else
+        {
+            _controller.StopRecording();
+            _state = 0;
+        }
+    }
 }

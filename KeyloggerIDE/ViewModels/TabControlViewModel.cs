@@ -150,6 +150,17 @@ namespace KeyloggerIDE.ViewModels
                 IsSaved = true
             });
 
+            // create syntax rules file if it doesn't exist
+            if (!File.Exists("syntax_definition.xshd"))
+            {
+                XmlWriter writer = XmlWriter.Create("syntax_definition.xshd");
+
+                // write default syntax rules
+                writer.WriteRaw("<SyntaxDefinition name=\"k++\" xmlns=\"http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008\">\r\n    <Color name=\"Comment\" foreground=\"Green\" />\r\n    <Color name=\"String\" foreground=\"rgb(232,201,187)\" />\r\n    \r\n    <!-- This is the main ruleset. -->\r\n    <RuleSet>        \r\n        <Span color=\"String\">\r\n            <Begin>\"</Begin>\r\n            <End>\"</End>\r\n        </Span>\r\n        \r\n        <Keywords fontWeight=\"bold\" foreground=\"rgb(220,220,170)\">\r\n            <Word>MsgBox</Word>\r\n            <Word>MousePress</Word>\r\n            <Word>MouseRelease</Word>\r\n            <Word>Send</Word>\r\n            <Word>SendInput</Word>\r\n        </Keywords>\r\n        \r\n        <Rule foreground=\"rgb(184,215,163)\">\r\n            \\d+\r\n        </Rule>\r\n\t\t\r\n\t\t<Rule foreground=\"#b33f3b\">\r\n\t\t\t[A-Za-z]+\\s+[A-Za-z]::\r\n\t\t</Rule>\r\n    </RuleSet>\r\n</SyntaxDefinition>");
+                writer.Flush();
+                writer.Close();
+            }
+
             // load syntax highlighting rules
             using (FileStream s = File.Open(@"syntax_definition.xshd", FileMode.Open))
             {
@@ -202,6 +213,9 @@ namespace KeyloggerIDE.ViewModels
                 page = _tabs[tabView.SelectedIndex];
             }
 
+            // sync tab view model and editor
+            page.Content = editor.Text;
+
             // get file dialog from TopLevel
             TopLevel topLevel = TopLevel.GetTopLevel(tabView);
             var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
@@ -247,6 +261,9 @@ namespace KeyloggerIDE.ViewModels
             }
             else
             {
+                // sync tab view model and editor
+                page.Content = editor.Text;
+
                 // write content from text box to file
                 StreamWriter sw = new StreamWriter(page.FilePath!);
                 sw.Write(page.Content);
@@ -263,12 +280,15 @@ namespace KeyloggerIDE.ViewModels
         /// <param name="path">absolute file path</param>
         public void Open(TabControl tabView, string path)
         {
+            // replace %20 (space) if there are any
+            path = path.Replace("%20", " ");
+
             StreamReader sr = new StreamReader(path);
             string content = sr.ReadToEnd();
 
             _tabs.Add(new TabControlPageViewModelItem
             {
-                Header = path.Substring(path.LastIndexOf('\\') + 1),
+                Header = path.Substring(path.LastIndexOf('/') + 1),
                 FilePath = path,
                 Content = content,
                 Status = "",

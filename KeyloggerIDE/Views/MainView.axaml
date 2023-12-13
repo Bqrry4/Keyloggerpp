@@ -23,10 +23,10 @@
 					<Button Content="File" FontSize="12" Padding="7" CornerRadius="10">
 						<Button.Flyout>
 							<MenuFlyout>
-								<MenuItem Name="Menu_NewFile" Header="New File" InputGesture="Ctrl+N" Command="{Binding menuItem_OnClick}"/>
-								<MenuItem Name="Menu_Open" Header="Open" InputGesture="Ctrl+O" Command="{Binding menuItem_OnClick}" />
-								<MenuItem Name="Menu_Save" Header="Save" InputGesture="Ctrl+S" Command="{Binding menuItem_OnClick}" />
-								<MenuItem Name="Menu_SaveAs" Header="Save as" Command="{Binding menuItem_OnClick}" />
+								<MenuItem Name="MenuNewFile" Header="New File" InputGesture="Ctrl+N" Click="menuItem_OnClick" />
+								<MenuItem Name="MenuOpen" Header="Open" InputGesture="Ctrl+O" Click="menuOpen_OnClick" />
+								<MenuItem Name="MenuSave" Header="Save" InputGesture="Ctrl+S" Click="menuItem_OnClick" />
+								<MenuItem Name="MenuSaveAs" Header="Save as" Click="menuItem_OnClick" />
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>
@@ -57,7 +57,7 @@
 						   WindowManagerAddShadowHint="False"
 						   Width="400"
 						   Height="200"
-						   PlacementMode="Bottom"
+						   Placement="Bottom"
 						   PlacementTarget="{Binding ElementName=aboutButton}" >
 						<v:CustomPopup />
 					</Popup>
@@ -66,10 +66,10 @@
             </Border>
 			<Border Name="IconBar" Padding="4" DockPanel.Dock="Top">
 				<WrapPanel>
-					<Button Name="Open" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Command="{Binding btn_OnClick}">
+					<Button Name="Open" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="btnOpen_OnClick">
 						<Image Source="/Assets/folder.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Save" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Command="{Binding btn_OnClick}">
+					<Button Name="Save" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="btn_OnClick">
 						<Image Source="/Assets/diskette.png" Width="20" Height="15"/>
 					</Button>
 					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
@@ -78,10 +78,10 @@
 					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
 						<Image Source="/Assets/redo.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Run" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+					<Button Name="Run" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="Run_OnClick" >
 						<Image Source="/Assets/execute.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Record" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+					<Button Name="Record" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="Record_OnClick" >
 						<Image Source="/Assets/record.png" Width="20" Height="15"/>
 					</Button>
 				</WrapPanel>
@@ -90,7 +90,13 @@
             <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
                 <Border Name="Explorer" Grid.Column="0" Grid.Row="0" DockPanel.Dock="Left" Padding="4">
                     <Border DockPanel.Dock="Top">
-                        <TextBlock>path</TextBlock>
+                        <TreeView ItemsSource="{Binding Folder}">
+							<TreeView.ItemTemplate>
+								<TreeDataTemplate ItemsSource="{Binding SubFiles}">
+									<TextBlock Text="{Binding FileName}"/>
+                                </TreeDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
                     </Border>
                 </Border>
 

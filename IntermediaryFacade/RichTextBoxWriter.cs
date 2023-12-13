@@ -9,8 +9,10 @@
 
 using System;
 using System.Threading;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using Recorder;
+
+#if !DEBUG
 
 namespace IntermediaryFacade
 {
@@ -38,7 +40,7 @@ namespace IntermediaryFacade
         }
 
         /// <summary>
-        /// Write the command using deleget for thread safety
+        /// Write the command using delegate for thread safety
         /// </summary>
         /// <param name="value">Command to be written</param>
         public void Write(string value)
@@ -62,3 +64,5 @@ namespace IntermediaryFacade
         }
     }
 }
+
+#endif

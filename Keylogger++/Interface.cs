@@ -61,7 +61,7 @@ namespace Keylogger__
         /// <summary>
         /// state of the app
         /// Idle = 0;
-        /// Recordin = 1;
+        /// Recording = 1;
         /// Running = 2;
         /// </summary>
         private int _state = 0;
