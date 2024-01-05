@@ -10,7 +10,6 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="KeyloggerIDE"
         TransparencyLevelHint="AcrylicBlur"
-        Background="Transparent"
         ExtendClientAreaToDecorationsHint="True">
 	<views:MainView />
     

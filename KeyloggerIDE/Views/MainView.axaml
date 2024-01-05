@@ -109,8 +109,11 @@
 								<TabControl.ItemTemplate>
                                     <DataTemplate>
                                         <DockPanel>
-                                            <TextBlock Name="Header" Text="{Binding Header}" />
+                                            <TextBlock Name="Header" Text="{Binding Header}"/>
                                             <TextBlock Name="Status" Text="{Binding Status}"/>
+											<Button IsVisible="{Binding CloseBtn}" Click="Button_OnClick">
+												<Image Source="/Assets/close.png"/>
+                                            </Button>
 										</DockPanel>
                                     </DataTemplate>
                                 </TabControl.ItemTemplate>
@@ -119,17 +122,10 @@
                                         <TextBlock />
                                     </DataTemplate>
                                 </TabControl.ContentTemplate>
-
-								<TabControl.Styles>
-                                    <Style Selector="TabControl WrapPanel">
-                                        <Setter Property="MaxHeight" Value="20"/>
-                                        <!--<Setter Property="VerticalAlignment" Value="Top"/>-->
-                                    </Style>
-                                </TabControl.Styles>
                             </TabControl>
                         </Border>
 
-						<AvaloniaEdit:TextEditor Name="AvalonEditor" TextChanged="AvalonEditor_OnTextChanged" ShowLineNumbers="True"/>
+						<AvaloniaEdit:TextEditor Name="AvalonEditor" TextChanged="AvalonEditor_OnTextChanged" ShowLineNumbers="True" BorderThickness="1,0,1,1" BorderBrush="Gray"/>
                     </DockPanel>
                 </Border>
             </Grid>
