@@ -16,6 +16,7 @@
   
   <ItemGroup>
     <None Remove="Assets\close.png" />
+    <None Remove="Assets\debug.png" />
   </ItemGroup>
 
   <ItemGroup>

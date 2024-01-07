@@ -18,9 +18,9 @@
     <Border>
         <DockPanel>
             <Border Name="MenuBar" Padding="4" DockPanel.Dock="Top">
-                <WrapPanel>
+                <WrapPanel Name="AppMenu">
                     <Image Source="/Assets/favicon.ico" Width="20" Height="20" ></Image>
-					<Button Content="File" FontSize="12" Padding="7" CornerRadius="10">
+					<Button Content="File" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
 								<MenuItem Name="MenuNewFile" Header="New File" InputGesture="Ctrl+N" Click="menuItem_OnClick" />
@@ -30,7 +30,7 @@
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>
-					<Button Content="Edit" FontSize="12" Padding="7" CornerRadius="10">
+					<Button Content="Edit" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
 								<MenuItem Header="Undo" InputGesture="Ctrl+Z" />
@@ -41,7 +41,7 @@
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>
-					<Button Content="Debug" FontSize="12" Padding="7" CornerRadius="10">
+					<Button Content="Debug" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
 								<MenuItem Header="Start debugging" InputGesture="F5" />
@@ -52,7 +52,7 @@
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>
-					<Button Content="About" Click="OnAboutButton_Click" Name="aboutButton" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Button Content="About" Click="OnAboutButton_Click" Name="aboutButton" FontSize="12" Padding="7" />
 					<Popup Name="About"
 						   WindowManagerAddShadowHint="False"
 						   Width="400"
@@ -61,27 +61,30 @@
 						   PlacementTarget="{Binding ElementName=aboutButton}" >
 						<v:CustomPresenter />
 					</Popup>
-					<Button Content="Help" FontSize="12" Padding="7" CornerRadius="10"/>
+					<Button Content="Help" FontSize="12" Padding="7" />
                 </WrapPanel>
             </Border>
 			<Border Name="IconBar" Padding="4" DockPanel.Dock="Top">
-				<WrapPanel>
-					<Button Name="Open" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="btnOpen_OnClick">
+				<WrapPanel Name="RunMenu">
+					<Button Name="Open" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btnOpen_OnClick">
 						<Image Source="/Assets/folder.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Save" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="btn_OnClick">
+					<Button Name="Save" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btn_OnClick">
 						<Image Source="/Assets/diskette.png" Width="20" Height="15"/>
 					</Button>
-					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" >
 						<Image Source="/Assets/undo.png" Width="20" Height="15"/>
 					</Button>
-					<Button HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10">
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" >
 						<Image Source="/Assets/redo.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Run" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="Run_OnClick" >
+					<Button Name="Run" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Run_OnClick" Background="Green">
 						<Image Source="/Assets/execute.png" Width="20" Height="15"/>
 					</Button>
-					<Button Name="Record" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="10" Click="Record_OnClick" >
+                    <Button Name="Debug" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Debug_OnClick" Background="Green">
+                        <Image Source="/Assets/debug.png" Width="20" Height="15"/>
+                    </Button>
+					<Button Name="Record" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Record_OnClick" Background="Green">
 						<Image Source="/Assets/record.png" Width="20" Height="15"/>
 					</Button>
 				</WrapPanel>

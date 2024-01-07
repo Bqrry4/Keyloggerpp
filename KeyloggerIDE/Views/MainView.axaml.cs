@@ -187,8 +187,11 @@ public partial class MainView : UserControl
     {
         if (_state == 0)
         {
-            _controller.StartRunning(_editor.Text);
+            _controller.StartRunning(_editor.Text, 0);
             _state = 1;
+            Run.Background = Brushes.DarkRed;
+            Record.IsEnabled = false;
+            Debug.IsEnabled = false;
 
             // themes test code
             App.Current.RequestedThemeVariant = ThemeVariant.Light;
@@ -198,6 +201,9 @@ public partial class MainView : UserControl
         {
             _controller.StopRunning();
             _state = 0;
+            Run.Background = Brushes.Green;
+            Record.IsEnabled = true;
+            Debug.IsEnabled = true;
 
             //themes test code
             App.Current.RequestedThemeVariant = ThemeVariant.Dark;
@@ -214,11 +220,17 @@ public partial class MainView : UserControl
             _controller.setOutput(new AvalonEditorWriter(_editor));
             _controller.StartRecording();
             _state = 2;
+            Record.Background = Brushes.DarkRed;
+            Run.IsEnabled = false;
+            Debug.IsEnabled = false;
         }
         else
         {
             _controller.StopRecording();
             _state = 0;
+            Record.Background = Brushes.Green;
+            Run.IsEnabled = true;
+            Debug.IsEnabled = true;
         }
     }
 
@@ -226,5 +238,25 @@ public partial class MainView : UserControl
     {
         
         _tabControlViewModel.CloseTab(TabView, AvalonEditor, (Button)sender);
+    }
+
+    private void Debug_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_state == 0)
+        {
+            _controller.StartRunning(_editor.Text, 1);
+            _state = 2;
+            Debug.Background = Brushes.DarkRed;
+            Run.IsEnabled = false;
+            Record.IsEnabled = false;
+        }
+        else
+        {
+            _controller.StopRunning();
+            _state = 0;
+            Debug.Background = Brushes.Green;
+            Run.IsEnabled = true;
+            Record.IsEnabled = true;
+        }
     }
 }

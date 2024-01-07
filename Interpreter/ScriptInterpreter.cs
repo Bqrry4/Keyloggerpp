@@ -21,6 +21,13 @@ namespace Interpreter
     /// </summary>
     public class ScriptInterpreter : IObserver<string>
     {
+        /// <summary>
+        /// Running mode, 0 - run all, 1 - debug
+        /// </summary>
+        public int mode { get; set; }
+
+        private int _cmdIndex = 0;
+
         private Dictionary<string, List<IKlppCommand>> _hotkeyScripts = new Dictionary<string, List<IKlppCommand>>();
 
         /// <summary>
@@ -96,11 +103,27 @@ namespace Interpreter
             {
                 throw new HotkeyNotFoundException("Hotkey " + hotkey + " is not registered in the interpreter!");
             }
-            foreach (IKlppCommand command in commandList)
+
+            if (mode == 0)
+            {
+                foreach (IKlppCommand command in commandList)
+                {
+                    try
+                    {
+                        command.Execute();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new AggregateException("Error executing hotkey " + hotkey, ex);
+                    }
+                }
+            }
+            else
             {
                 try
                 {
-                    command.Execute();
+                    commandList[_cmdIndex].Execute();
+                    _cmdIndex = (_cmdIndex > commandList.Count) ? 0 : (_cmdIndex + 1);
                 }
                 catch (Exception ex)
                 {
@@ -112,6 +135,7 @@ namespace Interpreter
         public void Clear()
         {
             _hotkeyScripts.Clear();
+            _cmdIndex = 0;
         }
 
         public void OnNext(string value)
