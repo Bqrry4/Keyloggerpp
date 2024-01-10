@@ -20,7 +20,6 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.ShutdownRequested += MainView.OnExit;
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainViewModel()
@@ -37,6 +36,4 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
-
-    public event EventHandler<ShutdownRequestedEventArgs>? ShutdownRequested;
 }

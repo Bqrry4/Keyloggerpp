@@ -65,6 +65,9 @@ public partial class MainView : UserControl
         // init tab control and editor
         TabView.DataContext = _tabControlViewModel = new TabControlViewModel();
         _tabControlViewModel.InitTabControl(AvalonEditor);
+
+        // init explorer
+        Explorer.DataContext = _solExplorer;
         
         // set editor callbacks
         AvalonEditor.TextArea.TextEntering += editor_TextArea_TextEntered;
@@ -73,9 +76,19 @@ public partial class MainView : UserControl
         Instance = this;
     }
 
-    public static void OnExit(object? sender, ShutdownRequestedEventArgs e)
+    public static void OnExit(object? sender, WindowClosingEventArgs e)
     {
+        foreach (TabControlViewModel.TabControlPageViewModelItem page in Instance._tabControlViewModel.Tabs)
+        {
+            if (!page.IsSaved && (!string.IsNullOrEmpty(page.Content) || (page == Instance.TabView.SelectedItem && !string.IsNullOrEmpty(Instance.AvalonEditor.Text))))
+            {
+                e.Cancel = true;
+                break;
+            }
+        }
+
         Instance._tabControlViewModel.SaveAll(Instance.TabView, Instance.AvalonEditor);
+        Instance._tabControlViewModel.SaveTabs();
     }
 
     private void OnAboutButton_Click(object sender, RoutedEventArgs e)

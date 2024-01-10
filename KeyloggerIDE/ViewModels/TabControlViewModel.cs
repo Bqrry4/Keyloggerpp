@@ -124,18 +124,21 @@ namespace KeyloggerIDE.ViewModels
             {
                 foreach (XmlNode item in tabItems)
                 {
-                    StreamReader sr = new StreamReader(item.Attributes["path"].Value);
-                    string content = sr.ReadToEnd();
-
-                    _tabs.Add(new TabControlPageViewModelItem
+                    try
                     {
-                        Header = item.InnerText,
-                        FilePath = item.Attributes["path"].Value,
-                        Content = content,
-                        Status = "",
-                        IsSaved = true,
-                        CloseBtn = true
-                    });
+                        StreamReader sr = new StreamReader(item.Attributes["path"].Value);
+                        string content = sr.ReadToEnd();
+
+                        _tabs.Add(new TabControlPageViewModelItem
+                        {
+                            Header = item.InnerText,
+                            FilePath = item.Attributes["path"].Value,
+                            Content = content,
+                            Status = "",
+                            IsSaved = true,
+                            CloseBtn = true
+                        });
+                    }catch (Exception e) { }
                 }
 
                 // set editor text to last opened file
@@ -244,10 +247,8 @@ namespace KeyloggerIDE.ViewModels
             if (page == null)
             {
                 page = _tabs[tabView.SelectedIndex];
+                page.Content = editor.Text;
             }
-
-            // sync tab view model and editor
-            page.Content = editor.Text;
 
             // get file dialog from TopLevel
             TopLevel topLevel = TopLevel.GetTopLevel(tabView);
@@ -259,7 +260,7 @@ namespace KeyloggerIDE.ViewModels
             if (file is not null)
             {
                 // Open writing stream from the file.
-                await using var stream = await file.OpenWriteAsync();
+                using var stream = await file.OpenWriteAsync();
                 using var streamWriter = new StreamWriter(stream);
 
                 // Write some content to the file.
@@ -286,6 +287,10 @@ namespace KeyloggerIDE.ViewModels
             {
                 page = _tabs[tabView.SelectedIndex];
             }
+            else if(page == _tabs[tabView.SelectedIndex])
+            {
+                page.Content = editor.Text;
+            }
 
             // if file path is null or empty, open a save file dialog
             if (string.IsNullOrEmpty(page.FilePath))
@@ -294,9 +299,6 @@ namespace KeyloggerIDE.ViewModels
             }
             else
             {
-                // sync tab view model and editor
-                page.Content = editor.Text;
-
                 // write content from text box to file
                 StreamWriter sw = new StreamWriter(page.FilePath!);
                 sw.Write(page.Content);
@@ -385,6 +387,22 @@ namespace KeyloggerIDE.ViewModels
             }
 
             _tabs.Remove(page);
+        }
+
+        public void SaveTabs()
+        {
+            string str = "";
+            foreach (var tab in _tabs)
+            {
+                if (!string.IsNullOrEmpty(tab.FilePath))
+                {
+                    str += "<FileTabItem path=\"" + tab.FilePath + "\">" + tab.Header + "</FileTabItem>\r\n";
+                }
+            }
+            XmlWriter writer = XmlWriter.Create(SavefilePath);
+            writer.WriteRaw("\r\n<TabControl>\r\n" + str + "</TabControl>");
+            writer.Flush();
+            writer.Close();
         }
     }
 }

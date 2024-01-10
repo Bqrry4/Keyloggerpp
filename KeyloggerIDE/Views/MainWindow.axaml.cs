@@ -13,6 +13,7 @@ public partial class MainWindow : Window
         Logger.TryGet(LogEventLevel.Fatal, LogArea.Control)?.Log(this, "Avalonia Infrastructure");
         System.Diagnostics.Debug.WriteLine("System Diagnostics Debug");
         InitializeComponent();
+        Closing += MainView.OnExit;
     }
 
 }
