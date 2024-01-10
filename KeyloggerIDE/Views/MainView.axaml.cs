@@ -65,8 +65,6 @@ public partial class MainView : UserControl
         // init tab control and editor
         TabView.DataContext = _tabControlViewModel = new TabControlViewModel();
         _tabControlViewModel.InitTabControl(AvalonEditor);
-
-        // init explorer
         Explorer.DataContext = _solExplorer;
         
         // set editor callbacks
