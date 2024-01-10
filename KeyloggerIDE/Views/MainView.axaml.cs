@@ -63,6 +63,7 @@ public partial class MainView : UserControl
         // init tab control and editor
         TabView.DataContext = _tabControlViewModel = new TabControlViewModel();
         _tabControlViewModel.InitTabControl(AvalonEditor);
+        Explorer.DataContext = _solExplorer;
         
         // set editor callbacks
         AvalonEditor.TextArea.TextEntering += editor_TextArea_TextEntered;
