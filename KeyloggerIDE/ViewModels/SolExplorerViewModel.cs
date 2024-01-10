@@ -15,7 +15,7 @@ public class SolExplorerViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private ObservableCollection<File> _folder;
+    private ObservableCollection<File> _folder = new ObservableCollection<File>();
     public ObservableCollection<File> Folder
     {
         get => _folder;
@@ -40,17 +40,26 @@ public class SolExplorerViewModel : INotifyPropertyChanged
 
     public void CreateSolExp(string path)
     {
-        while (string.IsNullOrEmpty(path))
+        if (string.IsNullOrEmpty(path) == false)
         {
-            int charLocation = path.IndexOf("/", StringComparison.Ordinal);
-
-            if (charLocation > 0)
+            int charLocation = 0;
+            while (string.IsNullOrEmpty(path) == false && charLocation != -1)
             {
-                var file = new File(path.Substring(0, charLocation));
-                Folder.Add(file);
-                path = path.Remove(0, charLocation);
-                IsChanged = true;
+                charLocation = path.IndexOf("/", StringComparison.Ordinal);
+
+                if (charLocation > 0)
+                {
+                    var file = new File(path.Substring(0, charLocation));
+                    _folder.Add(file);
+                    path = path.Remove(0, charLocation + 1);
+                    
+                }
             }
+            IsChanged = true;
+        }
+        else
+        {
+            IsChanged = false;
         }
     }
 }
