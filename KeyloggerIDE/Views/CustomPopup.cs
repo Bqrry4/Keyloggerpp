@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KeyloggerIDE.Views
 {
-    public class CustomPresenter : PickerPresenterBase
+    public class CustomPopup : PickerPresenterBase
     {
         public string Text
         {
@@ -17,6 +17,6 @@ namespace KeyloggerIDE.Views
         }
 
         public static readonly StyledProperty<string> TextProperty =
-            AvaloniaProperty.Register<CustomPresenter, string>(nameof(Text));
+            AvaloniaProperty.Register<CustomPopup, string>(nameof(Text));
     }
 }

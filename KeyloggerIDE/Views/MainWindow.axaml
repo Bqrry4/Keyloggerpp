@@ -18,14 +18,17 @@
     </Window.Styles>-->
 
 	<Window.Styles>
-		<Style Selector="v|CustomPresenter">
+		<Style Selector="v|CustomPopup">
 			<Setter Property="Template">
 				<ControlTemplate>
 					<Border BorderThickness="0.75"
 							BorderBrush="Black"
 							Padding="6,3"
-							Background="Black">
-						<TextBlock TextAlignment="Center"> Hello World </TextBlock>
+							Background="DarkGray"
+							MaxWidth="400">
+						<TextBlock TextAlignment="Center">
+							Program that records the user's actions in the form of a modifiable script
+						</TextBlock>
 					</Border>
 				</ControlTemplate>
 			</Setter>

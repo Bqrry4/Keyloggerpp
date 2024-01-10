@@ -25,7 +25,7 @@ public partial class MainView : UserControl
 {
     private readonly TabControlViewModel _tabControlViewModel;
 
-    private readonly MainViewModel _mainViewModel = new();
+    private readonly SolExplorerViewModel _solExplorer = new();
 
     private CompletionWindow _completionWindow;
 
@@ -130,6 +130,7 @@ public partial class MainView : UserControl
         switch (_btn.Name)
         {
             case "NewFile":
+                TabView.SelectedIndex = TabView.ItemCount - 1;
                 break;
             case "Save":
                 _tabControlViewModel.Save(_tab, _editor, null);
@@ -162,6 +163,7 @@ public partial class MainView : UserControl
         switch (_menuItem.Name)
         {
             case "MenuNewFile":
+                TabView.SelectedIndex = TabView.ItemCount - 1;
                 break;
             case "MenuSave":
                 _tabControlViewModel.Save(_tab, _editor, null);
@@ -184,8 +186,7 @@ public partial class MainView : UserControl
         if (files.Count >= 1)
         {
             _tabControlViewModel.Open(_tab, files[0].Path.AbsolutePath);
-            _mainViewModel.createSolExp(files[0].Path.AbsolutePath);
-
+            _solExplorer.CreateSolExp(files[0].Path.AbsolutePath);
         }
     }
 
