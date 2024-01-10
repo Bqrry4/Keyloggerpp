@@ -68,6 +68,11 @@ public partial class MainView : UserControl
         AvalonEditor.TextArea.TextEntering += editor_TextArea_TextEntered;
     }
 
+    private void This_ShutdownRequested(object? sender, ShutdownRequestedEventArgs e)
+    {
+        Editor.Background = Brushes.Green;
+    }
+
     private void OnAboutButton_Click(object sender, RoutedEventArgs e)
     {
         if (_popup != null)
@@ -104,11 +109,12 @@ public partial class MainView : UserControl
             _completionWindow = new CompletionWindow(AvalonEditor.TextArea);
             IList<ICompletionData> data = _completionWindow.CompletionList.CompletionData;
 
-            data.Add(new MyCompletionData("MsgBox", "Shows a message box"));
-            data.Add(new MyCompletionData("MousePress", "Mouse press event(without release)"));
-            data.Add(new MyCompletionData("MouseRelease", "Mouse release event"));
-            data.Add(new MyCompletionData("Send", "Send text to be typed"));
-            data.Add(new MyCompletionData("SendInput", "Send key combinations with Ctrl or Alt"));
+            data.Add(new MyCompletionData("MsgBox(\"\")", "Shows a message box with text"));
+            data.Add(new MyCompletionData("MsgBox(\"\", \"\")", "Shows a message box with text and title"));
+            data.Add(new MyCompletionData("MousePress(, , )", "Mouse press event(without release)"));
+            data.Add(new MyCompletionData("MouseRelease(, , )", "Mouse release event"));
+            data.Add(new MyCompletionData("Send(\"\")", "Send text to be typed"));
+            data.Add(new MyCompletionData("SendInput(\"\")", "Send key combinations with Ctrl or Alt"));
 
             _completionWindow.Show();
             _completionWindow.Closed += delegate {
@@ -237,7 +243,6 @@ public partial class MainView : UserControl
 
     private void Button_OnClick(object? sender, RoutedEventArgs e)
     {
-        
         _tabControlViewModel.CloseTab(TabView, AvalonEditor, (Button)sender);
     }
 

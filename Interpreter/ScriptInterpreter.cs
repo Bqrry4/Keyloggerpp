@@ -123,7 +123,7 @@ namespace Interpreter
                 try
                 {
                     commandList[_cmdIndex].Execute();
-                    _cmdIndex = (_cmdIndex > commandList.Count) ? 0 : (_cmdIndex + 1);
+                    _cmdIndex = (_cmdIndex >= commandList.Count - 1) ? 0 : (_cmdIndex + 1);
                 }
                 catch (Exception ex)
                 {
