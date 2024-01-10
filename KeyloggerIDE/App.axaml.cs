@@ -20,7 +20,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.ShutdownRequested += This_ShutdownRequested;
+            desktop.ShutdownRequested += MainView.OnExit;
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainViewModel()
@@ -36,17 +36,6 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    protected virtual void This_ShutdownRequested(object? sender, ShutdownRequestedEventArgs e)
-    {
-        Debug.WriteLine($"App.{nameof(This_ShutdownRequested)}");
-        OnShutdownRequested(e);
-    }
-
-    protected virtual void OnShutdownRequested(ShutdownRequestedEventArgs e)
-    {
-        ShutdownRequested?.Invoke(this, e);
     }
 
     public event EventHandler<ShutdownRequestedEventArgs>? ShutdownRequested;

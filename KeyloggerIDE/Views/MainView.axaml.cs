@@ -23,6 +23,8 @@ namespace KeyloggerIDE.Views;
 
 public partial class MainView : UserControl
 {
+    public static MainView Instance { get; private set; }
+
     private readonly TabControlViewModel _tabControlViewModel;
 
     private readonly SolExplorerViewModel _solExplorer = new();
@@ -66,11 +68,14 @@ public partial class MainView : UserControl
         
         // set editor callbacks
         AvalonEditor.TextArea.TextEntering += editor_TextArea_TextEntered;
+
+        // don't look here
+        Instance = this;
     }
 
-    private void This_ShutdownRequested(object? sender, ShutdownRequestedEventArgs e)
+    public static void OnExit(object? sender, ShutdownRequestedEventArgs e)
     {
-        Editor.Background = Brushes.Green;
+        Instance._tabControlViewModel.SaveAll(Instance.TabView, Instance.AvalonEditor);
     }
 
     private void OnAboutButton_Click(object sender, RoutedEventArgs e)
