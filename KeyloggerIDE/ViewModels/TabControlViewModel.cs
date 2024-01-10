@@ -379,15 +379,12 @@ namespace KeyloggerIDE.ViewModels
             TabItem item = (TabItem)btn.Parent.Parent;
             TabControlPageViewModelItem page = (TabControlPageViewModelItem)item.Content;
 
-            if (page.Header == "new tab" && page.Content == "")
-            {
-                _tabs.Remove(page);
-            }
-            else
+            if (!page.IsSaved && String.IsNullOrEmpty(page.Content))
             {
                 Save(tabView, editor, page);
-                _tabs.Remove(page);
             }
+
+            _tabs.Remove(page);
         }
     }
 }
