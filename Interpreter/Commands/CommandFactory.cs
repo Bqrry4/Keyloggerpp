@@ -152,7 +152,8 @@ namespace Interpreter
                                 return new MessageBoxCommand(message);
                             case 2:
                                 message = textPattern.Match(argumentString).Groups[0].Value;
-                                title = textPattern.Match(argumentString).Groups[1].Value;
+                                //title = textPattern.Match(argumentString).Groups[1].Value;
+                                title = argumentString.Split(',')[1].Replace("\"", "");
                                 return new MessageBoxCommand(message, title);
                             default:
                                 throw new ArgumentException("Syntax error: 'MsgBox' command usage: MessageBox(string message[, string title])");

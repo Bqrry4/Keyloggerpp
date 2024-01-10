@@ -176,6 +176,9 @@ namespace InputListener
         public static extern int GetSystemMetrics(int nIndex);
         [DllImport("kernel32.dll")]
         public static extern uint GetLastError();
+
+        [DllImport("user32.dll")]
+        public static extern int MessageBox(IntPtr hWnd, string text, string caption, int type);
     }
 
     public enum MessageType : int

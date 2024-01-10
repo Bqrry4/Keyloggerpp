@@ -8,10 +8,16 @@ using KeyloggerIDE.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.LogicalTree;
+using Avalonia.Markup.Xaml.Styling;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Styling;
 using IntermediaryFacade;
 using KeyloggerIDE.Models;
+using Avalonia.Themes.Fluent;
 
 namespace KeyloggerIDE.Views;
 
@@ -37,6 +43,16 @@ public partial class MainView : UserControl
 
     private int _state = 0;
 
+    StyleInclude light = new StyleInclude(new Uri("resm:Styles?assembly=ControlCatalog"))
+    {
+        Source = new Uri("resm:Avalonia.Themes.Default.Accents.BaseLight.xaml?assembly=Avalonia.Themes.Default")
+    };
+
+    StyleInclude dark = new StyleInclude(new Uri("resm:Styles?assembly=ControlCatalog"))
+    {
+        Source = new Uri("resm:Avalonia.Themes.Default.Accents.BaseDark.xaml?assembly=Avalonia.Themes.Default")
+    };
+
     public MainView()
     {
         InitializeComponent();
@@ -47,7 +63,7 @@ public partial class MainView : UserControl
         // init tab control and editor
         TabView.DataContext = _tabControlViewModel = new TabControlViewModel();
         _tabControlViewModel.InitTabControl(AvalonEditor);
-
+        
         // set editor callbacks
         AvalonEditor.TextArea.TextEntering += editor_TextArea_TextEntered;
     }
@@ -172,14 +188,30 @@ public partial class MainView : UserControl
     {
         if (_state == 0)
         {
-            _controller.StartRunning(_editor.Text);
+            _controller.StartRunning(_editor.Text, 0);
             _state = 1;
+            Run.Background = Brushes.DarkRed;
+            Record.IsEnabled = false;
+            Debug.IsEnabled = false;
+
+            // themes test code
+            App.Current.RequestedThemeVariant = ThemeVariant.Light;
+            _tabControlViewModel.loadSyntaxDefinition(AvalonEditor);
         }
         else
         {
             _controller.StopRunning();
             _state = 0;
+            Run.Background = Brushes.Green;
+            Record.IsEnabled = true;
+            Debug.IsEnabled = true;
+
+            //themes test code
+            App.Current.RequestedThemeVariant = ThemeVariant.Dark;
+            _tabControlViewModel.loadSyntaxDefinition(AvalonEditor);
         }
+
+        // themes testing code
     }
 
     private void Record_OnClick(object? sender, RoutedEventArgs e)
@@ -189,11 +221,43 @@ public partial class MainView : UserControl
             _controller.setOutput(new AvalonEditorWriter(_editor));
             _controller.StartRecording();
             _state = 2;
+            Record.Background = Brushes.DarkRed;
+            Run.IsEnabled = false;
+            Debug.IsEnabled = false;
         }
         else
         {
             _controller.StopRecording();
             _state = 0;
+            Record.Background = Brushes.Green;
+            Run.IsEnabled = true;
+            Debug.IsEnabled = true;
+        }
+    }
+
+    private void Button_OnClick(object? sender, RoutedEventArgs e)
+    {
+        
+        _tabControlViewModel.CloseTab(TabView, AvalonEditor, (Button)sender);
+    }
+
+    private void Debug_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (_state == 0)
+        {
+            _controller.StartRunning(_editor.Text, 1);
+            _state = 2;
+            Debug.Background = Brushes.DarkRed;
+            Run.IsEnabled = false;
+            Record.IsEnabled = false;
+        }
+        else
+        {
+            _controller.StopRunning();
+            _state = 0;
+            Debug.Background = Brushes.Green;
+            Run.IsEnabled = true;
+            Record.IsEnabled = true;
         }
     }
 }

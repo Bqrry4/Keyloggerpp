@@ -9,6 +9,9 @@
 
 //using System.Windows.Forms;
 
+using InputListener;
+using System.Runtime.InteropServices;
+
 namespace Interpreter
 {
     /// <summary>
@@ -31,7 +34,7 @@ namespace Interpreter
         /// </summary>
         public void Execute()
         {
-            //MessageBox.Show(_message, _title);
+            LLInput.MessageBox(IntPtr.Zero, _message, _title, 0);
         }
     }
 }

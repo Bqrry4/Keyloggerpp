@@ -1,7 +1,8 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
+using Avalonia.Themes.Fluent;
 using KeyloggerIDE.ViewModels;
 using KeyloggerIDE.Views;
 

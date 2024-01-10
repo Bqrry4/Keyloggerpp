@@ -17,11 +17,20 @@ using AvaloniaEdit.Document;
 using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.Highlighting;
 using System.Reflection;
+using Avalonia.Styling;
 
 namespace KeyloggerIDE.ViewModels
 {
     public class TabControlViewModel
     {
+        private const string DarkSyntaxFile = "syntax_definition_dark.xshd";
+
+        private const string LightSyntaxFile = "syntax_definition_light.xshd";
+
+        private const string DarkDefaultSyntax = "<SyntaxDefinition name=\"k++\" xmlns=\"http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008\">\r\n    <Color name=\"Comment\" foreground=\"Green\" />\r\n    <Color name=\"String\" foreground=\"rgb(232,201,187)\" />\r\n    \r\n    <!-- This is the main ruleset. -->\r\n    <RuleSet>        \r\n        <Span color=\"String\">\r\n            <Begin>\"</Begin>\r\n            <End>\"</End>\r\n        </Span>\r\n        \r\n        <Keywords fontWeight=\"bold\" foreground=\"rgb(220,220,170)\">\r\n            <Word>MsgBox</Word>\r\n            <Word>MousePress</Word>\r\n            <Word>MouseRelease</Word>\r\n            <Word>Send</Word>\r\n            <Word>SendInput</Word>\r\n        </Keywords>\r\n        \r\n        <Rule foreground=\"rgb(184,215,163)\">\r\n            \\d+\r\n        </Rule>\r\n\t\t\r\n\t\t<Rule foreground=\"#b33f3b\">\r\n\t\t\t[A-Za-z]+\\s+[A-Za-z]::\r\n\t\t</Rule>\r\n    </RuleSet>\r\n</SyntaxDefinition>";
+
+        private const string LightDefaultSyntax = "<SyntaxDefinition name=\"k++\" xmlns=\"http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008\">\r\n    <Color name=\"Comment\" foreground=\"Green\" />\r\n    <Color name=\"String\" foreground=\"rgb(232,201,187)\" />\r\n    \r\n    <!-- This is the main ruleset. -->\r\n    <RuleSet>        \r\n        <Span color=\"String\">\r\n            <Begin>\"</Begin>\r\n            <End>\"</End>\r\n        </Span>\r\n        \r\n        <Keywords fontWeight=\"bold\" foreground=\"rgb(220,220,170)\">\r\n            <Word>MsgBox</Word>\r\n            <Word>MousePress</Word>\r\n            <Word>MouseRelease</Word>\r\n            <Word>Send</Word>\r\n            <Word>SendInput</Word>\r\n        </Keywords>\r\n        \r\n        <Rule foreground=\"rgb(184,215,163)\">\r\n            \\d+\r\n        </Rule>\r\n\t\t\r\n\t\t<Rule foreground=\"#f83f3b\">\r\n\t\t\t[A-Za-z]+\\s+[A-Za-z]::\r\n\t\t</Rule>\r\n    </RuleSet>\r\n</SyntaxDefinition>";
+        
         /// <summary>
         /// Path to file which stores opened tabs info
         /// </summary>
@@ -87,6 +96,8 @@ namespace KeyloggerIDE.ViewModels
                     RaisePropertyChanged(nameof(Status));
                 }
             }
+
+            public bool CloseBtn { get; set; }
         }
 
         /// <summary>
@@ -122,7 +133,8 @@ namespace KeyloggerIDE.ViewModels
                         FilePath = item.Attributes["path"].Value,
                         Content = content,
                         Status = "",
-                        IsSaved = true
+                        IsSaved = true,
+                        CloseBtn = true
                     });
                 }
 
@@ -137,7 +149,8 @@ namespace KeyloggerIDE.ViewModels
                     FilePath = "",
                     Content = "",
                     Status = "*",
-                    IsSaved = false
+                    IsSaved = false,
+                    CloseBtn = true
                 });
             }
 
@@ -147,30 +160,50 @@ namespace KeyloggerIDE.ViewModels
                 FilePath = "", 
                 Content = "",
                 Status = "",
-                IsSaved = true
+                IsSaved = true,
+                CloseBtn = false
             });
 
-            // create syntax rules file if it doesn't exist
-            if (!File.Exists("syntax_definition.xshd"))
+            loadSyntaxDefinition(editor);
+            
+            _initComplete = true;
+        }
+
+        public void loadSyntaxDefinition(TextEditor editor)
+        {
+            string file;
+            string definition;
+
+            if (App.Current.RequestedThemeVariant == ThemeVariant.Light)
             {
-                XmlWriter writer = XmlWriter.Create("syntax_definition.xshd");
+                file = LightSyntaxFile;
+                definition = LightDefaultSyntax;
+            }
+            else
+            {
+                file = DarkSyntaxFile;
+                definition = DarkDefaultSyntax;
+            }
+
+            // create syntax rules file if it doesn't exist
+            if (!File.Exists(file))
+            {
+                XmlWriter writer = XmlWriter.Create(file);
 
                 // write default syntax rules
-                writer.WriteRaw("<SyntaxDefinition name=\"k++\" xmlns=\"http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008\">\r\n    <Color name=\"Comment\" foreground=\"Green\" />\r\n    <Color name=\"String\" foreground=\"rgb(232,201,187)\" />\r\n    \r\n    <!-- This is the main ruleset. -->\r\n    <RuleSet>        \r\n        <Span color=\"String\">\r\n            <Begin>\"</Begin>\r\n            <End>\"</End>\r\n        </Span>\r\n        \r\n        <Keywords fontWeight=\"bold\" foreground=\"rgb(220,220,170)\">\r\n            <Word>MsgBox</Word>\r\n            <Word>MousePress</Word>\r\n            <Word>MouseRelease</Word>\r\n            <Word>Send</Word>\r\n            <Word>SendInput</Word>\r\n        </Keywords>\r\n        \r\n        <Rule foreground=\"rgb(184,215,163)\">\r\n            \\d+\r\n        </Rule>\r\n\t\t\r\n\t\t<Rule foreground=\"#b33f3b\">\r\n\t\t\t[A-Za-z]+\\s+[A-Za-z]::\r\n\t\t</Rule>\r\n    </RuleSet>\r\n</SyntaxDefinition>");
+                writer.WriteRaw(definition);
                 writer.Flush();
                 writer.Close();
             }
 
             // load syntax highlighting rules
-            using (FileStream s = File.Open(@"syntax_definition.xshd", FileMode.Open))
+            using (FileStream s = File.Open(file, FileMode.Open))
             {
                 using (XmlTextReader reader = new XmlTextReader(s))
                 {
                     editor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
                 }
             }
-            
-            _initComplete = true;
         }
 
         /// <summary>
@@ -292,7 +325,8 @@ namespace KeyloggerIDE.ViewModels
                 FilePath = path,
                 Content = content,
                 Status = "",
-                IsSaved = true
+                IsSaved = true,
+                CloseBtn = true
             });
 
             // move '+' tab to the end
@@ -317,7 +351,8 @@ namespace KeyloggerIDE.ViewModels
                     FilePath = "",
                     Content = "",
                     Status = "*",
-                    IsSaved = false
+                    IsSaved = false,
+                    CloseBtn = true
                 });
 
                 // move '+' tab to the end
@@ -336,6 +371,22 @@ namespace KeyloggerIDE.ViewModels
                     _tabs[tabView.SelectedIndex].IsSaved = true;
                 }
                 _selectedIndex = tabView.SelectedIndex;
+            }
+        }
+
+        public void CloseTab(TabControl tabView, TextEditor editor, Button btn)
+        {
+            TabItem item = (TabItem)btn.Parent.Parent;
+            TabControlPageViewModelItem page = (TabControlPageViewModelItem)item.Content;
+
+            if (page.Header == "new tab" && page.Content == "")
+            {
+                _tabs.Remove(page);
+            }
+            else
+            {
+                Save(tabView, editor, page);
+                _tabs.Remove(page);
             }
         }
     }

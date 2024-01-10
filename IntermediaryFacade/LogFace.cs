@@ -82,10 +82,11 @@ namespace IntermediaryFacade
         }
 
 
-        public void StartRunning(string script)
+        public void StartRunning(string script, int mode)
         {
             try
             {
+                _interpreter.mode = mode;
                 List<string> hotKeys = new List<string>();
                 _interpreter.Parse(script, out hotKeys);
 

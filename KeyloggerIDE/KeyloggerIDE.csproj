@@ -13,6 +13,12 @@
 	<AvaloniaResource Include="Resource\**" />
   </ItemGroup>
 
+  
+  <ItemGroup>
+    <None Remove="Assets\close.png" />
+    <None Remove="Assets\debug.png" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.5" />
