@@ -92,13 +92,16 @@
 
             <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
                 <Border Name="Explorer" Grid.Column="0" Grid.Row="0" DockPanel.Dock="Left" Padding="4">
-                    <Border DockPanel.Dock="Top">
+					<Border DockPanel.Dock="Top">
 						<WrapPanel>
 							<TextBlock></TextBlock>
-								<TreeView ItemsSource="{Binding Folder}">
+							<TreeView ItemsSource="{Binding Folder}" SelectionMode="Multiple"
+									  Margin="10">
 								<TreeView.ItemTemplate>
 									<TreeDataTemplate ItemsSource="{Binding SubFiles}">
-										<TextBlock Text="{Binding FileName}"/>
+										<Border HorizontalAlignment="Left" BorderThickness="1" CornerRadius="5">
+											<TextBlock Text="{Binding FileName}"/>
+										</Border>
 									</TreeDataTemplate>
 								</TreeView.ItemTemplate>
 							</TreeView>

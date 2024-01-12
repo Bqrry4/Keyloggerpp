@@ -9,8 +9,10 @@ namespace KeyloggerIDE.Models
 {
     public class File
     {
-        public ObservableCollection<File>? SubFiles { get; }
+        public ObservableCollection<File>? SubFiles { get; set; }
         public string FileName { get; }
+
+        public File() { }
 
         public File(string fileName)
         {
