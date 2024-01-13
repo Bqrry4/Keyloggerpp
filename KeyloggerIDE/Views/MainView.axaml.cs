@@ -19,6 +19,8 @@ public partial class MainView : UserControl
 {
     public static MainView Instance { get; private set; }
 
+    public SettingsView Settings { get; private set; }
+
     private readonly TabControlViewModel _tabControlViewModel;
 
     private readonly SolExplorerViewModel _solExplorer = new();
@@ -278,5 +280,6 @@ public partial class MainView : UserControl
 
     private void SettingsButton_OnClick(object? sender, RoutedEventArgs e)
     {
+
     }
 }

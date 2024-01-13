@@ -47,7 +47,7 @@ public class SolExplorerViewModel : INotifyPropertyChanged
             var path_scan = path.Substring(0, charLocation);
             string[] directories = System.IO.Directory.GetDirectories(path_scan);
             string[] files = System.IO.Directory.GetFiles(path_scan);
-            File folder = new File(directories[0].Substring(directories[0].LastIndexOf("/", 0) + 1));
+            File folder = new File(path_scan);
             folder.SubFiles = new ObservableCollection<File>();
 
             if (directories.Length > 0)
@@ -55,7 +55,7 @@ public class SolExplorerViewModel : INotifyPropertyChanged
                 foreach (string name in directories)
                 {
                     charLocation = name.IndexOf("\\", 0);
-                    folder.SubFiles.Add(new File(path.Substring(charLocation + 1)));
+                    folder.SubFiles.Add(new File(name.Substring(charLocation + 1)));
                 }
             }
 
@@ -64,11 +64,10 @@ public class SolExplorerViewModel : INotifyPropertyChanged
                 foreach (string name in files)
                 {
                     charLocation = name.IndexOf("\\", 0);
-                    var file = new File(path.Substring(charLocation + 1));
-                    folder.SubFiles.Add(file);
+                    folder.SubFiles.Add(new File(name.Substring(charLocation + 1)));
                 }
             }
-            _folder.Add(new File(path_scan));
+            _folder.Add(folder);
             IsChanged = true;
         }
         else
