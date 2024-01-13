@@ -7,17 +7,11 @@ using AvaloniaEdit.CodeCompletion;
 using KeyloggerIDE.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.LogicalTree;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using IntermediaryFacade;
-using KeyloggerIDE.Models;
-using Avalonia.Themes.Fluent;
 
 namespace KeyloggerIDE.Views;
 
@@ -280,5 +274,9 @@ public partial class MainView : UserControl
             Run.IsEnabled = true;
             Record.IsEnabled = true;
         }
+    }
+
+    private void SettingsButton_OnClick(object? sender, RoutedEventArgs e)
+    {
     }
 }
