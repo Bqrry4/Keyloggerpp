@@ -33,22 +33,19 @@
 					<Button Content="Edit" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
-								<MenuItem Header="Undo" InputGesture="Ctrl+Z" />
-								<MenuItem Header="Redo" InputGesture="Ctrl+Y" />
-								<MenuItem Header="Cut" InputGesture="Ctrl+X" />
-								<MenuItem Header="Copy" InputGesture="Ctrl+C" />
-								<MenuItem Header="Paste" InputGesture="Ctrl+P" />
+								<MenuItem Header="Undo" InputGesture="Ctrl+Z" Click="Undo_OnClick"/>
+								<MenuItem Header="Redo" InputGesture="Ctrl+Y" Click="Redo_OnClick"/>
+								<MenuItem Header="Cut" InputGesture="Ctrl+X" Click="Cut_OnClick"/>
+								<MenuItem Header="Copy" InputGesture="Ctrl+C" Click="Copy_OnClick"/>
+								<MenuItem Header="Paste" InputGesture="Ctrl+P" Click="Paste_OnClick"/>
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>
 					<Button Content="Debug" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
-								<MenuItem Header="Start debugging" InputGesture="F5" />
-								<MenuItem Header="Start without debugging" InputGesture="Ctrl+F5" />
-								<MenuItem Header="Toggle breakpoint" InputGesture="F9" />
-								<MenuItem Header="Step into" InputGesture="F11" />
-								<MenuItem Header="Step over" InputGesture="F10" />
+								<MenuItem Header="Start debugging" InputGesture="F5" Click="Debug_OnClick"/>
+								<MenuItem Header="Start without debugging" InputGesture="Ctrl+F5" Click="Run_OnClick"/>
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>
@@ -61,8 +58,8 @@
 						   PlacementTarget="{Binding ElementName=aboutButton}" >
 						<v:CustomPopup />
 					</Popup>
-					<Button Content="Help" FontSize="12" Padding="7" />
-					<Button Content="Settings" FontSize="12" Padding="7" Click="SettingsButton_OnClick"/>
+					<Button Content="Help" FontSize="12" Padding="7" Click="HelpButton_OnClick" />
+					<Button Content="Settings" FontSize="12" Padding="7" Click="SettingsButton_OnClick" />
                 </WrapPanel>
             </Border>
 			<Border Name="IconBar" Padding="4" DockPanel.Dock="Top">
@@ -73,10 +70,10 @@
 					<Button Name="Save" HorizontalAlignment="Right" VerticalAlignment="Top" Click="btn_OnClick">
 						<Image Source="/Assets/diskette.png" Width="20" Height="15"/>
 					</Button>
-					<Button HorizontalAlignment="Right" VerticalAlignment="Top" >
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="Undo_OnClick">
 						<Image Source="/Assets/undo.png" Width="20" Height="15"/>
 					</Button>
-					<Button HorizontalAlignment="Right" VerticalAlignment="Top" >
+					<Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="Redo_OnClick">
 						<Image Source="/Assets/redo.png" Width="20" Height="15"/>
 					</Button>
 					<Button Name="Run" HorizontalAlignment="Right" VerticalAlignment="Top" Click="Run_OnClick" Background="Green">
