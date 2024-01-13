@@ -7,11 +7,13 @@
 		xmlns:v="clr-namespace:KeyloggerIDE.Views;assembly=KeyloggerIDE"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="KeyloggerIDE.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="KeyloggerIDE"
+        Content="{Binding ContentViewModel}"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True">
-	<views:MainView />
+    <!--<views:MainView/>-->
     
     <!--<Window.Styles>
         <StyleInclude Source="/Styles/EditorStyle.axaml"/>

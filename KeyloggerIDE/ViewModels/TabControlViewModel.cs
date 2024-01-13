@@ -142,7 +142,20 @@ namespace KeyloggerIDE.ViewModels
                 }
 
                 // set editor text to last opened file
-                editor.Text = _tabs.First().Content;
+                if(_tabs.Count != 0)
+                    editor.Text = _tabs.First().Content;
+                else
+                {
+                    _tabs.Add(new TabControlPageViewModelItem
+                    {
+                        Header = "new tab",
+                        FilePath = "",
+                        Content = "",
+                        Status = "*",
+                        IsSaved = false,
+                        CloseBtn = true
+                    });
+                }
             }
             else
             {
@@ -251,7 +264,7 @@ namespace KeyloggerIDE.ViewModels
             }
 
             // get file dialog from TopLevel
-            TopLevel topLevel = TopLevel.GetTopLevel(tabView);
+            TopLevel topLevel = TopLevel.GetTopLevel(new Window());
             var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
             {
                 Title = page.Header
@@ -286,6 +299,7 @@ namespace KeyloggerIDE.ViewModels
             if (page == null)
             {
                 page = _tabs[tabView.SelectedIndex];
+                page.Content = editor.Text;
             }
             else if(page == _tabs[tabView.SelectedIndex])
             {
@@ -381,12 +395,26 @@ namespace KeyloggerIDE.ViewModels
             TabItem item = (TabItem)btn.Parent.Parent;
             TabControlPageViewModelItem page = (TabControlPageViewModelItem)item.Content;
 
-            if (!page.IsSaved && String.IsNullOrEmpty(page.Content))
+            if (!page.IsSaved && !String.IsNullOrEmpty(page.Content))
             {
                 Save(tabView, editor, page);
             }
 
+            if (_tabs.Count == 2)
+            {
+                _tabs.Insert(0, new TabControlPageViewModelItem
+                {
+                    Header = "new tab",
+                    FilePath = "",
+                    Content = "",
+                    Status = "*",
+                    IsSaved = false,
+                    CloseBtn = true
+                });
+            }
+
             _tabs.Remove(page);
+            _selectedIndex = tabView.SelectedIndex;
         }
 
         public void SaveTabs()

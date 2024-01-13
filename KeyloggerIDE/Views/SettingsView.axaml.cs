@@ -4,7 +4,7 @@ using Avalonia.Platform.Storage;
 
 namespace KeyloggerIDE.Views
 {
-    public partial class SettingsView : Window
+    public partial class SettingsView : UserControl
     {
         public string default_path;
         public SettingsView()
@@ -20,7 +20,7 @@ namespace KeyloggerIDE.Views
 
         private async void ChangePath_OnClick(object? sender, RoutedEventArgs e)
         {
-            TopLevel? topLevel = GetTopLevel((Button?)sender);
+            TopLevel? topLevel = TopLevel.GetTopLevel((Button?)sender);
             var folder = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
             {
                 Title = "Pick folder"
