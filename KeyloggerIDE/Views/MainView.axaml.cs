@@ -12,6 +12,8 @@ using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 using IntermediaryFacade;
+using System.IO;
+using System.Diagnostics;
 
 namespace KeyloggerIDE.Views;
 
@@ -276,5 +278,46 @@ public partial class MainView : UserControl
             Run.IsEnabled = true;
             Record.IsEnabled = true;
         }
+    }
+
+    private void SettingsButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void HelpButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var path = Directory.GetCurrentDirectory();
+        ProcessStartInfo psi = new ProcessStartInfo
+        {
+            FileName = path + "\\Keylogger++.chm",
+            UseShellExecute = true
+        };
+        Process.Start(psi);
+    }
+
+    private void Undo_OnClick(object? sender, RoutedEventArgs e)
+    {
+        AvalonEditor.Undo();
+    }
+
+    private void Redo_OnClick(object? sender, RoutedEventArgs e)
+    {
+        AvalonEditor.Redo();
+    }
+
+    private void Cut_OnClick(object? sender, RoutedEventArgs e)
+    {
+        AvalonEditor.Cut();
+    }
+
+    private void Copy_OnClick(object? sender, RoutedEventArgs e)
+    {
+        AvalonEditor.Copy();
+    }
+
+    private void Paste_OnClick(object? sender, RoutedEventArgs e)
+    {
+        AvalonEditor.Paste();
     }
 }
