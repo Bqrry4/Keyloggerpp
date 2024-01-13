@@ -62,7 +62,7 @@
 						<v:CustomPopup />
 					</Popup>
 					<Button Content="Help" FontSize="12" Padding="7" />
-					<Button Content="Settings" FontSize="12" Padding="7" Click="SettingsButton_OnClick"/>
+					<Button Name="lol" Content="Settings" FontSize="12" Padding="7" Command="{Binding $parent[Window].DataContext.ChangeViewModel}"/>
                 </WrapPanel>
             </Border>
 			<Border Name="IconBar" Padding="4" DockPanel.Dock="Top">

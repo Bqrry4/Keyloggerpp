@@ -1,10 +1,12 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:KeyloggerIDE.ViewModels"
+        xmlns:v="clr-namespace:KeyloggerIDE.Views;assembly=KeyloggerIDE"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="KeyloggerIDE.Views.SettingsView"
-        Title="SettingsView">
+        x:DataType="vm:SettingsViewModel">
 	<StackPanel>
 		<TextBlock Text="Settings" FontSize="18" TextAlignment="Center" Margin="0,10,0,10"/>
 		<TextBox Name="Path" Margin="20,5,0,0" Width="200" HorizontalAlignment="Left" />
@@ -12,4 +14,4 @@
 		<RadioButton Content="Light mode" Margin="20,5,0,0" /> 
 		<RadioButton Content="Dark mode" Margin="20,5,0,0" IsChecked="True" />
 	</StackPanel>
-</Window>
+</UserControl>

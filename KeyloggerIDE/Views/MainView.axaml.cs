@@ -277,9 +277,4 @@ public partial class MainView : UserControl
             Record.IsEnabled = true;
         }
     }
-
-    private void SettingsButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-
-    }
 }
