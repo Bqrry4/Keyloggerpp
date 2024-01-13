@@ -13,7 +13,7 @@
 		<Button Content="Change path" Margin="20,5,0,0" Click="ChangePath_OnClick"/>
 		<RadioButton Name="Light" Content="Light mode" Margin="20,5,0,0" /> 
 		<RadioButton Name="Dark" Content="Dark mode" Margin="20,5,0,0" />
-		<Button Content="Switch to code" Margin="20,200,0,0" Command="{Binding $parent[Window].DataContext.ChangeViewModel}"/>
+		<Button Content="Switch to code" Margin="20,5,0,0" Command="{Binding $parent[Window].DataContext.ChangeViewModel}"/>
 		<Button Content="Save" Margin="0,-28,20,0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="Save_OnClick" />
 	</StackPanel>
 </UserControl>

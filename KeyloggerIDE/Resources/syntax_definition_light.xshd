@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?><SyntaxDefinition name="k++" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+    <Color name="Comment" foreground="Green" />
+    <Color name="String" foreground="rgb(8,144,0)" />
+    
+    <!-- This is the main ruleset. -->
+    <RuleSet>        
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+        </Span>
+        
+        <Keywords fontWeight="bold" foreground="rgb(76,0,164)">
+            <Word>MsgBox</Word>
+            <Word>MousePress</Word>
+            <Word>MouseRelease</Word>
+            <Word>Send</Word>
+            <Word>SendInput</Word>
+        </Keywords>
+        
+        <Rule foreground="rgb(72,75,106)">
+            \d+
+        </Rule>
+		
+		<Rule foreground="#f96161">
+			[A-Za-z]+\s+[A-Za-z]::
+		</Rule>
+    </RuleSet>
+</SyntaxDefinition>

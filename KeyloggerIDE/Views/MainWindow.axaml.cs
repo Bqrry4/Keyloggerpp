@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
+﻿using Avalonia.Controls;
 using Avalonia.Logging;
 
 namespace KeyloggerIDE.Views;

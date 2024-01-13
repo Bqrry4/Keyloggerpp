@@ -3,20 +3,15 @@ using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Platform.Storage;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using AvaloniaEdit;
-using AvaloniaEdit.Document;
 using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.Highlighting;
-using System.Reflection;
 using Avalonia.Styling;
 
 namespace KeyloggerIDE.ViewModels
@@ -200,9 +195,6 @@ namespace KeyloggerIDE.ViewModels
                 file = DarkSyntaxFile;
                 definition = DarkDefaultSyntax;
             }
-
-            file = LightSyntaxFile;
-            definition = LightDefaultSyntax;
 
             // create syntax rules file if it doesn't exist
             if (!File.Exists(file))

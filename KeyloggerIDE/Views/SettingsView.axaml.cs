@@ -46,23 +46,16 @@ namespace KeyloggerIDE.Views
             
             if (Light.IsChecked == true)
             {
-                Dark.IsChecked = false;
+                App.Current.RequestedThemeVariant = ThemeVariant.Light;
                 file = "syntax_definition_light.xshd";
             }
             else
             {
-                Light.IsChecked = false;
-                Dark.IsChecked = true;
+                App.Current.RequestedThemeVariant = ThemeVariant.Dark;
                 file = "syntax_definition_dark.xshd";
             }
 
-            StreamReader sr = new StreamReader(file);
-
-            File.WriteAllText("syntax_definition.xshd", sr.ReadToEnd());
-
-            sr.Close();
-
-            using (FileStream s = File.Open("syntax_definition.xshd", FileMode.Open))
+            using (FileStream s = File.Open(file, FileMode.Open))
             {
                 using (XmlTextReader reader = new XmlTextReader(s))
                 {
