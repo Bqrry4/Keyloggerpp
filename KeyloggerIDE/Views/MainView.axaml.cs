@@ -14,6 +14,8 @@ using Avalonia.Styling;
 using IntermediaryFacade;
 using System.IO;
 using System.Diagnostics;
+using CustomMessageBox.Avalonia;
+
 
 namespace KeyloggerIDE.Views;
 
@@ -206,32 +208,42 @@ public partial class MainView : UserControl
 
     private void Run_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (_state == 0)
+        try
         {
-            _controller.StartRunning(_editor.Text, 0);
-            _state = 1;
-            Run.Background = Brushes.DarkRed;
-            Record.IsEnabled = false;
-            Debug.IsEnabled = false;
+            if (_state == 0)
+            {
+                _controller.StartRunning(_editor.Text, 0);
+                _state = 1;
+                Run.Background = Brushes.DarkRed;
+                Record.IsEnabled = false;
+                Debug.IsEnabled = false;
 
-            // themes test code
-            App.Current.RequestedThemeVariant = ThemeVariant.Light;
-            _tabControlViewModel.loadSyntaxDefinition(AvalonEditor);
+                // themes test code
+                App.Current.RequestedThemeVariant = ThemeVariant.Light;
+                _tabControlViewModel.loadSyntaxDefinition(AvalonEditor);
+            }
+            else
+            {
+                _controller.StopRunning();
+                _state = 0;
+                Run.Background = Brushes.Green;
+                Record.IsEnabled = true;
+                Debug.IsEnabled = true;
+
+                //themes test code
+                App.Current.RequestedThemeVariant = ThemeVariant.Dark;
+                _tabControlViewModel.loadSyntaxDefinition(AvalonEditor);
+            }
         }
-        else
+        catch (Exception exception)
         {
-            _controller.StopRunning();
-            _state = 0;
-            Run.Background = Brushes.Green;
-            Record.IsEnabled = true;
-            Debug.IsEnabled = true;
-
-            //themes test code
-            App.Current.RequestedThemeVariant = ThemeVariant.Dark;
-            _tabControlViewModel.loadSyntaxDefinition(AvalonEditor);
+            MessageBox.Show(
+                exception.Message,
+                "Syntax error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
         }
-
-        // themes testing code
     }
 
     private void Record_OnClick(object? sender, RoutedEventArgs e)
@@ -262,21 +274,33 @@ public partial class MainView : UserControl
 
     private void Debug_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (_state == 0)
+        try
         {
-            _controller.StartRunning(_editor.Text, 1);
-            _state = 2;
-            Debug.Background = Brushes.DarkRed;
-            Run.IsEnabled = false;
-            Record.IsEnabled = false;
+            if (_state == 0)
+            {
+                _controller.StartRunning(_editor.Text, 1);
+                _state = 2;
+                Debug.Background = Brushes.DarkRed;
+                Run.IsEnabled = false;
+                Record.IsEnabled = false;
+            }
+            else
+            {
+                _controller.StopRunning();
+                _state = 0;
+                Debug.Background = Brushes.Green;
+                Run.IsEnabled = true;
+                Record.IsEnabled = true;
+            }
         }
-        else
+        catch (Exception exception)
         {
-            _controller.StopRunning();
-            _state = 0;
-            Debug.Background = Brushes.Green;
-            Run.IsEnabled = true;
-            Record.IsEnabled = true;
+            MessageBox.Show(
+                exception.Message,
+                "Syntax error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1);
         }
     }
 
