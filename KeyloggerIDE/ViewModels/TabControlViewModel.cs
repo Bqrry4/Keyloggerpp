@@ -299,6 +299,7 @@ namespace KeyloggerIDE.ViewModels
             if (page == null)
             {
                 page = _tabs[tabView.SelectedIndex];
+                page.Content = editor.Text;
             }
             else if(page == _tabs[tabView.SelectedIndex])
             {
