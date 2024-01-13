@@ -1,8 +1,10 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Styling;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
+using System;
 using System.IO;
 using System.Xml;
 
@@ -10,16 +12,21 @@ namespace KeyloggerIDE.Views
 {
     public partial class SettingsView : UserControl
     {
-        public string default_path;
+        public string default_path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public SettingsView()
         {
             InitializeComponent();
+            if (App.Current.RequestedThemeVariant == ThemeVariant.Light)
+                Light.IsChecked = true;
+            else
+                Dark.IsChecked = true;
             Path.Text = default_path;
         }
 
         private void setPath(string path)
         {
             default_path = path;
+            Path.Text = path;
         }
 
         private async void ChangePath_OnClick(object? sender, RoutedEventArgs e)
@@ -35,12 +42,12 @@ namespace KeyloggerIDE.Views
 
         private void Save_OnClick(object? sender, RoutedEventArgs e)
         {
-            var file = "";
+            string file;
             
             if (Light.IsChecked == true)
             {
                 Dark.IsChecked = false;
-                file = "syntax_definition.xshd";
+                file = "syntax_definition_light.xshd";
             }
             else
             {
@@ -48,7 +55,14 @@ namespace KeyloggerIDE.Views
                 Dark.IsChecked = true;
                 file = "syntax_definition_dark.xshd";
             }
-            using (FileStream s = File.Open(file, FileMode.Open))
+
+            StreamReader sr = new StreamReader(file);
+
+            File.WriteAllText("syntax_definition.xshd", sr.ReadToEnd());
+
+            sr.Close();
+
+            using (FileStream s = File.Open("syntax_definition.xshd", FileMode.Open))
             {
                 using (XmlTextReader reader = new XmlTextReader(s))
                 {

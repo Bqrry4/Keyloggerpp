@@ -201,6 +201,9 @@ namespace KeyloggerIDE.ViewModels
                 definition = DarkDefaultSyntax;
             }
 
+            file = LightSyntaxFile;
+            definition = LightDefaultSyntax;
+
             // create syntax rules file if it doesn't exist
             if (!File.Exists(file))
             {
