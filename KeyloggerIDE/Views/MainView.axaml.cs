@@ -39,7 +39,7 @@ public partial class MainView : UserControl
 
     private readonly LogFace _controller = new();
 
-    private readonly TextEditor _editor;
+    public readonly TextEditor _editor;
 
     private readonly TabControl _tab;
 

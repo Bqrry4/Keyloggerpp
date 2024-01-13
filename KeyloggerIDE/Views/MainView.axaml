@@ -23,9 +23,9 @@
 					<Button Content="File" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
-								<MenuItem Name="MenuNewFile" Header="New File" InputGesture="Ctrl+N" Click="menuItem_OnClick" />
-								<MenuItem Name="MenuOpen" Header="Open" InputGesture="Ctrl+O" Click="menuOpen_OnClick" />
-								<MenuItem Name="MenuSave" Header="Save" InputGesture="Ctrl+S" Click="menuItem_OnClick" />
+								<MenuItem Name="MenuNewFile" Header="New File" InputGesture="Ctrl+N" HotKey="Ctrl+N" Click="menuItem_OnClick" />
+								<MenuItem Name="MenuOpen" Header="Open" InputGesture="Ctrl+O" HotKey="Ctrl+O" Click="menuOpen_OnClick" />
+								<MenuItem Name="MenuSave" Header="Save" InputGesture="Ctrl+S" HotKey="Ctrl+S" Click="menuItem_OnClick" />
 								<MenuItem Name="MenuSaveAs" Header="Save as" Click="menuItem_OnClick" />
 							</MenuFlyout>
 						</Button.Flyout>
@@ -33,19 +33,19 @@
 					<Button Content="Edit" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
-								<MenuItem Header="Undo" InputGesture="Ctrl+Z" Click="Undo_OnClick"/>
-								<MenuItem Header="Redo" InputGesture="Ctrl+Y" Click="Redo_OnClick"/>
-								<MenuItem Header="Cut" InputGesture="Ctrl+X" Click="Cut_OnClick"/>
-								<MenuItem Header="Copy" InputGesture="Ctrl+C" Click="Copy_OnClick"/>
-								<MenuItem Header="Paste" InputGesture="Ctrl+P" Click="Paste_OnClick"/>
+								<MenuItem Header="Undo" InputGesture="Ctrl+Z"  HotKey="Ctrl+Z" Click="Undo_OnClick"/>
+								<MenuItem Header="Redo" InputGesture="Ctrl+Y" HotKey="Ctrl+Y" Click="Redo_OnClick"/>
+								<MenuItem Header="Cut" InputGesture="Ctrl+X" HotKey="Ctrl+X" Click="Cut_OnClick"/>
+								<MenuItem Header="Copy" InputGesture="Ctrl+C" HotKey="Ctrl+C" Click="Copy_OnClick"/>
+								<MenuItem Header="Paste" InputGesture="Ctrl+P" HotKey="Ctrl+P" Click="Paste_OnClick"/>
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>
 					<Button Content="Debug" FontSize="12" Padding="7" >
 						<Button.Flyout>
 							<MenuFlyout>
-								<MenuItem Header="Start debugging" InputGesture="F5" Click="Debug_OnClick"/>
-								<MenuItem Header="Start without debugging" InputGesture="Ctrl+F5" Click="Run_OnClick"/>
+								<MenuItem Header="Start debugging" InputGesture="F5" HotKey="F5" Click="Debug_OnClick"/>
+								<MenuItem Header="Start without debugging" InputGesture="Ctrl+F5" HotKey="Ctrl+F5" Click="Run_OnClick"/>
 							</MenuFlyout>
 						</Button.Flyout>
 					</Button>

@@ -1,6 +1,10 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
+using System.IO;
+using System.Xml;
 
 namespace KeyloggerIDE.Views
 {
@@ -27,6 +31,30 @@ namespace KeyloggerIDE.Views
             });
 
             setPath(folder[0].Path.AbsolutePath);
+        }
+
+        private void Save_OnClick(object? sender, RoutedEventArgs e)
+        {
+            var file = "";
+            
+            if (Light.IsChecked == true)
+            {
+                Dark.IsChecked = false;
+                file = "syntax_definition.xshd";
+            }
+            else
+            {
+                Light.IsChecked = false;
+                Dark.IsChecked = true;
+                file = "syntax_definition_dark.xshd";
+            }
+            using (FileStream s = File.Open(file, FileMode.Open))
+            {
+                using (XmlTextReader reader = new XmlTextReader(s))
+                {
+                    MainView.Instance._editor.SyntaxHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+                }
+            }
         }
     }
 }
